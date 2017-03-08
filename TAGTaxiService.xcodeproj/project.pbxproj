@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		C2E4F9D8DD06A8C3FAC2BFF7 /* Pods_TAGTaxiService.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F464A8EA014ED954563B38F /* Pods_TAGTaxiService.framework */; };
+		D85F1D731E6F84CB0076C3CA /* BookingStatusListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85F1D721E6F84CB0076C3CA /* BookingStatusListViewController.swift */; };
+		D85F1D751E6FEFF20076C3CA /* BookListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85F1D741E6FEFF20076C3CA /* BookListTableViewCell.swift */; };
 		D861EE361E6A94EA00CCF371 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D861EE351E6A94EA00CCF371 /* SignInViewController.swift */; };
 		D861EE4E1E6A977700CCF371 /* AcceptButton_ORG.png in Resources */ = {isa = PBXBuildFile; fileRef = D861EE381E6A977700CCF371 /* AcceptButton_ORG.png */; };
 		D861EE4F1E6A977700CCF371 /* ADMINACCEPTED_ORG.png in Resources */ = {isa = PBXBuildFile; fileRef = D861EE391E6A977700CCF371 /* ADMINACCEPTED_ORG.png */; };
@@ -46,13 +48,15 @@
 		D8FF564A1E69E4D600A99B75 /* Rider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FF56491E69E4D600A99B75 /* Rider.swift */; };
 		D8FF564C1E69FDDA00A99B75 /* Vehicle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FF564B1E69FDDA00A99B75 /* Vehicle.swift */; };
 		D8FF564E1E69FDE700A99B75 /* Driver.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FF564D1E69FDE700A99B75 /* Driver.swift */; };
-		D8FF56501E69FDF900A99B75 /* RiderBooking.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FF564F1E69FDF900A99B75 /* RiderBooking.swift */; };
+		D8FF56501E69FDF900A99B75 /* RideBooking.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FF564F1E69FDF900A99B75 /* RideBooking.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		5F464A8EA014ED954563B38F /* Pods_TAGTaxiService.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TAGTaxiService.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		93243EDE64EDCEED928D4DA9 /* Pods-TAGTaxiService.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TAGTaxiService.release.xcconfig"; path = "Pods/Target Support Files/Pods-TAGTaxiService/Pods-TAGTaxiService.release.xcconfig"; sourceTree = "<group>"; };
 		BA840D520D86F18A830B3FCE /* Pods-TAGTaxiService.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TAGTaxiService.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TAGTaxiService/Pods-TAGTaxiService.debug.xcconfig"; sourceTree = "<group>"; };
+		D85F1D721E6F84CB0076C3CA /* BookingStatusListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookingStatusListViewController.swift; sourceTree = "<group>"; };
+		D85F1D741E6FEFF20076C3CA /* BookListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookListTableViewCell.swift; sourceTree = "<group>"; };
 		D861EE351E6A94EA00CCF371 /* SignInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		D861EE381E6A977700CCF371 /* AcceptButton_ORG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AcceptButton_ORG.png; sourceTree = "<group>"; };
 		D861EE391E6A977700CCF371 /* ADMINACCEPTED_ORG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ADMINACCEPTED_ORG.png; sourceTree = "<group>"; };
@@ -94,7 +98,7 @@
 		D8FF56491E69E4D600A99B75 /* Rider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Rider.swift; sourceTree = "<group>"; };
 		D8FF564B1E69FDDA00A99B75 /* Vehicle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vehicle.swift; sourceTree = "<group>"; };
 		D8FF564D1E69FDE700A99B75 /* Driver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Driver.swift; sourceTree = "<group>"; };
-		D8FF564F1E69FDF900A99B75 /* RiderBooking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RiderBooking.swift; sourceTree = "<group>"; };
+		D8FF564F1E69FDF900A99B75 /* RideBooking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RideBooking.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -191,6 +195,7 @@
 				D861EE641E6A9B2C00CCF371 /* SignUpViewController.swift */,
 				D861EE6A1E6AA2C800CCF371 /* MainMenuViewController.swift */,
 				D861EE711E6D852200CCF371 /* BookARideViewController.swift */,
+				D85F1D721E6F84CB0076C3CA /* BookingStatusListViewController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -210,7 +215,8 @@
 				D8FF56491E69E4D600A99B75 /* Rider.swift */,
 				D8FF564B1E69FDDA00A99B75 /* Vehicle.swift */,
 				D8FF564D1E69FDE700A99B75 /* Driver.swift */,
-				D8FF564F1E69FDF900A99B75 /* RiderBooking.swift */,
+				D8FF564F1E69FDF900A99B75 /* RideBooking.swift */,
+				D85F1D741E6FEFF20076C3CA /* BookListTableViewCell.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -405,9 +411,11 @@
 			files = (
 				D861EE6B1E6AA2C800CCF371 /* MainMenuViewController.swift in Sources */,
 				D8FF564A1E69E4D600A99B75 /* Rider.swift in Sources */,
+				D85F1D731E6F84CB0076C3CA /* BookingStatusListViewController.swift in Sources */,
 				D8FF56451E69D96200A99B75 /* DataService.swift in Sources */,
+				D85F1D751E6FEFF20076C3CA /* BookListTableViewCell.swift in Sources */,
 				D861EE651E6A9B2C00CCF371 /* SignUpViewController.swift in Sources */,
-				D8FF56501E69FDF900A99B75 /* RiderBooking.swift in Sources */,
+				D8FF56501E69FDF900A99B75 /* RideBooking.swift in Sources */,
 				D861EE361E6A94EA00CCF371 /* SignInViewController.swift in Sources */,
 				D8FF564E1E69FDE700A99B75 /* Driver.swift in Sources */,
 				D861EE721E6D852200CCF371 /* BookARideViewController.swift in Sources */,

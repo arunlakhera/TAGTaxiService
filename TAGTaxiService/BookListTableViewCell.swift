@@ -10,6 +10,12 @@ import UIKit
 
 class BookListTableViewCell: UITableViewCell {
 
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var TravelDateLabel: UILabel!
+    @IBOutlet weak var fromToLabel: UILabel!
+    @IBOutlet weak var statusLabel: UILabel!
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

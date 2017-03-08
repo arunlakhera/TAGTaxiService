@@ -55,17 +55,17 @@ class RideBooking{
     init(bookingID: String, dictionary: Dictionary<String, AnyObject>) {
         self._vehicleID = vehicleID
         
-        if let riderID = dictionary["riderID"] as? String{ self._riderID = riderID }
-        if let vehicleID = dictionary["vehicleID"] as? String{ self._vehicleID = vehicleID }
-        if let driverID = dictionary["driverID"] as? String{ self._driverID = driverID }
-        if let dateOfBooking = dictionary["dateofbooking"] as? String{ self._dateOfBooking = dateOfBooking }
-        if let rideFrom = dictionary["ridefrom"] as? String{ self._rideFrom = rideFrom }
-        if let rideTo = dictionary["rideto"] as? String{ self._rideTo = rideTo }
-        if let rideBeginDate = dictionary["ridebegindate"] as? String{ self._rideBeginDate = rideBeginDate }
-        if let rideEndDate = dictionary["rideenddate"] as? String{ self._rideEndDate = rideEndDate }
-        if let roundTripFlag = dictionary["roundtripflag"] as? String{ self._roundTripFlag = roundTripFlag }
-        if let noOfTravellers = dictionary["nooftravellers"] as? String{ self._noOfTravellers = noOfTravellers }
-        if let status = dictionary["status"] as? String{ self._status = status }
+        if let riderID = dictionary["RiderID"] as? String{ self._riderID = riderID }
+        if let vehicleID = dictionary["VehicleID"] as? String{ self._vehicleID = vehicleID }
+        if let driverID = dictionary["DriverID"] as? String{ self._driverID = driverID }
+        if let dateOfBooking = dictionary["DateOfBooking"] as? String{ self._dateOfBooking = dateOfBooking }
+        if let rideFrom = dictionary["RideFrom"] as? String{ self._rideFrom = rideFrom }
+        if let rideTo = dictionary["RideTo"] as? String{ self._rideTo = rideTo }
+        if let rideBeginDate = dictionary["RideBeginDate"] as? String{ self._rideBeginDate = rideBeginDate }
+        if let rideEndDate = dictionary["RideEndDate"] as? String{ self._rideEndDate = rideEndDate }
+        if let roundTripFlag = dictionary["RoundTrip"] as? String{ self._roundTripFlag = roundTripFlag }
+        if let noOfTravellers = dictionary["NoOfTravellers"] as? String{ self._noOfTravellers = noOfTravellers }
+        if let status = dictionary["Status"] as? String{ self._status = status }
         
     }
     

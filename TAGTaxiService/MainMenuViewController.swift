@@ -8,8 +8,8 @@
 
 import UIKit
 import Firebase
-var userID = ""
-var userEmail = ""
+var riderID = ""
+var riderEmail = ""
 
 class MainMenuViewController: UIViewController {
 
@@ -20,10 +20,10 @@ class MainMenuViewController: UIViewController {
 
         // Get user information
         let user = FIRAuth.auth()?.currentUser
-        userID = (user?.uid)!
-        userEmail = (user?.email)!
+        riderID = (user?.uid)!
+        riderEmail = (user?.email)!
         
-        label.text = "UID-> \(userID)---Email ID ->\(userEmail)"
+        label.text = "UID-> \(riderID)---Email ID ->\(riderEmail)"
     }
 
     override func didReceiveMemoryWarning() {
@@ -32,12 +32,15 @@ class MainMenuViewController: UIViewController {
     }
     
     @IBAction func bookARideButton(_ sender: Any) {
-        self.performSegue(withIdentifier: "bookARideSegue", sender: nil)
+        self.performSegue(withIdentifier: "bookARideSegue", sender: UIButton())
     }
     
 
     @IBAction func bookingStatusButton(_ sender: Any) {
+        self.performSegue(withIdentifier: "mainToStatusSegue", sender: UIButton())
+
     }
+    
     
     
 }

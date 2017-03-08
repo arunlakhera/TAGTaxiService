@@ -16,7 +16,7 @@ class DataService{
     static let ds = DataService()
   
      private var _REF_RIDER = TAGBase.child("RIDER")
-     private var _REF_RIDERBOOKING = TAGBase.child("RIDERBOOKING")
+     private var _REF_RIDEBOOKING = TAGBase.child("RIDEBOOKING")
      private var _REF_VEHICLE = TAGBase.child("VEHICLE")
      private var _REF_DRIVER = TAGBase.child("DRIVER")
     
@@ -25,8 +25,8 @@ class DataService{
         return _REF_RIDER
     }
     
-    var REF_RIDERBOOKING: FIRDatabaseReference{
-        return _REF_RIDERBOOKING
+    var REF_RIDEBOOKING: FIRDatabaseReference{
+        return _REF_RIDEBOOKING
     }
     
     var REF_VEHICLE: FIRDatabaseReference{
