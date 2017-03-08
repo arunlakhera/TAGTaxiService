@@ -8,7 +8,7 @@
 
 import Foundation
 
-class RiderBooking{
+class RideBooking{
     
     private var _bookingID: String!
     private var _riderID: String!
