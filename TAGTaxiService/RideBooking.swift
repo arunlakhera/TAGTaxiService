@@ -54,7 +54,8 @@ class RideBooking{
     
     init(bookingID: String, dictionary: Dictionary<String, AnyObject>) {
         self._vehicleID = vehicleID
-        
+        self._bookingID = bookingID
+        //if let bookingID = dictionary["BookingID"] as? String{ self._bookingID = bookingID }
         if let riderID = dictionary["RiderID"] as? String{ self._riderID = riderID }
         if let vehicleID = dictionary["VehicleID"] as? String{ self._vehicleID = vehicleID }
         if let driverID = dictionary["DriverID"] as? String{ self._driverID = driverID }

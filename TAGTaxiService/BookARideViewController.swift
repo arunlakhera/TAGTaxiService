@@ -25,7 +25,7 @@ class BookARideViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     @IBOutlet weak var typeOfVehicleTextField: UITextField!
     
     // MARK: Variables
-    
+    var travelFrom = ""
     var noOfTravellers = 1
     var todayDate = NSDate()
     
@@ -195,7 +195,7 @@ class BookARideViewController: UIViewController, UIPickerViewDelegate, UIPickerV
             checkFlag = true
         }
         
-        if (phoneNo?.characters.count)! == 0 || (phoneNo?.characters.count)! > 10{
+        if (phoneNo?.characters.count)!  != 10{
             self.errorLogin(errTitle: "Error", errMessage: "Please provide Valid Phone Number.")
             phoneNoTextField.becomeFirstResponder()
         }else{

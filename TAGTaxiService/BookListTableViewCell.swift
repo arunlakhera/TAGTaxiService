@@ -21,6 +21,13 @@ class BookListTableViewCell: UITableViewCell {
         // Initialization code
     }
 
+    override func prepareForReuse() {
+        nameLabel.text = ""
+        TravelDateLabel.text = ""
+        fromToLabel.text = ""
+        statusLabel.text = ""
+    }
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 

@@ -29,21 +29,22 @@ class BookingStatusListViewController: UIViewController, UITableViewDelegate, UI
    
         TAGRiderBooking.observe(.value, with: { snapshot in
             
-            print("---> ALL BOOKINGS OF USER ---\(riderEmail)--->> \(snapshot.children.allObjects)")
+                self.bookings = []
             
                 if let snapshots = snapshot.children.allObjects as? [FIRDataSnapshot]{
                     
                     for snap in snapshots{
                         DataService.ds.REF_RIDEBOOKING.observe(.value, with: { bookingSnap in
+                           
                             if let bookSnap = bookingSnap.children.allObjects as? [FIRDataSnapshot]{
-                                
                                 for book in bookSnap {
+                                    
                                     if book.key == snap.key{
+                                        
                                         if let bookDict = book.value as? Dictionary<String, String>{
 
                                             let key = book.key
                                             let book = RideBooking(bookingID: key, dictionary: bookDict as Dictionary<String, AnyObject>)
-                                        
                                             self.bookings.append(book)
                                             
                                         }
@@ -80,23 +81,63 @@ class BookingStatusListViewController: UIViewController, UITableViewDelegate, UI
         let cell = tableView.dequeueReusableCell(withIdentifier: "bookListCell", for: indexPath) as? BookListTableViewCell
         let book = bookings[indexPath.row]
         
-        cell?.nameLabel.text = riderEmail
-        cell?.fromToLabel.text = "\(book.rideFrom!) - \(book.rideTo!)"
+        let rideFrom = String(book.rideFrom!)
+        let rideTo = String(book.rideTo!)
+        
+        let indexFrom = rideFrom?.index((rideFrom!.startIndex), offsetBy: 3)
+        let indexTo = rideTo?.index((rideTo!.startIndex), offsetBy: 3)
+       
+        cell?.nameLabel.text =  riderEmail
+        cell?.fromToLabel.text = "\(rideFrom!.substring(to: indexFrom!)) - \(rideTo!.substring(to: indexTo!))"
         cell?.TravelDateLabel.text = book.rideBeginDate!
         cell?.statusLabel.text = book.status!
+
+        if book.status! == "Pending"{
+            cell?.statusLabel.textColor = UIColor.yellow
+        }else if book.status! == "Accepted"{
+            cell?.statusLabel.textColor = UIColor.green
+        } else if book.status! == "Declined" || book.status! == "Cancelled"{
+            cell?.statusLabel.textColor = UIColor.red
+        }else if book.status! == "Quoted"{
+            cell?.statusLabel.textColor = UIColor.orange
+        }else if book.status! == "Completed"{
+            cell?.statusLabel.textColor = UIColor.white
+        }
+        
         
         return cell!
     }
     
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+     
+        if segue.identifier == "bookDetailSegue" {
+            
+            if let destinationVC = segue.destination as? BookingDetailViewController {
+                
+                let ip = (self.tableView.indexPathForSelectedRow?.row)!
+                let book = bookings[ip]
+                
+                destinationVC.bookKey = book.bookingID!
+                destinationVC.bookName = riderEmail
+                destinationVC.bookTravelDate = book.rideBeginDate!.capitalized
+                destinationVC.bookFrom = book.rideFrom!.capitalized
+                destinationVC.bookTo = book.rideTo!.capitalized
+                destinationVC.bookPhone = "Phone"
+                destinationVC.bookRoundTrip = book.roundTripFlag!.capitalized
+                destinationVC.bookNoOfTravellers = book.noOfTravellers!
+                destinationVC.bookAmount = "Pending"
+                destinationVC.bookStatus = book.status!.capitalized
+                destinationVC.bookVehicle = "Pending"
+                
+                if book.status! == "Quoted"{
+                    destinationVC.bookStatus = "Quote Received"
+                }else{
+                    destinationVC.bookStatus = book.status!.capitalized
+                }
+                destinationVC.bookVehicle = "PENDING VEHICLE"
+            }
+        }
     }
-    */
     
     
     func errorLogin(errTitle: String, errMessage: String){

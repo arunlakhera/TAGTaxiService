@@ -54,6 +54,19 @@ class SignUpViewController: UIViewController {
         }
     }
     
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        if textField == emailTextField{
+            self.passwordTextField.becomeFirstResponder()
+        }else{
+            self.passwordTextField.resignFirstResponder()
+        }
+        return true
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+    
     func errorLogin(errTitle: String, errMessage: String){
         
         let alert = UIAlertController(title: errTitle, message: errMessage, preferredStyle: .alert)

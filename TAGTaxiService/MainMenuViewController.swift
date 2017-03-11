@@ -8,30 +8,130 @@
 
 import UIKit
 import Firebase
+import MapKit
+import CoreLocation
+
+// Global Variables
+
 var riderID = ""
 var riderEmail = ""
 
-class MainMenuViewController: UIViewController {
+class MainMenuViewController: UIViewController, CLLocationManagerDelegate {
 
-    @IBOutlet weak var label: UILabel!
+    // MARK: Outlets
+    @IBOutlet weak var riderMap: MKMapView!
+    @IBOutlet weak var addressLabel: UILabel!
+ 
+    // Menu View Outlets
+    @IBOutlet weak var leadingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var menuView: UIView!
+    @IBOutlet weak var menuNameLabel: UILabel!
+    @IBOutlet weak var menuImage: UIImageView!
+    
+    
+    
+    // MARK: Variables
+    let manager = CLLocationManager()
+    var menuShow = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        // Menu Properties
+        menuView.layer.shadowOpacity = 1
+        menuView.layer.shadowRadius = 6
+        
+        manager.delegate = self
+        manager.desiredAccuracy = kCLLocationAccuracyBest
+        manager.requestWhenInUseAuthorization()
+        manager.startUpdatingLocation()
+        
         // Get user information
         let user = FIRAuth.auth()?.currentUser
         riderID = (user?.uid)!
         riderEmail = (user?.email)!
-        
-        label.text = "UID-> \(riderID)---Email ID ->\(riderEmail)"
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    
     }
     
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        
+            // Get latest location of user
+            let location = locations[0]
+            // zoom to that location of user
+            let span = MKCoordinateSpanMake(0.01, 0.01)
+            let myLocation: CLLocationCoordinate2D = CLLocationCoordinate2DMake(location.coordinate.latitude, location.coordinate.longitude)
+
+            let region: MKCoordinateRegion = MKCoordinateRegionMake(myLocation, span)
+            riderMap.setRegion(region, animated: true)
+       
+            self.riderMap.showsUserLocation = true
+        
+            CLGeocoder().reverseGeocodeLocation(location) { (placemark, error) in
+            
+                if error == nil{
+     
+                        let placemark = placemark?.first
+                        let addDic = placemark?.addressDictionary
+     
+                        let street =  (addDic!["Street"] != nil ? addDic!["Street"] : "Not Available")!
+                        let sublocality = (addDic!["SubLocality"] != nil ? addDic!["SubLocality"] : "Not Available")!
+                        let city = (addDic!["City"] != nil ? addDic!["City"] : "Not Available")!
+                        let zip = (addDic!["ZIP"] != nil ? addDic!["ZIP"] : "Not Available")!
+                        let country = (placemark?.country != nil ? placemark?.country : "Not Available")!
+                        let myAddress = "\(street) \n \(sublocality) \n \(city)  \(zip)  \(country)"
+     
+                        print("My Address--->>> \(myAddress)")
+                        self.addressLabel.text = myAddress
+                    
+                        manager.stopUpdatingLocation()
+                    
+                }
+        }
+    }
+   
+    
+    @IBAction func menuButton(_ sender: Any) {
+        if (menuShow){
+            leadingConstraint.constant = 0
+        }else{
+            leadingConstraint.constant = -170
+            
+            UIView.animate(withDuration: 0.5, animations: {
+                self.view.layoutIfNeeded()
+            })
+            
+            
+        }
+        menuShow = !menuShow
+    }
+    
+    // Menu Button Action
+    
+    @IBAction func menuBookingStatus(_ sender: Any) {
+        bookingStatusButton(Any.self)
+    }
+    
+    @IBAction func menuBookARide(_ sender: Any) {
+         bookARideButton(Any.self)
+    }
+    
+    
+    @IBAction func menuEditProfile(_ sender: Any) {
+        
+    }
+    
+    @IBAction func menuSignOut(_ sender: Any) {
+        do{
+            try FIRAuth.auth()?.signOut()
+            self.performSegue(withIdentifier: "logOutSegue", sender: self)
+        }catch{
+            print("Error While Signing Out")
+        }
+    }
+    
+    
     @IBAction func bookARideButton(_ sender: Any) {
+        
         self.performSegue(withIdentifier: "bookARideSegue", sender: UIButton())
     }
     
@@ -40,7 +140,5 @@ class MainMenuViewController: UIViewController {
         self.performSegue(withIdentifier: "mainToStatusSegue", sender: UIButton())
 
     }
-    
-    
-    
 }
+  
