@@ -27,9 +27,12 @@ class BookingStatusListViewController: UIViewController, UITableViewDelegate, UI
         
         // Load all the bookings of the User
    
+        self.tableView.reloadData()
+        
         TAGRiderBooking.observe(.value, with: { snapshot in
             
                 self.bookings = []
+            
             
                 if let snapshots = snapshot.children.allObjects as? [FIRDataSnapshot]{
                     
