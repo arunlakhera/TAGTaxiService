@@ -28,8 +28,6 @@ class MainMenuViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet weak var menuNameLabel: UILabel!
     @IBOutlet weak var menuImage: UIImageView!
     
-    
-    
     // MARK: Variables
     let manager = CLLocationManager()
     var menuShow = false
@@ -49,7 +47,6 @@ class MainMenuViewController: UIViewController, CLLocationManagerDelegate {
         let user = FIRAuth.auth()?.currentUser
         riderID = (user?.uid)!
         riderEmail = (user?.email)!
-    
     
     }
     
@@ -93,13 +90,14 @@ class MainMenuViewController: UIViewController, CLLocationManagerDelegate {
     @IBAction func menuButton(_ sender: Any) {
         if (menuShow){
             leadingConstraint.constant = 0
+            menuNameLabel.text = riderEmail
+            
         }else{
             leadingConstraint.constant = -170
             
             UIView.animate(withDuration: 0.5, animations: {
                 self.view.layoutIfNeeded()
             })
-            
             
         }
         menuShow = !menuShow
@@ -111,15 +109,17 @@ class MainMenuViewController: UIViewController, CLLocationManagerDelegate {
         bookingStatusButton(Any.self)
     }
     
+    // To navigate to Book a Ride Screen
     @IBAction func menuBookARide(_ sender: Any) {
          bookARideButton(Any.self)
     }
     
-    
+    // To navigate to Riders Profile Screen
     @IBAction func menuEditProfile(_ sender: Any) {
         
     }
     
+    // To Slide the Menu On and Off screen
     @IBAction func menuSignOut(_ sender: Any) {
         do{
             try FIRAuth.auth()?.signOut()
@@ -129,16 +129,23 @@ class MainMenuViewController: UIViewController, CLLocationManagerDelegate {
         }
     }
     
-    
+    // To navigate to Booking Screen
     @IBAction func bookARideButton(_ sender: Any) {
         
         self.performSegue(withIdentifier: "bookARideSegue", sender: UIButton())
     }
     
-
+    // To navigate to Status screen
     @IBAction func bookingStatusButton(_ sender: Any) {
         self.performSegue(withIdentifier: "mainToStatusSegue", sender: UIButton())
 
     }
+    
+    // To slide the menu back call menu button function
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        menuShow = false
+        menuButton(touches)
+    }
+    
 }
   

@@ -26,6 +26,10 @@
 	<string>Main</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>We need to find your current location for address</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We need to Access Photo Library to Upload your Photo</string>
+	<key>NSCameraUsageDescription</key>
+	<string>We need to Access Camera to Upload your Photo</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>

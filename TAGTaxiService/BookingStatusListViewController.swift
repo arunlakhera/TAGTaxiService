@@ -82,7 +82,7 @@ class BookingStatusListViewController: UIViewController, UITableViewDelegate, UI
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "bookListCell", for: indexPath) as? BookListTableViewCell
-        let book = bookings[indexPath.row]
+        let book = bookings.reversed()[indexPath.row]
         
         let rideFrom = String(book.rideFrom!)
         let rideTo = String(book.rideTo!)
@@ -118,7 +118,7 @@ class BookingStatusListViewController: UIViewController, UITableViewDelegate, UI
             if let destinationVC = segue.destination as? BookingDetailViewController {
                 
                 let ip = (self.tableView.indexPathForSelectedRow?.row)!
-                let book = bookings[ip]
+                let book = bookings.reversed()[ip]
                 
                 destinationVC.bookKey = book.bookingID!
                 destinationVC.bookName = riderEmail

@@ -16,6 +16,7 @@ class DataService{
     static let ds = DataService()
   
      private var _REF_RIDER = TAGBase.child("RIDER")
+    
      private var _REF_RIDEBOOKING = TAGBase.child("RIDEBOOKING")
      private var _REF_VEHICLE = TAGBase.child("VEHICLE")
      private var _REF_DRIVER = TAGBase.child("DRIVER")

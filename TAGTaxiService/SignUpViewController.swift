@@ -20,6 +20,7 @@ class SignUpViewController: UIViewController {
         super.viewDidLoad()
 
         emailTextField.becomeFirstResponder()
+        
     }
     
     // MARK: Action
@@ -46,7 +47,22 @@ class SignUpViewController: UIViewController {
                 }else{
                     
                     // Sign up was successfull so we signin with the sign up information
-            
+                    
+                    // Get user information
+                    let user = FIRAuth.auth()?.currentUser
+                    riderID = (user?.uid)!
+                    riderEmail = (user?.email)!
+                    
+                    let todayDate = NSDate()
+                    
+                    let riderProfile = DataService.ds.REF_RIDER.child(riderID).child("Profile")
+                    
+                    riderProfile.child("EmailID").setValue(riderEmail)
+                    riderProfile.child("CreatedOnDate").setValue(String(describing: todayDate))
+                    riderProfile.child("LastUpdatedOnDate").setValue(String(describing: todayDate))
+                    riderProfile.child("CreatedBy").setValue(riderEmail)
+                    riderProfile.child("UpdatedBy").setValue(riderEmail)
+                    
                     self.performSegue(withIdentifier: "signUpSegue", sender: nil)
                 }
             
