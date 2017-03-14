@@ -128,9 +128,9 @@ class BookingStatusListViewController: UIViewController, UITableViewDelegate, UI
                 destinationVC.bookPhone = "Phone"
                 destinationVC.bookRoundTrip = book.roundTripFlag!.capitalized
                 destinationVC.bookNoOfTravellers = book.noOfTravellers!
-                destinationVC.bookAmount = "Pending"
+                destinationVC.bookAmount = book.amount!
                 destinationVC.bookStatus = book.status!.capitalized
-                destinationVC.bookVehicle = "Pending"
+                destinationVC.bookVehicle = book.vehicle!
                 
                 if book.status! == "Quoted"{
                     destinationVC.bookStatus = "Quote Received"

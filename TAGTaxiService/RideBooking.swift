@@ -22,6 +22,9 @@ class RideBooking{
     private var _roundTripFlag: String!
     private var _noOfTravellers: String!
     private var _status: String!
+    private var _amount: String!
+    private var _vehicle: String!
+    
     
     var bookingID: String?{ return _bookingID}
     var riderID: String?{ return _riderID}
@@ -35,8 +38,11 @@ class RideBooking{
     var roundTripFlag: String?{ return _roundTripFlag}
     var noOfTravellers: String?{ return _noOfTravellers }
     var status: String?{ return _status }
+    var amount: String?{ return _amount }
+    var vehicle: String?{ return _vehicle }
     
-    init(bookingID: String, riderID: String, vehicleID: String, driverID: String, dateOfBooking: String, rideFrom: String, rideTo: String, rideBeginDate: String, rideEndDate: String, roundTripFlag: String, noOfTravellers: String, status: String) {
+    
+    init(bookingID: String, riderID: String, vehicleID: String, driverID: String, dateOfBooking: String, rideFrom: String, rideTo: String, rideBeginDate: String, rideEndDate: String, roundTripFlag: String, noOfTravellers: String, status: String, amount: String, vehicle: String) {
         
         self._bookingID = bookingID
         self._riderID = riderID
@@ -50,6 +56,8 @@ class RideBooking{
         self._roundTripFlag = roundTripFlag
         self._noOfTravellers = noOfTravellers
         self._status = status
+        self._amount = amount
+        self._vehicle = vehicle
     }
     
     init(bookingID: String, dictionary: Dictionary<String, AnyObject>) {
@@ -67,6 +75,8 @@ class RideBooking{
         if let roundTripFlag = dictionary["RoundTrip"] as? String{ self._roundTripFlag = roundTripFlag }
         if let noOfTravellers = dictionary["NoOfTravellers"] as? String{ self._noOfTravellers = noOfTravellers }
         if let status = dictionary["Status"] as? String{ self._status = status }
+        if let amount = dictionary["Amount"] as? String{ self._amount = amount }
+        if let vehicle = dictionary["Vehicle"] as? String{ self._vehicle = vehicle }
         
     }
     

@@ -30,8 +30,6 @@ class SignInViewController: UIViewController {
         let submit = UIAlertAction(title: "Submit", style: .default) { (UIAlertAction) in
             userEmail = alert.textFields![0].text
             
-            print("===INSIDE SUBMIT===>>>>> \(userEmail)")
-            
             FIRAuth.auth()?.sendPasswordReset(withEmail: userEmail!) { (error) in
                 if error != nil{
                     self.errorLogin(errTitle: "Error in Email Provided", errMessage: (error?.localizedDescription)!)

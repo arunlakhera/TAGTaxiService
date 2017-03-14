@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import Photos
 
 class RiderProfileViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
 
@@ -23,20 +24,24 @@ class RiderProfileViewController: UIViewController, UINavigationControllerDelega
     @IBOutlet weak var dateOfBirthTextField: UITextField!
     @IBOutlet weak var genderTextField: UITextField!
     @IBOutlet weak var emailIDTextField: UITextField!
+    @IBOutlet weak var saveButton: UIButton!
     
     // Rider Link
     
     let riderProfile = DataService.ds.REF_RIDER.child(riderID).child("Profile")
+    let image = UIImagePickerController()
+    
+    var storageRef: FIRStorageReference!
     
     override func viewDidLoad() {
         super.viewDidLoad()
       
-        riderPhotoImageView.layer.cornerRadius = 0.5
+        storageRef = FIRStorage.storage().reference()
+        
         // Call Load profile function
         loadProfile()
         // Make Name field as first responder
         firstNameTextField.becomeFirstResponder()
-        
         
     }
     
@@ -50,7 +55,7 @@ class RiderProfileViewController: UIViewController, UINavigationControllerDelega
         phoneTextField.isEnabled = true
         dateOfBirthTextField.isEnabled = true
         genderTextField.isEnabled = true
-        
+       
         //Keep the Email id disable as we do not want users to change it.
         //emailIDTextField.isEnabled = false
     }
@@ -82,13 +87,14 @@ class RiderProfileViewController: UIViewController, UINavigationControllerDelega
             }
         })
         
+
        enableFields()
         
     }
     
     @IBAction func uploadPhotoButton(_ sender: Any) {
      
-        let image = UIImagePickerController()
+       
         image.delegate = self
         
         let actionSheet = UIAlertController(title: "Upload Photo", message: "Choose a Source", preferredStyle: .actionSheet)
@@ -96,8 +102,8 @@ class RiderProfileViewController: UIViewController, UINavigationControllerDelega
         actionSheet.addAction(UIAlertAction(title: "Camera", style: .default, handler: { (action: UIAlertAction) in
             
             if UIImagePickerController.isSourceTypeAvailable(.camera){
-                image.sourceType = .camera
-                self.present(image, animated: true, completion: nil)
+                self.image.sourceType = .camera
+                self.present(self.image, animated: true, completion: nil)
             }else{
                 self.errorLogin(errTitle: "Camera Alert", errMessage: "Camera is Not Available!")
             }
@@ -106,8 +112,8 @@ class RiderProfileViewController: UIViewController, UINavigationControllerDelega
         actionSheet.addAction(UIAlertAction(title: "Photo Library", style: .default, handler: { (action: UIAlertAction) in
             
             if UIImagePickerController.isSourceTypeAvailable(.photoLibrary){
-                image.sourceType = .photoLibrary
-                self.present(image, animated: true, completion: nil)
+                self.image.sourceType = .photoLibrary
+                self.present(self.image, animated: true, completion: nil)
             }else{
                 self.errorLogin(errTitle: "Photo Library Alert", errMessage: "Photo Library is Not Available!")
             }
@@ -120,9 +126,10 @@ class RiderProfileViewController: UIViewController, UINavigationControllerDelega
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         
-        if let image = info[UIImagePickerControllerOriginalImage] as? UIImage
+        if  let image = info[UIImagePickerControllerOriginalImage] as? UIImage
         {
             riderPhotoImageView.image = image
+            
         }else{
             // Error
             self.errorLogin(errTitle: "Error", errMessage: "Error in presenting the Image")
@@ -144,7 +151,7 @@ class RiderProfileViewController: UIViewController, UINavigationControllerDelega
             
             riderProfile.child("FirstName").setValue(firstNameTextField.text)
             riderProfile.child("LastName").setValue(lastNameTextField.text)
-            riderProfile.child("EmailID").setValue(emailIDTextField.text)
+            //riderProfile.child("EmailID").setValue(emailIDTextField.text)
             riderProfile.child("PhoneNumber").setValue(phoneTextField.text)
             riderProfile.child("DateOfBirth").setValue(dateOfBirthTextField.text)
             riderProfile.child("Gender").setValue(genderTextField.text)
@@ -157,9 +164,33 @@ class RiderProfileViewController: UIViewController, UINavigationControllerDelega
             riderProfile.child("LastUpdatedOnDate").setValue(String(describing: todayDate))
             riderProfile.child("CreatedBy").setValue(riderEmail)
             riderProfile.child("UpdatedBy").setValue(riderEmail)
+            
+            guard let imageData = UIImageJPEGRepresentation(riderPhotoImageView.image!, 0.8) else { return }
+           
+            let imagePath = FIRAuth.auth()!.currentUser!.uid + "/\(riderID).jpg"
+            
+            let metadata = FIRStorageMetadata()
+            metadata.contentType = "image/jpeg"
+            self.storageRef.child(imagePath).put(imageData, metadata: metadata) { (metadata, error) in
+                    if let error = error {
+                        print("Error uploading: \(error)")
+                       // self.urlTextView.text = "Upload Failed"
+                        return
+                    }
+                    self.uploadSuccess(metadata!, storagePath: imagePath)
+            }
+            // END OF PHOTO UPLOAD CHANGE--DELETE TILL THIS LINE
         }
         
         self.performSegue(withIdentifier: "riderToMainSegue", sender: nil)
+    }
+    // Delete this function
+    func uploadSuccess(_ metadata: FIRStorageMetadata, storagePath: String) {
+       
+        print("Upload Succeeded!")
+        UserDefaults.standard.set(storagePath, forKey: "storagePath")
+        UserDefaults.standard.synchronize()
+       
     }
     
     func checkFields() -> Bool{
@@ -253,9 +284,7 @@ class RiderProfileViewController: UIViewController, UINavigationControllerDelega
         }else if textField == stateTextField{
             self.phoneTextField.becomeFirstResponder()
         }else if textField == phoneTextField{
-            self.emailIDTextField.becomeFirstResponder()
-        }else {
-            self.emailIDTextField.resignFirstResponder()
+            self.firstNameTextField.becomeFirstResponder()
         }
         
         return true

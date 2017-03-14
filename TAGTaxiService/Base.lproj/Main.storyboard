@@ -262,7 +262,7 @@
                                                 <color key="textColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PhotoAvatar.png" translatesAutoresizingMaskIntoConstraints="NO" id="dXK-vR-bCR">
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="TAG.png" translatesAutoresizingMaskIntoConstraints="NO" id="dXK-vR-bCR">
                                                 <rect key="frame" x="40" y="37" width="80" height="60"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="60" id="zCW-Dl-MFB"/>
@@ -935,6 +935,7 @@
                         <outlet property="lastNameTextField" destination="dTy-oa-aHy" id="Vuf-33-UaM"/>
                         <outlet property="phoneTextField" destination="Vkl-0k-cDs" id="lVT-kM-zF6"/>
                         <outlet property="riderPhotoImageView" destination="yfM-aK-OTa" id="Qss-SV-rOt"/>
+                        <outlet property="saveButton" destination="SNv-lq-9s3" id="eIb-Xs-D7i"/>
                         <outlet property="stateTextField" destination="eUA-ZY-Qb9" id="azz-1r-Tw5"/>
                     </connections>
                 </viewController>
