@@ -11,6 +11,8 @@
 		D81235E41E715FA800519F6A /* BookingDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81235E31E715FA800519F6A /* BookingDetailViewController.swift */; };
 		D81235E81E7382E300519F6A /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D81235E71E7382E300519F6A /* CoreLocation.framework */; };
 		D81235EA1E746F2100519F6A /* PhotoAvatar.png in Resources */ = {isa = PBXBuildFile; fileRef = D81235E91E746F2100519F6A /* PhotoAvatar.png */; };
+		D83D363D1E7A6EF0003166AA /* AdminBookListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83D363C1E7A6EF0003166AA /* AdminBookListTableViewCell.swift */; };
+		D83D363F1E7AAB7B003166AA /* AdminBookDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83D363E1E7AAB7B003166AA /* AdminBookDetailViewController.swift */; };
 		D85888E01E769F5800AB1DB9 /* RiderProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85888DF1E769F5800AB1DB9 /* RiderProfileViewController.swift */; };
 		D85F1D731E6F84CB0076C3CA /* BookingStatusListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85F1D721E6F84CB0076C3CA /* BookingStatusListViewController.swift */; };
 		D85F1D751E6FEFF20076C3CA /* BookListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85F1D741E6FEFF20076C3CA /* BookListTableViewCell.swift */; };
@@ -43,6 +45,8 @@
 		D861EE6B1E6AA2C800CCF371 /* MainMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D861EE6A1E6AA2C800CCF371 /* MainMenuViewController.swift */; };
 		D861EE6F1E6AA5DD00CCF371 /* Setting Button.png in Resources */ = {isa = PBXBuildFile; fileRef = D861EE6E1E6AA5DD00CCF371 /* Setting Button.png */; };
 		D861EE721E6D852200CCF371 /* BookARideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D861EE711E6D852200CCF371 /* BookARideViewController.swift */; };
+		D8C422A41E7934E1007EA962 /* AdminMainBookingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C422A31E7934E1007EA962 /* AdminMainBookingViewController.swift */; };
+		D8C422A61E79A8AD007EA962 /* AdminBookStatusListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C422A51E79A8AD007EA962 /* AdminBookStatusListViewController.swift */; };
 		D8FF562D1E69AD9D00A99B75 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FF562C1E69AD9D00A99B75 /* AppDelegate.swift */; };
 		D8FF56321E69AD9D00A99B75 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8FF56301E69AD9D00A99B75 /* Main.storyboard */; };
 		D8FF56341E69AD9D00A99B75 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8FF56331E69AD9D00A99B75 /* Assets.xcassets */; };
@@ -62,6 +66,8 @@
 		D81235E31E715FA800519F6A /* BookingDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookingDetailViewController.swift; sourceTree = "<group>"; };
 		D81235E71E7382E300519F6A /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		D81235E91E746F2100519F6A /* PhotoAvatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PhotoAvatar.png; sourceTree = "<group>"; };
+		D83D363C1E7A6EF0003166AA /* AdminBookListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdminBookListTableViewCell.swift; sourceTree = "<group>"; };
+		D83D363E1E7AAB7B003166AA /* AdminBookDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdminBookDetailViewController.swift; sourceTree = "<group>"; };
 		D85888DF1E769F5800AB1DB9 /* RiderProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RiderProfileViewController.swift; sourceTree = "<group>"; };
 		D85F1D721E6F84CB0076C3CA /* BookingStatusListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookingStatusListViewController.swift; sourceTree = "<group>"; };
 		D85F1D741E6FEFF20076C3CA /* BookListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookListTableViewCell.swift; sourceTree = "<group>"; };
@@ -95,6 +101,8 @@
 		D861EE6E1E6AA5DD00CCF371 /* Setting Button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Setting Button.png"; sourceTree = "<group>"; };
 		D861EE701E6AB6DB00CCF371 /* TAGTaxiService.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TAGTaxiService.entitlements; sourceTree = "<group>"; };
 		D861EE711E6D852200CCF371 /* BookARideViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookARideViewController.swift; sourceTree = "<group>"; };
+		D8C422A31E7934E1007EA962 /* AdminMainBookingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdminMainBookingViewController.swift; sourceTree = "<group>"; };
+		D8C422A51E79A8AD007EA962 /* AdminBookStatusListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdminBookStatusListViewController.swift; sourceTree = "<group>"; };
 		D8FF56291E69AD9D00A99B75 /* TAGTaxiService.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TAGTaxiService.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8FF562C1E69AD9D00A99B75 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D8FF56311E69AD9D00A99B75 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -209,6 +217,9 @@
 				D85F1D721E6F84CB0076C3CA /* BookingStatusListViewController.swift */,
 				D81235E31E715FA800519F6A /* BookingDetailViewController.swift */,
 				D85888DF1E769F5800AB1DB9 /* RiderProfileViewController.swift */,
+				D8C422A31E7934E1007EA962 /* AdminMainBookingViewController.swift */,
+				D8C422A51E79A8AD007EA962 /* AdminBookStatusListViewController.swift */,
+				D83D363E1E7AAB7B003166AA /* AdminBookDetailViewController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -230,6 +241,7 @@
 				D8FF564D1E69FDE700A99B75 /* Driver.swift */,
 				D8FF564F1E69FDF900A99B75 /* RideBooking.swift */,
 				D85F1D741E6FEFF20076C3CA /* BookListTableViewCell.swift */,
+				D83D363C1E7A6EF0003166AA /* AdminBookListTableViewCell.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -427,6 +439,8 @@
 				D861EE6B1E6AA2C800CCF371 /* MainMenuViewController.swift in Sources */,
 				D8FF564A1E69E4D600A99B75 /* Rider.swift in Sources */,
 				D85F1D731E6F84CB0076C3CA /* BookingStatusListViewController.swift in Sources */,
+				D8C422A41E7934E1007EA962 /* AdminMainBookingViewController.swift in Sources */,
+				D8C422A61E79A8AD007EA962 /* AdminBookStatusListViewController.swift in Sources */,
 				D8FF56451E69D96200A99B75 /* DataService.swift in Sources */,
 				D85F1D751E6FEFF20076C3CA /* BookListTableViewCell.swift in Sources */,
 				D861EE651E6A9B2C00CCF371 /* SignUpViewController.swift in Sources */,
@@ -435,7 +449,9 @@
 				D861EE361E6A94EA00CCF371 /* SignInViewController.swift in Sources */,
 				D8FF564E1E69FDE700A99B75 /* Driver.swift in Sources */,
 				D861EE721E6D852200CCF371 /* BookARideViewController.swift in Sources */,
+				D83D363F1E7AAB7B003166AA /* AdminBookDetailViewController.swift in Sources */,
 				D8FF564C1E69FDDA00A99B75 /* Vehicle.swift in Sources */,
+				D83D363D1E7A6EF0003166AA /* AdminBookListTableViewCell.swift in Sources */,
 				D8FF562D1E69AD9D00A99B75 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

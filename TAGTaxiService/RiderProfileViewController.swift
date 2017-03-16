@@ -56,8 +56,6 @@ class RiderProfileViewController: UIViewController, UINavigationControllerDelega
         dateOfBirthTextField.isEnabled = true
         genderTextField.isEnabled = true
        
-        //Keep the Email id disable as we do not want users to change it.
-        //emailIDTextField.isEnabled = false
     }
     
         // Function to load the profile data if it already exists
@@ -67,8 +65,6 @@ class RiderProfileViewController: UIViewController, UINavigationControllerDelega
             
             // if snapshot does not exists return
             if !snapshot.exists(){ self.errorLogin(errTitle: "ERROR in SNAPSHOT", errMessage: "Snapshot Error") }
-            
-            print("SNAPSHOT---->>>\(snapshot)")
             
             if let riderProfile = snapshot.value as? Dictionary<String, String>{
                 
@@ -84,6 +80,22 @@ class RiderProfileViewController: UIViewController, UINavigationControllerDelega
                 if let dateOfBirth = rider.dateOfBirth { self.dateOfBirthTextField.text = dateOfBirth}
                 if let gender = rider.gender { self.genderTextField.text = gender}
                 if let emailID = rider.emailID { self.emailIDTextField.text = emailID}
+                
+                // Profile Photo
+                
+                let imagePath = FIRAuth.auth()!.currentUser!.uid + "/\(riderID).jpg"
+                
+                self.storageRef.child(imagePath).data(withMaxSize: 5 * 1024 * 1024, completion: { (data, error) in
+                    
+                    if error != nil{
+                            print("Error occured while downloading image")
+                    }else{
+                            print("Image Downloaded Successfully")
+                            let image = UIImage(data: data!)
+                            self.riderPhotoImageView.image = image
+                   }
+                })
+                
             }
         })
         
@@ -179,12 +191,11 @@ class RiderProfileViewController: UIViewController, UINavigationControllerDelega
                     }
                     self.uploadSuccess(metadata!, storagePath: imagePath)
             }
-            // END OF PHOTO UPLOAD CHANGE--DELETE TILL THIS LINE
         }
         
         self.performSegue(withIdentifier: "riderToMainSegue", sender: nil)
     }
-    // Delete this function
+    
     func uploadSuccess(_ metadata: FIRStorageMetadata, storagePath: String) {
        
         print("Upload Succeeded!")

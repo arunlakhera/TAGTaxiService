@@ -72,7 +72,25 @@ class SignInViewController: UIViewController {
                     
                 }else{
                     
-                    self.performSegue(withIdentifier: "signInSegue", sender: nil)
+                    // Login Successful. Check if User is Admin
+                    //////
+                    
+                    let user = FIRAuth.auth()?.currentUser
+                    riderID = (user?.uid)!
+                    let riderProfile = DataService.ds.REF_RIDER.child(riderID).child("Profile").child("AdminFlag")
+                    
+                    riderProfile.observe(.value, with: { (snapshot) in
+                        let adminFlag = (snapshot.value)! as? String
+                        
+                        if adminFlag == "Yes"{
+                            self.performSegue(withIdentifier: "adminMainSegue", sender: nil)
+                        }else{
+                            self.performSegue(withIdentifier: "signInSegue", sender: nil)
+                        }
+                        
+                    }, withCancel: { (error) in
+                        print("ERROR IN ADMIN FLAG")
+                    })
                     
                 }
                 

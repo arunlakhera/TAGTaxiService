@@ -62,6 +62,7 @@ class SignUpViewController: UIViewController {
                     riderProfile.child("LastUpdatedOnDate").setValue(String(describing: todayDate))
                     riderProfile.child("CreatedBy").setValue(riderEmail)
                     riderProfile.child("UpdatedBy").setValue(riderEmail)
+                    riderProfile.child("AdminFlag").setValue("No")
                     
                     self.performSegue(withIdentifier: "signUpSegue", sender: nil)
                 }

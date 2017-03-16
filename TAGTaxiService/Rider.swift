@@ -24,7 +24,7 @@ class Rider{
     private var _gender: String!
     private var _emailID: String!
     private var _riderID: String!
-    
+    private var _adminFlag: String!
     
     var firstName: String?{ return _firstName }
     var lastName: String?{ return _lastName }
@@ -37,7 +37,8 @@ class Rider{
     var gender: String?{ return _gender }
     var emailID: String?{ return _emailID }
     var riderID: String?{ return _riderID }
- 
+    var adminFlag: String?{ return _adminFlag }
+    
     init(riderID: String, firstName: String, lastName: String, address1: String, address2: String, city: String, state: String, phoneNumber: String, dateOfBirth: String, gender: String, emailID: String){
         self._riderID = riderID
         self._firstName = firstName
@@ -50,6 +51,7 @@ class Rider{
         self._dateOfBirth = dateOfBirth
         self._gender = gender
         self._emailID = emailID
+        self._adminFlag = adminFlag
     }
     
     init( riderID: String, dictionary: Dictionary<String, AnyObject> )
@@ -66,7 +68,7 @@ class Rider{
         if let dateOfBirth = dictionary["DateOfBirth"] as? String{ self._dateOfBirth = dateOfBirth }
         if let gender = dictionary["Gender"] as? String{ self._gender = gender }
         if let emailID = dictionary["EmailID"] as? String{ self._emailID = emailID }
-        
+        if let adminFlag = dictionary["AdminFlag"] as? String{ self._adminFlag = adminFlag }
     }
 
 }
