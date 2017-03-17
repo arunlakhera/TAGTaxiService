@@ -91,25 +91,28 @@ class BookingDetailViewController: UIViewController {
     }
     
     @IBAction func cancelBooking(sender: AnyObject) {
-       bookingAction(bookingTitle: "Cancel Booking", bookingMessage: "Are You sure you want to Cancel your booking!")
-        bookStatus = "Cancelled"
-        DataService.ds.REF_RIDEBOOKING.child(bookKey).child("Status").setValue(bookStatus)
-        viewDidLoad()
+            bookStatus = "Cancelled"
+            DataService.ds.REF_RIDEBOOKING.child(bookKey).child("Status").setValue(bookStatus)
+            viewDidLoad()
         
     }
-    
-    func bookingAction(bookingTitle: String, bookingMessage: String){
+    /*
+    func bookingAction(bookingTitle: String, bookingMessage: String) -> String{
         
+        var flag = ""
         let alert = UIAlertController(title: bookingTitle, message: bookingMessage, preferredStyle: .alert)
         let actionYes = UIAlertAction(title: "Yes", style: .default, handler: nil)
         let actionNo = UIAlertAction(title: "No", style: .default, handler: nil)
         alert.addAction(actionYes)
         alert.addAction(actionNo)
         present(alert, animated: true, completion: nil)
-       
-        
-    }
-    
-
-    
+        present(alert, animated: true) { 
+            if alert.title == "Yes"{
+                    flag = "Yes"
+            }else{
+                    flag = "No"
+            }
+        }
+    return flag
+}*/
 }

@@ -16,6 +16,7 @@ class AdminBookStatusListViewController: UIViewController, UITableViewDelegate, 
     var bookings = [RideBooking]()
     var riderName = ""
     var riderEmail = ""
+    var riderPhone = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,20 +68,18 @@ class AdminBookStatusListViewController: UIViewController, UITableViewDelegate, 
         
         let riderProfile = DataService.ds.REF_RIDER.child(book.riderID!).child("Profile")
         
-        
-        
-            riderProfile.observeSingleEvent(of: .value, with: { (snapshot) in
+        riderProfile.observeSingleEvent(of: .value, with: { (snapshot) in
             
             let value = snapshot.value as? NSDictionary
             self.riderName = "\(value?["FirstName"] as? String ?? "")  \(value?["LastName"] as? String ?? "")"
             self.riderEmail = value?["EmailID"] as? String ?? ""
+            self.riderPhone = value?["PhoneNumber"] as? String ?? ""
             
             if self.riderName.characters.count > 0{
                 cell?.nameLabel.text = self.riderName
             }else{
                 cell?.nameLabel.text = self.riderEmail
             }
-            
             
         })
  
@@ -123,19 +122,19 @@ class AdminBookStatusListViewController: UIViewController, UITableViewDelegate, 
                 destinationVC.bookKey = book.bookingID!
                 
                 if self.riderName.characters.count > 0{
-                    destinationVC.bookName = self.riderName
+                    destinationVC.bookName = self.riderName.capitalized
                 }else{
-                    destinationVC.bookName = self.riderEmail
+                    destinationVC.bookName = self.riderEmail.capitalized
                 }
 
                 
                 //destinationVC.bookName = riderEmail
-                destinationVC.bookPhone = "Phone Number"
+                destinationVC.bookPhone = riderPhone
                 destinationVC.bookTravelDate = book.rideBeginDate!
-                destinationVC.bookFrom = book.rideFrom!
-                destinationVC.bookTo = book.rideTo!
+                destinationVC.bookFrom = book.rideFrom!.capitalized
+                destinationVC.bookTo = book.rideTo!.capitalized
                 destinationVC.bookNoOfTravellers = book.noOfTravellers!
-                destinationVC.bookRoundTrip = book.roundTripFlag!
+                destinationVC.bookRoundTrip = book.roundTripFlag!.capitalized
                 
                 if book.status == "Quoted"{
                     destinationVC.bookStatus = "Quote Sent"

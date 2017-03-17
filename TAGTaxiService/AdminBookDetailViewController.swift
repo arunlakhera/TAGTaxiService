@@ -10,17 +10,17 @@ import UIKit
 
 class AdminBookDetailViewController: UIViewController {
 
-    var bookName = "Not Available"
-    var bookTravelDate = "Not Available"
-    var bookFrom = "Not Available"
-    var bookTo = "Not Available"
-    var bookNoOfTravellers = "Not Available"
-    var bookPhone = "Not Available"
-    var bookRoundTrip = "Not Available"
-    var bookAmount = "Not Available"
-    var bookStatus = "Not Available"
-    var bookVehicle = "Not Available"
-    var bookVehicleType = "No Available"
+    var bookName = "NA"
+    var bookTravelDate = "NA"
+    var bookFrom = "NA"
+    var bookTo = "NA"
+    var bookNoOfTravellers = "NA"
+    var bookPhone = "NA"
+    var bookRoundTrip = "NA"
+    var bookAmount = "NA"
+    var bookStatus = "NA"
+    var bookVehicle = ""
+    var bookVehicleType = ""
     
     var bookKey = ""
     var bStatus = ""
@@ -64,6 +64,7 @@ class AdminBookDetailViewController: UIViewController {
             amountText.isEnabled = false
             vehicleText.isEnabled = false
             send.isEnabled = false
+            send.isHidden = true
         }
 
     

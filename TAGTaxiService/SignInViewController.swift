@@ -18,10 +18,11 @@ class SignInViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-       emailTextField.becomeFirstResponder()
+        emailTextField.becomeFirstResponder()
+        
     }
 
-  
+   
     @IBAction func forgotPasswordButton(_ sender: Any) {
     
         var userEmail: String?
@@ -99,7 +100,10 @@ class SignInViewController: UIViewController {
         
     }
     
+    
     func textFieldShouldReturn(textField: UITextField) -> Bool {
+        
+        
         if textField == emailTextField{
             self.passwordTextField.becomeFirstResponder()
         }else{

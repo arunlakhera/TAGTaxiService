@@ -40,6 +40,7 @@ class BookARideViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     override func viewDidLoad() {
         super.viewDidLoad()
       
+        travelFromTextField.text = TravelFromCity
         // Mark: Make Name Textfield as first responder and set the no of travellers to 1
         nameTexField.becomeFirstResponder()
         noOfTravellersLabel.text = String(noOfTravellers)

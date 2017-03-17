@@ -15,6 +15,7 @@ import CoreLocation
 
 var riderID = ""
 var riderEmail = ""
+var TravelFromCity = ""
 
 class MainMenuViewController: UIViewController, CLLocationManagerDelegate {
 
@@ -73,6 +74,7 @@ class MainMenuViewController: UIViewController, CLLocationManagerDelegate {
                         let street =  (addDic!["Street"] != nil ? addDic!["Street"] : "Not Available")!
                         let sublocality = (addDic!["SubLocality"] != nil ? addDic!["SubLocality"] : "Not Available")!
                         let city = (addDic!["City"] != nil ? addDic!["City"] : "Not Available")!
+                        TravelFromCity = city as! String
                         let zip = (addDic!["ZIP"] != nil ? addDic!["ZIP"] : "Not Available")!
                         let country = (placemark?.country != nil ? placemark?.country : "Not Available")!
                         let myAddress = "\(street) \n \(sublocality) \n \(city)  \(zip)  \(country)"
@@ -131,6 +133,7 @@ class MainMenuViewController: UIViewController, CLLocationManagerDelegate {
     
     // To navigate to Booking Screen
     @IBAction func bookARideButton(_ sender: Any) {
+        
         
         self.performSegue(withIdentifier: "bookARideSegue", sender: UIButton())
     }
