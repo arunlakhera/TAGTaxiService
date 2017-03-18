@@ -28,6 +28,8 @@ class BookARideViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     var travelFrom = ""
     var noOfTravellers = 1
     var todayDate = NSDate()
+  //  var travelDate = ""
+    let formatter = DateFormatter()
     
     // MARK: Picker variable for Vehicle Type Picker View
     var vehicleType = ["SMALL","SEDAN","SUV"]
@@ -42,6 +44,14 @@ class BookARideViewController: UIViewController, UIPickerViewDelegate, UIPickerV
       
         travelFromTextField.text = TravelFromCity
         // Mark: Make Name Textfield as first responder and set the no of travellers to 1
+        
+        // By default show today date as travel date
+        formatter.dateFormat = "dd-MMM-YYYY"
+        travelBeginDateTextField.text = formatter.string(from: todayDate as Date)
+       
+        // By default show Small
+        typeOfVehicleTextField.text = vehicleType[0]
+        
         nameTexField.becomeFirstResponder()
         noOfTravellersLabel.text = String(noOfTravellers)
         
@@ -87,11 +97,8 @@ class BookARideViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     // MARK: Travel Date picker function
     
     func travelBeginDatePicker(sender: UIDatePicker){
-    
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd-MMM-YYYY"
+       
         travelBeginDateTextField.text = formatter.string(from: sender.date)
-        
         if sender.date < todayDate as Date{
             self.errorLogin(errTitle: "Error", errMessage: "You have selected Travel Date from Past. Booking can be done only for future Dates")
         }
