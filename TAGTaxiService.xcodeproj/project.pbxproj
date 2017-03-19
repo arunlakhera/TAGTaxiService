@@ -13,6 +13,7 @@
 		D81235EA1E746F2100519F6A /* PhotoAvatar.png in Resources */ = {isa = PBXBuildFile; fileRef = D81235E91E746F2100519F6A /* PhotoAvatar.png */; };
 		D83D363D1E7A6EF0003166AA /* AdminBookListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83D363C1E7A6EF0003166AA /* AdminBookListTableViewCell.swift */; };
 		D83D363F1E7AAB7B003166AA /* AdminBookDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83D363E1E7AAB7B003166AA /* AdminBookDetailViewController.swift */; };
+		D83D366A1E7D3881003166AA /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83D36691E7D3881003166AA /* AuthService.swift */; };
 		D85888E01E769F5800AB1DB9 /* RiderProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85888DF1E769F5800AB1DB9 /* RiderProfileViewController.swift */; };
 		D85F1D731E6F84CB0076C3CA /* BookingStatusListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85F1D721E6F84CB0076C3CA /* BookingStatusListViewController.swift */; };
 		D85F1D751E6FEFF20076C3CA /* BookListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85F1D741E6FEFF20076C3CA /* BookListTableViewCell.swift */; };
@@ -68,6 +69,7 @@
 		D81235E91E746F2100519F6A /* PhotoAvatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PhotoAvatar.png; sourceTree = "<group>"; };
 		D83D363C1E7A6EF0003166AA /* AdminBookListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdminBookListTableViewCell.swift; sourceTree = "<group>"; };
 		D83D363E1E7AAB7B003166AA /* AdminBookDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdminBookDetailViewController.swift; sourceTree = "<group>"; };
+		D83D36691E7D3881003166AA /* AuthService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		D85888DF1E769F5800AB1DB9 /* RiderProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RiderProfileViewController.swift; sourceTree = "<group>"; };
 		D85F1D721E6F84CB0076C3CA /* BookingStatusListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookingStatusListViewController.swift; sourceTree = "<group>"; };
 		D85F1D741E6FEFF20076C3CA /* BookListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookListTableViewCell.swift; sourceTree = "<group>"; };
@@ -250,6 +252,7 @@
 			isa = PBXGroup;
 			children = (
 				D8FF56441E69D96200A99B75 /* DataService.swift */,
+				D83D36691E7D3881003166AA /* AuthService.swift */,
 			);
 			name = Services;
 			sourceTree = "<group>";
@@ -441,6 +444,7 @@
 				D85F1D731E6F84CB0076C3CA /* BookingStatusListViewController.swift in Sources */,
 				D8C422A41E7934E1007EA962 /* AdminMainBookingViewController.swift in Sources */,
 				D8C422A61E79A8AD007EA962 /* AdminBookStatusListViewController.swift in Sources */,
+				D83D366A1E7D3881003166AA /* AuthService.swift in Sources */,
 				D8FF56451E69D96200A99B75 /* DataService.swift in Sources */,
 				D85F1D751E6FEFF20076C3CA /* BookListTableViewCell.swift in Sources */,
 				D861EE651E6A9B2C00CCF371 /* SignUpViewController.swift in Sources */,
@@ -574,6 +578,7 @@
 			baseConfigurationReference = BA840D520D86F18A830B3FCE /* Pods-TAGTaxiService.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = F889M77EY9;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -589,6 +594,7 @@
 					"\"${PODS_ROOT}/Headers/Public/FirebaseStorage\"",
 				);
 				INFOPLIST_FILE = TAGTaxiService/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.MyCompany.TAGTaxiService;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -602,6 +608,7 @@
 			baseConfigurationReference = 93243EDE64EDCEED928D4DA9 /* Pods-TAGTaxiService.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = F889M77EY9;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -617,6 +624,7 @@
 					"\"${PODS_ROOT}/Headers/Public/FirebaseStorage\"",
 				);
 				INFOPLIST_FILE = TAGTaxiService/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.MyCompany.TAGTaxiService;
 				PRODUCT_NAME = "$(TARGET_NAME)";

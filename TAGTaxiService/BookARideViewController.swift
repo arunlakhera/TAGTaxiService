@@ -13,8 +13,6 @@ class BookARideViewController: UIViewController, UIPickerViewDelegate, UIPickerV
 
     // MARK: Outlets
     
-    @IBOutlet weak var nameTexField: UITextField!
-    @IBOutlet weak var phoneNoTextField: UITextField!
     @IBOutlet weak var travelFromTextField: UITextField!
     @IBOutlet weak var travelToTextField: UITextField!
     @IBOutlet weak var roundTripLabel: UILabel!
@@ -28,7 +26,6 @@ class BookARideViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     var travelFrom = ""
     var noOfTravellers = 1
     var todayDate = NSDate()
-  //  var travelDate = ""
     let formatter = DateFormatter()
     
     // MARK: Picker variable for Vehicle Type Picker View
@@ -42,17 +39,19 @@ class BookARideViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     override func viewDidLoad() {
         super.viewDidLoad()
       
+        
         travelFromTextField.text = TravelFromCity
         // Mark: Make Name Textfield as first responder and set the no of travellers to 1
         
         // By default show today date as travel date
+       
         formatter.dateFormat = "dd-MMM-YYYY"
         travelBeginDateTextField.text = formatter.string(from: todayDate as Date)
+        travelEndDateTextField.text = formatter.string(from: todayDate as Date)
        
         // By default show Small
         typeOfVehicleTextField.text = vehicleType[0]
         
-        nameTexField.becomeFirstResponder()
         noOfTravellersLabel.text = String(noOfTravellers)
         
         // Set Picker delegate and datasource to self
@@ -69,8 +68,35 @@ class BookARideViewController: UIViewController, UIPickerViewDelegate, UIPickerV
         travelBeginDatePicker.addTarget(self, action: #selector(BookARideViewController.travelBeginDatePicker(sender:)), for: .valueChanged)
         travelEndDatePicker.addTarget(self, action: #selector(BookARideViewController.travelEndDatePicker(sender:)), for: .valueChanged)
         
+        let toolBar = addDoneButton()
+        
+        
+        travelFromTextField.inputAccessoryView = toolBar
+        travelToTextField.inputAccessoryView = toolBar
+        travelBeginDateTextField.inputAccessoryView = toolBar
+        travelEndDateTextField.inputAccessoryView = toolBar
+        typeOfVehicleTextField.inputAccessoryView = toolBar
+        
     }
     
+    func addDoneButton() -> UIToolbar{
+        
+        let toolBar = UIToolbar()
+        toolBar.sizeToFit()
+        
+        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+        let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(self.doneClicked))
+        
+        toolBar.setItems([flexibleSpace,doneButton], animated: true)
+        
+        return toolBar
+        
+    }
+    
+    func doneClicked(){
+        self.view.endEditing(true)
+    }
+
     // MARK: Picker View Methods for Type of Vehicle PickerView
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -191,25 +217,9 @@ class BookARideViewController: UIViewController, UIPickerViewDelegate, UIPickerV
         
         // remove any whitespace and special characters
         
-        let name = nameTexField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
-        let phoneNo = phoneNoTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
         let travelFrom = travelFromTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
         let travelTo = travelToTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
       
-        if (name?.characters.count)! == 0{
-            self.errorLogin(errTitle: "Error", errMessage: "Please provide your Name.")
-            nameTexField.becomeFirstResponder()
-        }else{
-            checkFlag = true
-        }
-        
-        if (phoneNo?.characters.count)!  != 10{
-            self.errorLogin(errTitle: "Error", errMessage: "Please provide Valid Phone Number.")
-            phoneNoTextField.becomeFirstResponder()
-        }else{
-            checkFlag = true
-        }
-        
         if (travelFrom?.characters.count)! == 0{
             checkFlag = false
             self.errorLogin(errTitle: "Error", errMessage: "Please provide City Name from where you will be travelling.")

@@ -106,5 +106,15 @@ class AdminMainBookingViewController: UIViewController {
         self.performSegue(withIdentifier: "adminBookListSegue", sender: nil)
     }
     
-   
+    @IBAction func signOut(_ sender: Any) {
+        do{
+            try FIRAuth.auth()?.signOut()
+            AuthService.instance.isLoggedIn = false
+            self.performSegue(withIdentifier: "adminLogoutSegue", sender: self)
+        }catch{
+            print("Error While Signing Out")
+        }
+    }
+    
+    
 }

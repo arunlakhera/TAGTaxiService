@@ -45,9 +45,8 @@ class MainMenuViewController: UIViewController, CLLocationManagerDelegate {
         manager.startUpdatingLocation()
         
         // Get user information
-        let user = FIRAuth.auth()?.currentUser
-        riderID = (user?.uid)!
-        riderEmail = (user?.email)!
+        riderID = (FIRAuth.auth()?.currentUser?.uid)! 
+        riderEmail = (FIRAuth.auth()?.currentUser?.email)!
     
     }
     
@@ -125,6 +124,7 @@ class MainMenuViewController: UIViewController, CLLocationManagerDelegate {
     @IBAction func menuSignOut(_ sender: Any) {
         do{
             try FIRAuth.auth()?.signOut()
+            AuthService.instance.isLoggedIn = false
             self.performSegue(withIdentifier: "logOutSegue", sender: self)
         }catch{
             print("Error While Signing Out")
