@@ -12,9 +12,9 @@ import MapKit
 import CoreLocation
 
 // Global Variables
+var riderID = (FIRAuth.auth()?.currentUser?.uid)!
+var riderEmail = (FIRAuth.auth()?.currentUser?.email)
 
-var riderID = ""
-var riderEmail = ""
 var TravelFromCity = ""
 
 class MainMenuViewController: UIViewController, CLLocationManagerDelegate {
@@ -29,7 +29,7 @@ class MainMenuViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet weak var menuNameLabel: UILabel!
     @IBOutlet weak var menuImage: UIImageView!
     
-    // MARK: Variables
+    // MARK: Variables for Location manager
     let manager = CLLocationManager()
     var menuShow = false
     
@@ -44,12 +44,9 @@ class MainMenuViewController: UIViewController, CLLocationManagerDelegate {
         manager.requestWhenInUseAuthorization()
         manager.startUpdatingLocation()
         
-        // Get user information
-        riderID = (FIRAuth.auth()?.currentUser?.uid)! 
-        riderEmail = (FIRAuth.auth()?.currentUser?.email)!
-    
     }
     
+    // Function to find the current location of user.
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
             // Get latest location of user
@@ -87,11 +84,11 @@ class MainMenuViewController: UIViewController, CLLocationManagerDelegate {
         }
     }
    
-    
+    // Action when Menu button is clicked, Menu slides from left
     @IBAction func menuButton(_ sender: Any) {
         if (menuShow){
             leadingConstraint.constant = 0
-            menuNameLabel.text = riderEmail
+            menuNameLabel.text = AuthService.instance.userName
             
         }else{
             leadingConstraint.constant = -170
@@ -104,20 +101,20 @@ class MainMenuViewController: UIViewController, CLLocationManagerDelegate {
         menuShow = !menuShow
     }
     
-    // Menu Button Action
+    // Action when booking Status button is pressed in Menu
     
     @IBAction func menuBookingStatus(_ sender: Any) {
         bookingStatusButton(Any.self)
     }
     
-    // To navigate to Book a Ride Screen
+    //  Action when book a Ride button is pressed in Menu
     @IBAction func menuBookARide(_ sender: Any) {
          bookARideButton(Any.self)
     }
     
     // To navigate to Riders Profile Screen
     @IBAction func menuEditProfile(_ sender: Any) {
-        
+        performSegue(withIdentifier: "editProfileSegue", sender: nil)
     }
     
     // To Slide the Menu On and Off screen
@@ -133,8 +130,6 @@ class MainMenuViewController: UIViewController, CLLocationManagerDelegate {
     
     // To navigate to Booking Screen
     @IBAction func bookARideButton(_ sender: Any) {
-        
-        
         self.performSegue(withIdentifier: "bookARideSegue", sender: UIButton())
     }
     

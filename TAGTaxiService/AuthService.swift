@@ -16,6 +16,8 @@ class AuthService{
     var userName: String?
     var isLoggedIn = false
     var isAdmin = false
+    var riderID: String?
+   var  riderEmail: String?
     
     func emailSignIn(email: String, password: String, Completion: @escaping(_ success: Bool, _ message: String) -> Void ){
         
@@ -24,7 +26,12 @@ class AuthService{
             if error != nil{
                 Completion(false, "\((error?.localizedDescription)!)")
             }else{
+                
+                self.riderID = FIRAuth.auth()?.currentUser?.uid
+                self.riderEmail = (FIRAuth.auth()?.currentUser?.email)!
+          
                 Completion(true, "Welcome \(self.userName) !")
+                
             }
         })
     }
@@ -36,6 +43,10 @@ class AuthService{
             if error != nil{
                 Completion(false, "\((error?.localizedDescription)!)")
             }else{
+          
+                self.riderID = FIRAuth.auth()?.currentUser?.uid
+                self.riderEmail = (FIRAuth.auth()?.currentUser?.email)!
+                
                 Completion(true, "Successfully Created Account")
             }
         })

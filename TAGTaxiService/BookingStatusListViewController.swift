@@ -14,12 +14,12 @@ class BookingStatusListViewController: UIViewController, UITableViewDelegate, UI
     // MARK: Outlet
     @IBOutlet weak var tableView: UITableView!
     
-    
     // MARK: Variables
+    
     var TAGRiderBooking = DataService.ds.REF_RIDER.child(riderID).child("Booking")
     var bookings = [RideBooking]()
-    var riderName = ""
-    var riderEmail = ""
+    var riderName = AuthService.instance.userName!
+    var riderEmail = AuthService.instance.riderEmail!
     var riderPhone = ""
     
     override func viewDidLoad() {
@@ -30,13 +30,12 @@ class BookingStatusListViewController: UIViewController, UITableViewDelegate, UI
         
         // Load all the bookings of the User
    
+        showAlert(title: "RIDER BOOKING", message: "------>>>\(TAGRiderBooking)")
         self.tableView.reloadData()
         
         TAGRiderBooking.observe(.value, with: { snapshot in
             
                 self.bookings = []
-            
-            
                 if let snapshots = snapshot.children.allObjects as? [FIRDataSnapshot]{
                     
                     for snap in snapshots{
@@ -62,14 +61,16 @@ class BookingStatusListViewController: UIViewController, UITableViewDelegate, UI
                             self.tableView.reloadData()
                             
                         }, withCancel: { error in
-                            self.errorLogin(errTitle: "ERROR!", errMessage: "Error occured whilte fetching Booking Record -- \(error.localizedDescription)")
+                            self.showAlert(title: "ERROR", message: "Error occured whilte fetching Booking Record -- \(error.localizedDescription)")
+                            
                         })
                         
                     }
             }
             
         }) { error in
-            self.errorLogin(errTitle: "ERROR!", errMessage: "Not to able to fetch the booking list.")
+            self.showAlert(title: "ERROR", message: "Not to able to fetch the booking list.")
+            
         }
         
     }
@@ -169,12 +170,14 @@ class BookingStatusListViewController: UIViewController, UITableViewDelegate, UI
     }
     
     
-    func errorLogin(errTitle: String, errMessage: String){
+    // Alert function to show messages
+    func showAlert(title: String, message: String){
         
-        let alert = UIAlertController(title: errTitle, message: errMessage, preferredStyle: .alert)
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let action = UIAlertAction(title: "Ok", style: .default, handler: nil)
-        alert.addAction(action)
-        present(alert, animated: true, completion: nil)
+        alertController.addAction(action)
+        self.present(alertController, animated: true, completion: nil)
+        
     }
     
 }

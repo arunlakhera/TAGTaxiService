@@ -46,8 +46,11 @@
 		D861EE6B1E6AA2C800CCF371 /* MainMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D861EE6A1E6AA2C800CCF371 /* MainMenuViewController.swift */; };
 		D861EE6F1E6AA5DD00CCF371 /* Setting Button.png in Resources */ = {isa = PBXBuildFile; fileRef = D861EE6E1E6AA5DD00CCF371 /* Setting Button.png */; };
 		D861EE721E6D852200CCF371 /* BookARideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D861EE711E6D852200CCF371 /* BookARideViewController.swift */; };
+		D88F12551E80D8E80066DCCE /* TextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = D88F12541E80D8E80066DCCE /* TextField.swift */; };
 		D8C422A41E7934E1007EA962 /* AdminMainBookingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C422A31E7934E1007EA962 /* AdminMainBookingViewController.swift */; };
 		D8C422A61E79A8AD007EA962 /* AdminBookStatusListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C422A51E79A8AD007EA962 /* AdminBookStatusListViewController.swift */; };
+		D8D12C481E83828700F1C364 /* Dropdown.png in Resources */ = {isa = PBXBuildFile; fileRef = D8D12C471E83828700F1C364 /* Dropdown.png */; };
+		D8D12C521E84E3AA00F1C364 /* Email Address.png in Resources */ = {isa = PBXBuildFile; fileRef = D8D12C511E84E3AA00F1C364 /* Email Address.png */; };
 		D8FF562D1E69AD9D00A99B75 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FF562C1E69AD9D00A99B75 /* AppDelegate.swift */; };
 		D8FF56321E69AD9D00A99B75 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8FF56301E69AD9D00A99B75 /* Main.storyboard */; };
 		D8FF56341E69AD9D00A99B75 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8FF56331E69AD9D00A99B75 /* Assets.xcassets */; };
@@ -103,8 +106,11 @@
 		D861EE6E1E6AA5DD00CCF371 /* Setting Button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Setting Button.png"; sourceTree = "<group>"; };
 		D861EE701E6AB6DB00CCF371 /* TAGTaxiService.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TAGTaxiService.entitlements; sourceTree = "<group>"; };
 		D861EE711E6D852200CCF371 /* BookARideViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookARideViewController.swift; sourceTree = "<group>"; };
+		D88F12541E80D8E80066DCCE /* TextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextField.swift; sourceTree = "<group>"; };
 		D8C422A31E7934E1007EA962 /* AdminMainBookingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdminMainBookingViewController.swift; sourceTree = "<group>"; };
 		D8C422A51E79A8AD007EA962 /* AdminBookStatusListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdminBookStatusListViewController.swift; sourceTree = "<group>"; };
+		D8D12C471E83828700F1C364 /* Dropdown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Dropdown.png; sourceTree = "<group>"; };
+		D8D12C511E84E3AA00F1C364 /* Email Address.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Email Address.png"; sourceTree = "<group>"; };
 		D8FF56291E69AD9D00A99B75 /* TAGTaxiService.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TAGTaxiService.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8FF562C1E69AD9D00A99B75 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D8FF56311E69AD9D00A99B75 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -147,6 +153,8 @@
 				D861EE661E6A9B9700CCF371 /* PikchillyLogo@2x.png */,
 				D861EE6E1E6AA5DD00CCF371 /* Setting Button.png */,
 				D861EE671E6A9B9700CCF371 /* PikchillyLogo@3x.png */,
+				D8D12C471E83828700F1C364 /* Dropdown.png */,
+				D8D12C511E84E3AA00F1C364 /* Email Address.png */,
 				D861EE381E6A977700CCF371 /* AcceptButton_ORG.png */,
 				D861EE391E6A977700CCF371 /* ADMINACCEPTED_ORG.png */,
 				D861EE3A1E6A977700CCF371 /* AdminBokkingDetailBG.png */,
@@ -244,6 +252,7 @@
 				D8FF564F1E69FDF900A99B75 /* RideBooking.swift */,
 				D85F1D741E6FEFF20076C3CA /* BookListTableViewCell.swift */,
 				D83D363C1E7A6EF0003166AA /* AdminBookListTableViewCell.swift */,
+				D88F12541E80D8E80066DCCE /* TextField.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -321,7 +330,7 @@
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Keychain = {
-								enabled = 0;
+								enabled = 1;
 							};
 						};
 					};
@@ -368,6 +377,7 @@
 				D861EE511E6A977700CCF371 /* ADMINCANCELLED_ORG.png in Resources */,
 				D861EE601E6A977700CCF371 /* SendButton_ORG.png in Resources */,
 				D8FF56341E69AD9D00A99B75 /* Assets.xcassets in Resources */,
+				D8D12C521E84E3AA00F1C364 /* Email Address.png in Resources */,
 				D861EE531E6A977700CCF371 /* AdminCount.png in Resources */,
 				D861EE631E6A977700CCF371 /* TAG.png in Resources */,
 				D861EE621E6A977700CCF371 /* SignUpButton_ORG.png in Resources */,
@@ -379,6 +389,7 @@
 				D861EE5E1E6A977700CCF371 /* NewSignUpButton.png in Resources */,
 				D861EE501E6A977700CCF371 /* AdminBokkingDetailBG.png in Resources */,
 				D861EE561E6A977700CCF371 /* ADMINQUOTED_ORG.png in Resources */,
+				D8D12C481E83828700F1C364 /* Dropdown.png in Resources */,
 				D81235EA1E746F2100519F6A /* PhotoAvatar.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -441,6 +452,7 @@
 				D85888E01E769F5800AB1DB9 /* RiderProfileViewController.swift in Sources */,
 				D861EE6B1E6AA2C800CCF371 /* MainMenuViewController.swift in Sources */,
 				D8FF564A1E69E4D600A99B75 /* Rider.swift in Sources */,
+				D88F12551E80D8E80066DCCE /* TextField.swift in Sources */,
 				D85F1D731E6F84CB0076C3CA /* BookingStatusListViewController.swift in Sources */,
 				D8C422A41E7934E1007EA962 /* AdminMainBookingViewController.swift in Sources */,
 				D8C422A61E79A8AD007EA962 /* AdminBookStatusListViewController.swift in Sources */,
@@ -578,6 +590,7 @@
 			baseConfigurationReference = BA840D520D86F18A830B3FCE /* Pods-TAGTaxiService.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = TAGTaxiService/TAGTaxiService.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = F889M77EY9;
 				HEADER_SEARCH_PATHS = (
@@ -596,7 +609,7 @@
 				INFOPLIST_FILE = TAGTaxiService/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.MyCompany.TAGTaxiService;
+				PRODUCT_BUNDLE_IDENTIFIER = com.MyCompany.TAGTaxiService1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 				USER_HEADER_SEARCH_PATHS = "\"$(OBJROOT)/UninstalledProducts/$(PLATFORM_NAME)/include\"";
@@ -608,6 +621,7 @@
 			baseConfigurationReference = 93243EDE64EDCEED928D4DA9 /* Pods-TAGTaxiService.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = TAGTaxiService/TAGTaxiService.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = F889M77EY9;
 				HEADER_SEARCH_PATHS = (
@@ -626,7 +640,7 @@
 				INFOPLIST_FILE = TAGTaxiService/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.MyCompany.TAGTaxiService;
+				PRODUCT_BUNDLE_IDENTIFIER = com.MyCompany.TAGTaxiService1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 				USER_HEADER_SEARCH_PATHS = "\"$(OBJROOT)/UninstalledProducts/$(PLATFORM_NAME)/include\"";

@@ -17,43 +17,47 @@ class SignInViewController: UIViewController {
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     
-    // MARK: Variables to store email and password
-    var email = ""
-    var password = ""
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Make email Text field as first responder when view loads
-        emailTextField.becomeFirstResponder()
         
-        // ADD Done button to the Keyboard
-        let toolBar = addDoneButton()
+        // MARK: Create variable and assign return properties from addDoneButton()
+        let toolBarWithDoneButton = addDoneButton()
         
-        emailTextField.inputAccessoryView = toolBar
-        passwordTextField.inputAccessoryView = toolBar
+        // MARK: Add toolbar to the keyboard that appears in email and password keyboard
+        emailTextField.inputAccessoryView = toolBarWithDoneButton
+        passwordTextField.inputAccessoryView = toolBarWithDoneButton
     }
     
+    // MARK: Function to add toolbar to the Keyboard
     func addDoneButton() -> UIToolbar{
         
-        let toolBar = UIToolbar()
-        toolBar.sizeToFit()
+        // MARK: Create toolbar with button
+        let toolBar = UIToolbar()   // Create toolbar View
+        toolBar.sizeToFit()             // calls sizeThatFits: with current view bounds and changes bounds size of toolbar.
         
+        // Adds space on toolbar so that Done Button appears on right side of the toolbar
         let flexibleSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+        // Adds Done button to the toolbar
         let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(self.doneClicked))
         
+        // Adds Space and Done button to the Toolbar
         toolBar.setItems([flexibleSpace,doneButton], animated: true)
         
         return toolBar
         
     }
     
+    // Function to Dismiss keyboards once Done button is clicked
     func doneClicked(){
         self.view.endEditing(true)
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        
+        // Call function to Set the username
        setUserName()
+        
+        // MARK: Check if the user is logged in already and if yes take user to Main screen else ask for sign in
         
         if AuthService.instance.isLoggedIn{
             if AuthService.instance.isAdmin{
@@ -64,7 +68,7 @@ class SignInViewController: UIViewController {
         }
     }
     
-    // MARK: Function to extract user name from Email id for the user
+    // MARK: Function to extract user name from Email id for the user to show in Main Screen
     func setUserName(){
         if let user = FIRAuth.auth()?.currentUser{
             AuthService.instance.isLoggedIn = true
@@ -115,36 +119,43 @@ class SignInViewController: UIViewController {
     // SIGNIN FUNCTION BEGIN
     
     @IBAction func signInButton(_ sender: Any) {
-        // Function to check if required fields are provided or not
         
+        // Variables to store email and password provided by user
         let email = emailTextField.text!
         let password = passwordTextField.text!
         
+        // Function to check if required fields are provided or not
+        
         checkFields()
         
+        // Call Signin Function emailSignIn function defined in AuthService Class for user email signin
         AuthService.instance.emailSignIn(email: email, password: password) { (success, message) in
+            // If login is successfull
             if success{
+                // Set the username
                 self.setUserName()
+                // Get the current user
+                let riderID = AuthService.instance.riderID!
                 
-                let  user = FIRAuth.auth()?.currentUser
-                riderID = (user?.uid)!
+                // Get Admin flag Path from Firebase
                 let riderProfile = DataService.ds.REF_RIDER.child(riderID).child("Profile").child("AdminFlag")
                 
+                // Check for Admin flag value and depending on perform segue to Admin or user screen
                 riderProfile.observe(.value, with: { (snapshot) in
                     let adminFlag = (snapshot.value)! as? String
                     
                     if adminFlag == "Yes"{
-                        AuthService.instance.isAdmin = true
+                        AuthService.instance.isAdmin = true    // Set the Admin flag to true
                         self.performSegue(withIdentifier: "adminMainSegue", sender: nil)
                     }else{
-                        AuthService.instance.isAdmin = false
+                        AuthService.instance.isAdmin = false    // Set the Admin flag to false
                         self.performSegue(withIdentifier: "signInSegue", sender: nil)
                     }
                     
                 }, withCancel: { (error) in
             })
         }else{
-                self.showAlert(title: "Failure", message: message)
+                self.showAlert(title: "Failure", message: message) //Show Failure Message
             }
         }
     }

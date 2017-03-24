@@ -21,16 +21,25 @@ class BookARideViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     @IBOutlet weak var travelEndDateTextField: UITextField!
     @IBOutlet weak var noOfTravellersLabel: UILabel!
     @IBOutlet weak var typeOfVehicleTextField: UITextField!
+    @IBOutlet weak var returnDateLabel: UILabel!
     
     // MARK: Variables
     var travelFrom = ""
     var noOfTravellers = 1
-    var todayDate = NSDate()
-    let formatter = DateFormatter()
+    
+    
+    var travelMinDate = NSDate() // Assign current date as minimum travel begin date
+    var travelMaxDate: NSDate {
+        return (Calendar.current as NSCalendar).date(byAdding: .day, value: 90, to: Date(), options: [])! as NSDate
+    }   // Allows max date to be selected for booking as 90 days from current date
+    
+    var travelEndMinDate = NSDate() // Travel End date is shown as current date by deafult
+    
+    let formatter = DateFormatter() // variable for date formatter
     
     // MARK: Picker variable for Vehicle Type Picker View
     var vehicleType = ["SMALL","SEDAN","SUV"]
-    var picker = UIPickerView()
+    var typeOfVehiclePicker = UIPickerView()
     
     // MARK: Picker Variable for Date picker
     var travelBeginDatePicker = UIDatePicker()
@@ -39,27 +48,35 @@ class BookARideViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     override func viewDidLoad() {
         super.viewDidLoad()
       
+        // Show only dates in picker
+        travelBeginDatePicker.datePickerMode = UIDatePickerMode.date
+        travelEndDatePicker.datePickerMode = UIDatePickerMode.date
         
+        // Assign city name from main view if available
         travelFromTextField.text = TravelFromCity
-        // Mark: Make Name Textfield as first responder and set the no of travellers to 1
         
         // By default show today date as travel date
        
         formatter.dateFormat = "dd-MMM-YYYY"
-        travelBeginDateTextField.text = formatter.string(from: todayDate as Date)
-        travelEndDateTextField.text = formatter.string(from: todayDate as Date)
-       
+        travelBeginDateTextField.text = formatter.string(from: travelMinDate as Date)
+        travelBeginDatePicker.minimumDate = travelMinDate as  Date
+        travelBeginDatePicker.maximumDate = travelMaxDate as Date
+        
+        travelEndDateTextField.text = formatter.string(from: travelMinDate as Date)
+        travelEndDatePicker.minimumDate  = travelMinDate as  Date
+        travelEndDatePicker.maximumDate = travelMaxDate as Date
+        
         // By default show Small
         typeOfVehicleTextField.text = vehicleType[0]
         
         noOfTravellersLabel.text = String(noOfTravellers)
         
         // Set Picker delegate and datasource to self
-        picker.delegate = self
-        picker.dataSource = self
+        typeOfVehiclePicker.delegate = self
+        typeOfVehiclePicker.dataSource = self
         
         // Assign vehicle picker to typeOfVehicle field
-        typeOfVehicleTextField.inputView = picker
+        typeOfVehicleTextField.inputView = typeOfVehiclePicker
         
         //Assign date picker to travelBeginDate field
         travelBeginDateTextField.inputView = travelBeginDatePicker
@@ -68,16 +85,19 @@ class BookARideViewController: UIViewController, UIPickerViewDelegate, UIPickerV
         travelBeginDatePicker.addTarget(self, action: #selector(BookARideViewController.travelBeginDatePicker(sender:)), for: .valueChanged)
         travelEndDatePicker.addTarget(self, action: #selector(BookARideViewController.travelEndDatePicker(sender:)), for: .valueChanged)
         
+        // Variable to set Toolbar
         let toolBar = addDoneButton()
-        
         
         travelFromTextField.inputAccessoryView = toolBar
         travelToTextField.inputAccessoryView = toolBar
-        travelBeginDateTextField.inputAccessoryView = toolBar
-        travelEndDateTextField.inputAccessoryView = toolBar
-        typeOfVehicleTextField.inputAccessoryView = toolBar
+       
+        travelBeginDateTextField.inputView = travelBeginDatePicker
+        travelEndDateTextField.inputView = travelEndDatePicker
+        typeOfVehicleTextField.inputView = typeOfVehiclePicker
         
     }
+   
+    // Function to add Done Button in toolbar
     
     func addDoneButton() -> UIToolbar{
         
@@ -92,6 +112,7 @@ class BookARideViewController: UIViewController, UIPickerViewDelegate, UIPickerV
         return toolBar
         
     }
+    // Action to perform when Done button is clicked
     
     func doneClicked(){
         self.view.endEditing(true)
@@ -109,10 +130,12 @@ class BookARideViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         typeOfVehicleTextField.text = vehicleType[row]
+        self.view.endEditing(true)
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return vehicleType[row]
+        
     }
     
     // Function to remove Picker view from screen once the user has selected and touched the screen putside view
@@ -125,30 +148,43 @@ class BookARideViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     func travelBeginDatePicker(sender: UIDatePicker){
        
         travelBeginDateTextField.text = formatter.string(from: sender.date)
-        if sender.date < todayDate as Date{
-            self.errorLogin(errTitle: "Error", errMessage: "You have selected Travel Date from Past. Booking can be done only for future Dates")
+        
+        if (sender.date.compare(travelMinDate as Date).rawValue == -1){
+           
+            self.showAlert(title: "Error!", message: "Please select future date for booking")
+            travelBeginDateTextField.becomeFirstResponder()
+        }else{
+            travelEndMinDate = sender.date as NSDate
+            travelEndDateTextField.text = formatter.string(from: sender.date)
+            
+            self.view.endEditing(true)
+            
         }
     }
     
     func travelEndDatePicker(sender: UIDatePicker){
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd-MMM-YYYY"
         
-        travelEndDateTextField.text = formatter.string(from: sender.date)
-        
-        if  sender.date < formatter.date(from: travelBeginDateTextField.text!)!  {
-            self.errorLogin(errTitle: "Error", errMessage: "Your Return date cannot be before Travel Begin Date. Please select another Return Date ")
+        if (sender.date.compare(travelEndMinDate as Date).rawValue) == -1{
+            self.showAlert(title: "Error!", message: "You selected Return date that is before your Travel Date. Please select correct Return Date")
+            travelEndDateTextField.becomeFirstResponder()
+            
+        }else{
+            travelEndDateTextField.text = formatter.string(from: sender.date)
+            self.view.endEditing(true)
         }
-    }
+}
 
     // MARK: Actions
     
+    // Action when no of travellers buttons are added
     @IBAction func addNoOfTravellers(_ sender: Any) {
         if noOfTravellers <= 7{
                 noOfTravellers += 1
                 noOfTravellersLabel.text = String(noOfTravellers)
         }
     }
+    
+    // Action when no of travellers are reduced
     @IBAction func reduceNoOfTravellers(_ sender: Any) {
         if noOfTravellers != 1{
             noOfTravellers -= 1
@@ -156,25 +192,31 @@ class BookARideViewController: UIViewController, UIPickerViewDelegate, UIPickerV
         }
     }
     
+    // Action when round trip button is selected
     @IBAction func roundTrip(_ sender: Any) {
        
         if roundTripSwitch.isOn{
             roundTripLabel.text = "Yes"
             travelEndDateTextField.isEnabled = true
             travelEndDateTextField.isHidden = false
+            returnDateLabel.isHidden = false
         }else{
             roundTripLabel.text = "No"
             travelEndDateTextField.isEnabled = false
             travelEndDateTextField.isHidden = true
+            returnDateLabel.isHidden = true
         }
         
     }
+    
+    // Action when Ask Quote button is pressed
     
     @IBAction func askQuoteButton(_ sender: UIButton) {
         
         if checkFields(){
             
             // Get the unique Booking ID
+            
             let rideBookID = DataService.ds.REF_RIDEBOOKING.childByAutoId()
             let formatter = DateFormatter()
             formatter.dateFormat = "dd-MMM-YYYY"
@@ -182,16 +224,16 @@ class BookARideViewController: UIViewController, UIPickerViewDelegate, UIPickerV
             rideBookID.child("RiderID").setValue(riderID)
             rideBookID.child("VehicleID").setValue("")
             rideBookID.child("DriverID").setValue("")
-            rideBookID.child("DateOfBooking").setValue(String(describing: todayDate))
+            rideBookID.child("DateOfBooking").setValue(String(describing: travelMinDate))
             rideBookID.child("RideFrom").setValue(travelFromTextField.text?.capitalized)
             rideBookID.child("RideTo").setValue(travelToTextField.text?.capitalized)
             rideBookID.child("RideBeginDate").setValue(travelBeginDateTextField.text)
             rideBookID.child("RideEndDate").setValue(travelEndDateTextField.text)
             rideBookID.child("RoundTrip").setValue(roundTripLabel.text?.capitalized)
             rideBookID.child("NoOfTravellers").setValue(noOfTravellersLabel.text)
-            rideBookID.child("CreatedOnDate").setValue(String(describing: todayDate))
+            rideBookID.child("CreatedOnDate").setValue(String(describing: travelMinDate))
             rideBookID.child("CreatedBy").setValue(riderID)
-            rideBookID.child("LastUpdatedOnDate").setValue(String(describing: todayDate))
+            rideBookID.child("LastUpdatedOnDate").setValue(String(describing: travelMinDate))
             rideBookID.child("UpdatedBy").setValue(riderID)
             
             // Set Default Admin Values
@@ -222,7 +264,7 @@ class BookARideViewController: UIViewController, UIPickerViewDelegate, UIPickerV
       
         if (travelFrom?.characters.count)! == 0{
             checkFlag = false
-            self.errorLogin(errTitle: "Error", errMessage: "Please provide City Name from where you will be travelling.")
+            self.showAlert(title: "Error!", message:  "Please provide City Name from where you will be travelling.")
             travelFromTextField.becomeFirstResponder()
         }else{
             checkFlag = true
@@ -230,7 +272,7 @@ class BookARideViewController: UIViewController, UIPickerViewDelegate, UIPickerV
         
         if (travelTo?.characters.count)! == 0{
             checkFlag = false
-            self.errorLogin(errTitle: "Error", errMessage: "Please provide City Name of your Destination.")
+            self.showAlert(title: "Error!", message: "Please provide City Name of your Destination.")
             travelToTextField.becomeFirstResponder()
         }else{
             checkFlag = true
@@ -240,12 +282,14 @@ class BookARideViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     }
     
    
-    func errorLogin(errTitle: String, errMessage: String){
+    // Alert function to show messages
+    func showAlert(title: String, message: String){
         
-        let alert = UIAlertController(title: errTitle, message: errMessage, preferredStyle: .alert)
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let action = UIAlertAction(title: "Ok", style: .default, handler: nil)
-        alert.addAction(action)
-        present(alert, animated: true, completion: nil)
+        alertController.addAction(action)
+        self.present(alertController, animated: true, completion: nil)
+        
     }
     
 }

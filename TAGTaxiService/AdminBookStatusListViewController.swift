@@ -12,6 +12,8 @@ import Firebase
 class AdminBookStatusListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource{
 
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var toolBar: UINavigationBar!
+    @IBOutlet weak var toolBarTitle: UILabel!
  
     var bookings = [RideBooking]()
     var riderName = ""
@@ -23,8 +25,8 @@ class AdminBookStatusListViewController: UIViewController, UITableViewDelegate, 
         
         tableView.delegate = self
         tableView.dataSource = self
-
-        
+        toolBarTitle.text = "\(bookingStatusList) List"
+   
         DataService.ds.REF_RIDEBOOKING.observe(.value, with: { (snapshot) in
             self.bookings = []
             

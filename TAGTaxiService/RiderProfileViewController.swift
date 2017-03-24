@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 import Photos
 
-class RiderProfileViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+class RiderProfileViewController: UIViewController, /*UINavigationControllerDelegate, UIImagePickerControllerDelegate,*/UIPickerViewDataSource, UIPickerViewDelegate {
 
     // MARK: Outlets
     @IBOutlet weak var riderPhotoImageView: UIImageView!
@@ -27,16 +27,34 @@ class RiderProfileViewController: UIViewController, UINavigationControllerDelega
     @IBOutlet weak var saveButton: UIButton!
     
     // Rider Link
-    
     let riderProfile = DataService.ds.REF_RIDER.child(riderID).child("Profile")
-    let image = UIImagePickerController()
+ 
+    // Variable to set Gender picker
+    var gender = ["Male","Female"]
+    let genderPicker = UIPickerView()
     
-    var storageRef: FIRStorageReference!
+    // Variable to set States Picker
+    var states = ["Andra Pradesh","Arunachal Pradesh","Assam","Bihar","Chhattisgarh","Goa","Gujarat","Haryana","Himachal Pradesh","Jammu and Kashmir","Jharkhand","Karnataka","Kerala","Madya Pradesh","Maharashtra","Manipur","Meghalaya","Mizoram","Nagaland","Orissa","Punjab","Rajasthan","Sikkim","Tamil Nadu","Tripura","Uttaranchal","Uttar Pradesh","West Bengal"]
+    let statesPicker = UIPickerView()
+
+    // Variable for Date of Birth picker
+    let dateOfBirthPicker = UIDatePicker()
     
     override func viewDidLoad() {
         super.viewDidLoad()
       
-        storageRef = FIRStorage.storage().reference()
+        genderPicker.delegate = self
+        genderPicker.dataSource = self
+        
+        statesPicker.delegate = self
+        statesPicker.dataSource = self
+        
+        genderTextField.inputView = genderPicker
+        stateTextField.inputView = statesPicker
+        
+        dateOfBirthPicker.datePickerMode = UIDatePickerMode.date
+        dateOfBirthTextField.inputView = dateOfBirthPicker
+        dateOfBirthPicker.addTarget(self, action: #selector(self.datePickerValueChanged), for: UIControlEvents.valueChanged)
         
         // Call Load profile function
         loadProfile()
@@ -44,6 +62,59 @@ class RiderProfileViewController: UIViewController, UINavigationControllerDelega
         firstNameTextField.becomeFirstResponder()
         
     }
+    
+    func datePickerValueChanged(_ sender: UIDatePicker){
+        let dateformatter = DateFormatter()
+        
+        dateformatter.dateFormat = "dd-MM-YYYY"
+        if ((sender.date).compare(NSDate() as Date).rawValue > 0 ){
+            dateOfBirthTextField.text = dateformatter.string(from: sender.date)
+            self.view.endEditing(true)
+        }else{
+            
+         showAlert(title: "Error!", message: "Date of Birth Needs to be corrected")
+            
+        }
+    }
+    
+    // Gender Picker Begin
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        var rows = 0
+        if pickerView == genderPicker{
+             rows = gender.count
+        }else if pickerView == statesPicker{
+            rows = states.count
+        }
+        
+        return rows
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        var rowTitle = "--"
+        if pickerView == genderPicker{
+            rowTitle = gender[row]
+        }else if pickerView == statesPicker{
+            rowTitle = states[row]
+        }
+        
+        return rowTitle
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        
+        if pickerView == genderPicker{
+            genderTextField.text  = gender[row]
+        }else if pickerView == statesPicker{
+            stateTextField.text  = states[row]
+        }
+
+        //genderTextField.text = gender[row]
+        self.view.endEditing(true)
+    }
+
     
     func enableFields(){
         firstNameTextField.isEnabled = true
@@ -64,7 +135,7 @@ class RiderProfileViewController: UIViewController, UINavigationControllerDelega
            riderProfile.observe(.value, with: { snapshot in
             
             // if snapshot does not exists return
-            if !snapshot.exists(){ self.errorLogin(errTitle: "ERROR in SNAPSHOT", errMessage: "Snapshot Error") }
+            if !snapshot.exists(){ self.showAlert(title: "ERROR in SNAPSHOT", message: "Snapshot Error")}
             
             if let riderProfile = snapshot.value as? Dictionary<String, String>{
                 
@@ -83,7 +154,7 @@ class RiderProfileViewController: UIViewController, UINavigationControllerDelega
                 
                 // Profile Photo
                 
-                let imagePath = FIRAuth.auth()!.currentUser!.uid + "/\(riderID).jpg"
+               /* let imagePath = FIRAuth.auth()!.currentUser!.uid + "/\(riderID).jpg"
                 
                 self.storageRef.child(imagePath).data(withMaxSize: 5 * 1024 * 1024, completion: { (data, error) in
                     
@@ -95,7 +166,7 @@ class RiderProfileViewController: UIViewController, UINavigationControllerDelega
                             self.riderPhotoImageView.image = image
                    }
                 })
-                
+             */
             }
         })
         
@@ -103,7 +174,7 @@ class RiderProfileViewController: UIViewController, UINavigationControllerDelega
        enableFields()
         
     }
-    
+    /*
     @IBAction func uploadPhotoButton(_ sender: Any) {
      
        
@@ -117,8 +188,7 @@ class RiderProfileViewController: UIViewController, UINavigationControllerDelega
                 self.image.sourceType = .camera
                 self.present(self.image, animated: true, completion: nil)
             }else{
-                self.errorLogin(errTitle: "Camera Alert", errMessage: "Camera is Not Available!")
-            }
+                self.showAlert(title: "Camera Alert", message: "Camera is Not Available!")            }
         }))
         
         actionSheet.addAction(UIAlertAction(title: "Photo Library", style: .default, handler: { (action: UIAlertAction) in
@@ -127,7 +197,7 @@ class RiderProfileViewController: UIViewController, UINavigationControllerDelega
                 self.image.sourceType = .photoLibrary
                 self.present(self.image, animated: true, completion: nil)
             }else{
-                self.errorLogin(errTitle: "Photo Library Alert", errMessage: "Photo Library is Not Available!")
+                self.showAlert(title: "Photo Library Alert", message: "Photo Library is Not Available!")
             }
         }))
         
@@ -135,7 +205,8 @@ class RiderProfileViewController: UIViewController, UINavigationControllerDelega
         self.present(actionSheet, animated: true, completion: nil)
         
     }
-    
+ */
+    /*
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         
         if  let image = info[UIImagePickerControllerOriginalImage] as? UIImage
@@ -144,7 +215,7 @@ class RiderProfileViewController: UIViewController, UINavigationControllerDelega
             
         }else{
             // Error
-            self.errorLogin(errTitle: "Error", errMessage: "Error in presenting the Image")
+            self.showAlert(title: "Error", message: "Error in presenting the Image")
         }
         self.dismiss(animated: true, completion: nil)
 
@@ -153,7 +224,8 @@ class RiderProfileViewController: UIViewController, UINavigationControllerDelega
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         self.dismiss(animated: true, completion: nil)
     }
-    
+    */
+    // Action to save the riders profile in firebase
     @IBAction func saveButton(_ sender: Any) {
         
         if checkFields()
@@ -177,25 +249,25 @@ class RiderProfileViewController: UIViewController, UINavigationControllerDelega
             riderProfile.child("CreatedBy").setValue(riderEmail)
             riderProfile.child("UpdatedBy").setValue(riderEmail)
             
-            guard let imageData = UIImageJPEGRepresentation(riderPhotoImageView.image!, 0.8) else { return }
+          //  guard let imageData = UIImageJPEGRepresentation(riderPhotoImageView.image!, 0.8) else { return }
            
-            let imagePath = FIRAuth.auth()!.currentUser!.uid + "/\(riderID).jpg"
+            //let imagePath = FIRAuth.auth()!.currentUser!.uid + "/\(riderID).jpg"
             
-            let metadata = FIRStorageMetadata()
-            metadata.contentType = "image/jpeg"
-            self.storageRef.child(imagePath).put(imageData, metadata: metadata) { (metadata, error) in
-                    if let error = error {
-                        print("Error uploading: \(error)")
+            //let metadata = FIRStorageMetadata()
+            //metadata.contentType = "image/jpeg"
+            //self.storageRef.child(imagePath).put(imageData, metadata: metadata) { (metadata, error) in
+              //      if let error = error {
+                //        print("Error uploading: \(error)")
                        // self.urlTextView.text = "Upload Failed"
-                        return
-                    }
-                    self.uploadSuccess(metadata!, storagePath: imagePath)
-            }
+                  //      return
+                    //}
+                    //self.uploadSuccess(metadata!, storagePath: imagePath)
+            //}
         }
         
         self.performSegue(withIdentifier: "riderToMainSegue", sender: nil)
     }
-    
+    /*
     func uploadSuccess(_ metadata: FIRStorageMetadata, storagePath: String) {
        
         print("Upload Succeeded!")
@@ -203,7 +275,7 @@ class RiderProfileViewController: UIViewController, UINavigationControllerDelega
         UserDefaults.standard.synchronize()
        
     }
-    
+    */
     func checkFields() -> Bool{
    
         var checkFlag = false
@@ -211,73 +283,23 @@ class RiderProfileViewController: UIViewController, UINavigationControllerDelega
         let firstName = firstNameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
         let lastName = lastNameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
         let name = firstName! + " " + lastName!
-        let addressLine1 = address1TextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
-        let addressLine2 = address2TextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
-        let address = addressLine1! + " " + addressLine2!
-        let city = cityTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
-        let state = stateTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
         let phoneNo = phoneTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
-        let dateOfBirth = dateOfBirthTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
-        let gender = genderTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
-        let emailID = emailIDTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
         
         if (name.characters.count) == 0{
-            self.errorLogin(errTitle: "Error", errMessage: "Please provide your Name.")
+            self.showAlert(title: "Error", message: "Please provide your Name.")
             firstNameTextField.becomeFirstResponder()
         }else{
             checkFlag = true
         }
 
-        if (address.characters.count) == 0{
-            self.errorLogin(errTitle: "Error", errMessage: "Please provide your Address.")
-            address1TextField.becomeFirstResponder()
-        }else{
-            checkFlag = true
-        }
-
-        if (city?.characters.count)! == 0{
-            self.errorLogin(errTitle: "Error", errMessage: "Please provide your City.")
-            cityTextField.becomeFirstResponder()
-        }else{
-            checkFlag = true
-        }
-        
-        if (state?.characters.count) == 0{
-            self.errorLogin(errTitle: "Error", errMessage: "Please provide your State.")
-            stateTextField.becomeFirstResponder()
-        }else{
-            checkFlag = true
-        }
-       
         if (phoneNo?.characters.count)!  != 10{
-            self.errorLogin(errTitle: "Error", errMessage: "Please provide Valid Phone Number.")
+            self.showAlert(title: "Error", message: "Please provide Valid Phone Number.")
             phoneTextField.becomeFirstResponder()
         }else{
             checkFlag = true
         }
         
-        if (dateOfBirth?.characters.count) == 0{
-            self.errorLogin(errTitle: "Error", errMessage: "Please provide your Date Of Birth.")
-            dateOfBirthTextField.becomeFirstResponder()
-        }else{
-            checkFlag = true
-        }
-        
-        if (gender?.characters.count) == 0{
-            self.errorLogin(errTitle: "Error", errMessage: "Please provide your Gender.")
-            genderTextField.becomeFirstResponder()
-        }else{
-            checkFlag = true
-        }
-        
-        if (emailID?.characters.count) == 0{
-            self.errorLogin(errTitle: "Error", errMessage: "Please provide your Email ID.")
-            emailIDTextField.becomeFirstResponder()
-        }else{
-            checkFlag = true
-        }
-        
-    return checkFlag
+          return checkFlag
     }
     
     
@@ -305,13 +327,13 @@ class RiderProfileViewController: UIViewController, UINavigationControllerDelega
         self.view.endEditing(true)
     }
     
-    func errorLogin(errTitle: String, errMessage: String){
+    func showAlert(title: String, message: String){
         
-        let alert = UIAlertController(title: errTitle, message: errMessage, preferredStyle: .alert)
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let action = UIAlertAction(title: "Ok", style: .default, handler: nil)
-        alert.addAction(action)
-        present(alert, animated: true, completion: nil)
+        alertController.addAction(action)
+        self.present(alertController, animated: true, completion: nil)
+        
     }
-    
     
 }
