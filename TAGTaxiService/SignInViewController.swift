@@ -57,7 +57,7 @@ class SignInViewController: UIViewController {
        setUserName()
        
         // MARK: Check if the user is logged in already and if yes take user to Main screen else ask for sign in
-    /*
+    
         if AuthService.instance.isLoggedIn{
             if AuthService.instance.isAdmin{
                 self.performSegue(withIdentifier: "adminMainSegue", sender: nil)
@@ -65,14 +65,14 @@ class SignInViewController: UIViewController {
                   self.performSegue(withIdentifier: "signInSegue", sender: nil)
             }
         }
-    */
+ /*
         if AuthService.instance.isLoggedIn && AuthService.instance.isAdmin{
             self.performSegue(withIdentifier: "adminMainSegue", sender: nil)
         }
         
         if AuthService.instance.isLoggedIn{
             self.performSegue(withIdentifier: "signInSegue", sender: nil)
-        }
+        }*/
     }
     
     // MARK: Function to extract user name from Email id for the user to show in Main Screen
