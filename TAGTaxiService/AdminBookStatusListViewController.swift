@@ -39,7 +39,7 @@ class AdminBookStatusListViewController: UIViewController, UITableViewDelegate, 
         
                         if booking.status == bookingStatusList{
                             self.bookings.append(booking)
-                            //self.statuslabel.text = self.statuslabel.text! + booking.bookingID! + "-" + booking.rideFrom! + "\n"
+                            
                         }
                     }
                 }
@@ -71,17 +71,14 @@ class AdminBookStatusListViewController: UIViewController, UITableViewDelegate, 
         let riderProfile = DataService.ds.REF_RIDER.child(book.riderID!).child("Profile")
         
         riderProfile.observeSingleEvent(of: .value, with: { (snapshot) in
-            
-            let value = snapshot.value as? NSDictionary
-            self.riderName = "\(value?["FirstName"] as? String ?? "")  \(value?["LastName"] as? String ?? "")"
-            self.riderEmail = value?["EmailID"] as? String ?? ""
-            self.riderPhone = value?["PhoneNumber"] as? String ?? ""
-            
-            if self.riderName.characters.count > 0{
-                cell?.nameLabel.text = self.riderName
-            }else{
-                cell?.nameLabel.text = self.riderEmail
-            }
+           
+            let riderProfile = Rider(riderID: book.riderID!, dictionary: snapshot.value as! Dictionary<String, AnyObject>)
+           
+            self.riderName = riderProfile.firstName! + " " + riderProfile.lastName!
+            self.riderEmail = riderProfile.emailID!
+            self.riderPhone = riderProfile.phoneNumber!
+   
+            cell?.nameLabel.text = self.riderName
             
         })
  

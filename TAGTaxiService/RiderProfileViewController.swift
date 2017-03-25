@@ -27,9 +27,11 @@ class RiderProfileViewController: UIViewController, /*UINavigationControllerDele
     @IBOutlet weak var saveButton: UIButton!
     
     // Rider Link
-    let riderProfile = DataService.ds.REF_RIDER.child(riderID).child("Profile")
- 
-    // Variable to set Gender picker
+    //let riderProfile = DataService.ds.REF_RIDER.child(riderID).child("Profile")
+    let riderID = AuthService.instance.riderID!
+    let riderProfile = DataService.ds.REF_RIDER.child(AuthService.instance.riderID!).child("Profile")
+    
+// Variable to set Gender picker
     var gender = ["Male","Female"]
     let genderPicker = UIPickerView()
     
@@ -56,12 +58,56 @@ class RiderProfileViewController: UIViewController, /*UINavigationControllerDele
         dateOfBirthTextField.inputView = dateOfBirthPicker
         dateOfBirthPicker.addTarget(self, action: #selector(self.datePickerValueChanged), for: UIControlEvents.valueChanged)
         
-        // Call Load profile function
-        loadProfile()
-        // Make Name field as first responder
-        firstNameTextField.becomeFirstResponder()
+        
+        // Check if internet connection is available
+        if Reachability.isConnectedToNetwork() == true
+        {
+            // Call Load profile function
+            self.loadProfile()
+        }else{
+           
+            self.showAlert(title: "Profile", message: "Could not Load Profile as Internet Connection is not Available!") //Show Failure Message
+        }
+        
+        // MARK: Create variable and assign return properties from addDoneButton()
+        let toolBarWithDoneButton =  addDoneButton()
+      
+        firstNameTextField.inputView = toolBarWithDoneButton
+        lastNameTextField.inputView = toolBarWithDoneButton
+        address1TextField.inputView = toolBarWithDoneButton
+        address2TextField.inputView = toolBarWithDoneButton
+        cityTextField.inputView = toolBarWithDoneButton
+        stateTextField.inputView = toolBarWithDoneButton
+        phoneTextField.inputView = toolBarWithDoneButton
+        
         
     }
+    
+    
+    // MARK: Function to add toolbar to the Keyboard
+    func addDoneButton() -> UIToolbar{
+        
+        // MARK: Create toolbar with button
+        let toolBar = UIToolbar()   // Create toolbar View
+        toolBar.sizeToFit()             // calls sizeThatFits: with current view bounds and changes bounds size of toolbar.
+        
+        // Adds space on toolbar so that Done Button appears on right side of the toolbar
+        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+        // Adds Done button to the toolbar
+        let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(self.doneClicked))
+        
+        // Adds Space and Done button to the Toolbar
+        toolBar.setItems([flexibleSpace,doneButton], animated: true)
+        
+        return toolBar
+        
+    }
+    
+    // Function to Dismiss keyboards once Done button is clicked
+    func doneClicked(){
+        self.view.endEditing(true)
+    }
+
     
     func datePickerValueChanged(_ sender: UIDatePicker){
         let dateformatter = DateFormatter()
@@ -139,7 +185,7 @@ class RiderProfileViewController: UIViewController, /*UINavigationControllerDele
             
             if let riderProfile = snapshot.value as? Dictionary<String, String>{
                 
-                let rider = Rider(riderID: riderID, dictionary: riderProfile as Dictionary<String, AnyObject>)
+                let rider = Rider(riderID: self.riderID, dictionary: riderProfile as Dictionary<String, AnyObject>)
 
                 if let firstName = rider.firstName { self.firstNameTextField.text = firstName}
                 if let lastName = rider.lastName { self.lastNameTextField.text = lastName}
@@ -228,26 +274,25 @@ class RiderProfileViewController: UIViewController, /*UINavigationControllerDele
     // Action to save the riders profile in firebase
     @IBAction func saveButton(_ sender: Any) {
         
-        if checkFields()
+        if Reachability.isConnectedToNetwork() == true
         {
-           
-            let todayDate = NSDate()
+            if checkFields()
+            {
+                let todayDate = NSDate()
+                riderProfile.child("FirstName").setValue(firstNameTextField.text)
+                riderProfile.child("LastName").setValue(lastNameTextField.text)
+                riderProfile.child("PhoneNumber").setValue(phoneTextField.text)
+                riderProfile.child("DateOfBirth").setValue(dateOfBirthTextField.text)
+                riderProfile.child("Gender").setValue(genderTextField.text)
+                riderProfile.child("AddressLine1").setValue(address1TextField.text)
+                riderProfile.child("AddressLine2").setValue(address2TextField.text)
+                riderProfile.child("City").setValue(cityTextField.text)
+                riderProfile.child("State").setValue(stateTextField.text)
             
-            riderProfile.child("FirstName").setValue(firstNameTextField.text)
-            riderProfile.child("LastName").setValue(lastNameTextField.text)
-            //riderProfile.child("EmailID").setValue(emailIDTextField.text)
-            riderProfile.child("PhoneNumber").setValue(phoneTextField.text)
-            riderProfile.child("DateOfBirth").setValue(dateOfBirthTextField.text)
-            riderProfile.child("Gender").setValue(genderTextField.text)
-            riderProfile.child("AddressLine1").setValue(address1TextField.text)
-            riderProfile.child("AddressLine2").setValue(address2TextField.text)
-            riderProfile.child("City").setValue(cityTextField.text)
-            riderProfile.child("State").setValue(stateTextField.text)
-            
-            riderProfile.child("CreatedOnDate").setValue(String(describing: todayDate))
-            riderProfile.child("LastUpdatedOnDate").setValue(String(describing: todayDate))
-            riderProfile.child("CreatedBy").setValue(riderEmail)
-            riderProfile.child("UpdatedBy").setValue(riderEmail)
+                riderProfile.child("CreatedOnDate").setValue(String(describing: todayDate))
+                riderProfile.child("LastUpdatedOnDate").setValue(String(describing: todayDate))
+                riderProfile.child("CreatedBy").setValue(AuthService.instance.riderEmail!)
+                riderProfile.child("UpdatedBy").setValue(AuthService.instance.riderEmail!)
             
           //  guard let imageData = UIImageJPEGRepresentation(riderPhotoImageView.image!, 0.8) else { return }
            
@@ -263,10 +308,16 @@ class RiderProfileViewController: UIViewController, /*UINavigationControllerDele
                     //}
                     //self.uploadSuccess(metadata!, storagePath: imagePath)
             //}
-        }
+            }
         
         self.performSegue(withIdentifier: "riderToMainSegue", sender: nil)
+        
+        }else{
+    
+            self.showAlert(title: "Save Profile", message: "Could not Save Profile as Internet Connection is not Available!") //Show Failure Message
+        }
     }
+
     /*
     func uploadSuccess(_ metadata: FIRStorageMetadata, storagePath: String) {
        

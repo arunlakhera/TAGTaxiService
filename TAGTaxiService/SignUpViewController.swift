@@ -22,7 +22,7 @@ class SignUpViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+  
         // MARK: Create variable and assign return properties from addDoneButton()
         let toolBarWithDoneButton = addDoneButton()
         
@@ -59,9 +59,31 @@ class SignUpViewController: UIViewController {
         self.view.endEditing(true)
     }
     
+    func setUserName(){
+        
+        if let user = FIRAuth.auth()?.currentUser{
+            AuthService.instance.isLoggedIn = true
+            AuthService.instance.riderID = user.uid
+            AuthService.instance.riderEmail = user.email
+            
+            let emailComponents = user.email?.components(separatedBy: "@")
+            
+            if let userName = emailComponents?[0]{
+                AuthService.instance.userName = userName
+            }else{
+                AuthService.instance.isLoggedIn = false
+                AuthService.instance.userName = "UserName Not Available"
+            }
+        }
+       
+    }
+    
     // MARK: Action
     @IBAction func signUpButton(_ sender: Any) {
         
+        if Reachability.isConnectedToNetwork() == true
+        {
+            
         // Variables to store Signup information for new user
         let firstName = firstNameTextField.text!
         let lastName = lastNameTextField.text!
@@ -76,6 +98,8 @@ class SignUpViewController: UIViewController {
             AuthService.instance.emailSignUp(email: emailText, password: passwordText, Completion: { (success, message) in
                 
                 if success{
+                    
+                    self.setUserName()
                     
                     let riderID = AuthService.instance.riderID!             // Variable to Store rider ID
                     let riderEmail = AuthService.instance.riderEmail!   // Variable to Store Email
@@ -103,6 +127,9 @@ class SignUpViewController: UIViewController {
                 
             })
           
+        }
+        }else{
+            self.showAlert(title: "Failure", message: "Internet Connection not Available!") //Show Failure Message
         }
     }
     

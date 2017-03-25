@@ -11,10 +11,6 @@ import Firebase
 import MapKit
 import CoreLocation
 
-// Global Variables
-var riderID = (FIRAuth.auth()?.currentUser?.uid)!
-var riderEmail = (FIRAuth.auth()?.currentUser?.email)
-
 var TravelFromCity = ""
 
 class MainMenuViewController: UIViewController, CLLocationManagerDelegate {
@@ -38,6 +34,9 @@ class MainMenuViewController: UIViewController, CLLocationManagerDelegate {
         // Menu Properties
         menuView.layer.shadowOpacity = 1
         menuView.layer.shadowRadius = 6
+        
+       // AuthService.instance.riderID = riderID
+        //AuthService.instance.riderEmail = riderEmail
         
         manager.delegate = self
         manager.desiredAccuracy = kCLLocationAccuracyBest
@@ -117,11 +116,16 @@ class MainMenuViewController: UIViewController, CLLocationManagerDelegate {
         performSegue(withIdentifier: "editProfileSegue", sender: nil)
     }
     
-    // To Slide the Menu On and Off screen
+    // To log out the user
     @IBAction func menuSignOut(_ sender: Any) {
+        
+        AuthService.instance.isLoggedIn = false
+        AuthService.instance.riderID = ""
+        AuthService.instance.riderEmail = ""
+        AuthService.instance.userName = ""
+        
         do{
             try FIRAuth.auth()?.signOut()
-            AuthService.instance.isLoggedIn = false
             self.performSegue(withIdentifier: "logOutSegue", sender: self)
         }catch{
             print("Error While Signing Out")
@@ -135,6 +139,7 @@ class MainMenuViewController: UIViewController, CLLocationManagerDelegate {
     
     // To navigate to Status screen
     @IBAction func bookingStatusButton(_ sender: Any) {
+      
         self.performSegue(withIdentifier: "mainToStatusSegue", sender: UIButton())
 
     }

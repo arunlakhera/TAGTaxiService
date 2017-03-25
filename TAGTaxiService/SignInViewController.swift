@@ -19,13 +19,13 @@ class SignInViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         // MARK: Create variable and assign return properties from addDoneButton()
-        let toolBarWithDoneButton = addDoneButton()
+        let toolBarWithDoneButton =  addDoneButton()
         
         // MARK: Add toolbar to the keyboard that appears in email and password keyboard
         emailTextField.inputAccessoryView = toolBarWithDoneButton
         passwordTextField.inputAccessoryView = toolBarWithDoneButton
+        
     }
     
     // MARK: Function to add toolbar to the Keyboard
@@ -53,12 +53,11 @@ class SignInViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        
         // Call function to Set the username
        setUserName()
-        
+       
         // MARK: Check if the user is logged in already and if yes take user to Main screen else ask for sign in
-        
+    /*
         if AuthService.instance.isLoggedIn{
             if AuthService.instance.isAdmin{
                 self.performSegue(withIdentifier: "adminMainSegue", sender: nil)
@@ -66,12 +65,24 @@ class SignInViewController: UIViewController {
                   self.performSegue(withIdentifier: "signInSegue", sender: nil)
             }
         }
+    */
+        if AuthService.instance.isLoggedIn && AuthService.instance.isAdmin{
+            self.performSegue(withIdentifier: "adminMainSegue", sender: nil)
+        }
+        
+        if AuthService.instance.isLoggedIn{
+            self.performSegue(withIdentifier: "signInSegue", sender: nil)
+        }
     }
     
     // MARK: Function to extract user name from Email id for the user to show in Main Screen
     func setUserName(){
+    
         if let user = FIRAuth.auth()?.currentUser{
             AuthService.instance.isLoggedIn = true
+            AuthService.instance.riderID = user.uid
+            AuthService.instance.riderEmail = user.email
+            
             let emailComponents = user.email?.components(separatedBy: "@")
             
             if let userName = emailComponents?[0]{
@@ -82,7 +93,6 @@ class SignInViewController: UIViewController {
             }
         }
     }
-    
     
     // Forgot Password Function BEGIN
     @IBAction func forgotPasswordButton(_ sender: Any) {
@@ -120,43 +130,77 @@ class SignInViewController: UIViewController {
     
     @IBAction func signInButton(_ sender: Any) {
         
-        // Variables to store email and password provided by user
-        let email = emailTextField.text!
-        let password = passwordTextField.text!
+        // Check if internet connection is available
+        if Reachability.isConnectedToNetwork() == true
+        {
+          
+            // Variables to store email and password provided by user
+            let email = emailTextField.text!
+            let password = passwordTextField.text!
         
-        // Function to check if required fields are provided or not
+            // Function to check if required fields are provided or not
         
-        checkFields()
+            checkFields()
         
-        // Call Signin Function emailSignIn function defined in AuthService Class for user email signin
-        AuthService.instance.emailSignIn(email: email, password: password) { (success, message) in
-            // If login is successfull
-            if success{
-                // Set the username
-                self.setUserName()
-                // Get the current user
-                let riderID = AuthService.instance.riderID!
+            // Call Signin Function emailSignIn function defined in AuthService Class for user email signin
+            AuthService.instance.emailSignIn(email: email, password: password) { (success, message) in
+                // If login is successfull
+                if success{
+                    // Set the username
+                    self.setUserName()
+                    // Get the current user
+                    let riderID = AuthService.instance.riderID!
                 
-                // Get Admin flag Path from Firebase
-                let riderProfile = DataService.ds.REF_RIDER.child(riderID).child("Profile").child("AdminFlag")
-                
-                // Check for Admin flag value and depending on perform segue to Admin or user screen
-                riderProfile.observe(.value, with: { (snapshot) in
-                    let adminFlag = (snapshot.value)! as? String
+                    // Get Admin flag Path from Firebase
+                    let riderProfile = DataService.ds.REF_RIDER.child(riderID).child("Profile").child("AdminFlag")
+                      
+                    // Check for Admin flag value and depending on perform segue to Admin or user screen
+                    riderProfile.observe(.value, with: { (snapshot) in
+                        let adminFlag = (snapshot.value)! as? String
                     
-                    if adminFlag == "Yes"{
-                        AuthService.instance.isAdmin = true    // Set the Admin flag to true
-                        self.performSegue(withIdentifier: "adminMainSegue", sender: nil)
-                    }else{
-                        AuthService.instance.isAdmin = false    // Set the Admin flag to false
-                        self.performSegue(withIdentifier: "signInSegue", sender: nil)
-                    }
+                        if adminFlag == "Yes"{
+                            AuthService.instance.isAdmin = true    // Set the Admin flag to true
+                            self.performSegue(withIdentifier: "adminMainSegue", sender: nil)
+                        }else{
+                            AuthService.instance.isAdmin = false    // Set the Admin flag to false
+                            self.performSegue(withIdentifier: "signInSegue", sender: nil)
+                        }
                     
-                }, withCancel: { (error) in
-            })
-        }else{
-                self.showAlert(title: "Failure", message: message) //Show Failure Message
+                    }, withCancel: { (error) in
+                    })
+                }else{
+                    self.showAlert(title: "Failure", message: message) //Show Failure Message
+                }
             }
+        }
+        else
+        {
+            //self.showAlert(title: "Failure", message: "Internet Connection not Available!") //Show Failure Message
+             let alert = UIAlertController(title: "Failure!!", message: "Internet Connection not available! Connect to Internet", preferredStyle: .alert)
+             let okButton = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
+             let callUs = UIAlertAction(title: "Call Tag Taxi", style: .default, handler: { (callAction) in
+               
+                let callNumber = "8979743264"
+             
+                if let phoneCallURL:URL = URL(string: "tel:\(callNumber)") {
+                    let application:UIApplication = UIApplication.shared
+                
+                    if (application.canOpenURL(phoneCallURL)) {
+                        application.open(phoneCallURL, options: [:], completionHandler: nil)
+                    }else{
+                        print("Cannot Make Phone Call")
+                    }
+                
+                }else{
+                    print("Cannot open Call URL")
+                }
+                
+             })
+            
+            alert.addAction(okButton)
+            alert.addAction(callUs)
+            present(alert, animated: true, completion: nil)
+            
         }
     }
     
@@ -169,7 +213,7 @@ class SignInViewController: UIViewController {
         }
         
         guard email != "", password != "" else {
-            showAlert(title: "Error", message: "Please provde Email ID and PAssword")
+            showAlert(title: "Error", message: "Please provde Email ID and Password")
             return
         }
     }

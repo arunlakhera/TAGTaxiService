@@ -38,11 +38,12 @@ class AdminBookDetailViewController: UIViewController {
     @IBOutlet weak var send: UIButton!
     @IBOutlet weak var statusText: UITextField!
     
+    // Create a MessageComposer
+    let messageComposer = MessageComposer()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        amountText.becomeFirstResponder()
-        
         nameLabel.text = bookName
         phoneLabel.text = bookPhone
         travelDateLabel.text = bookTravelDate
@@ -72,6 +73,9 @@ class AdminBookDetailViewController: UIViewController {
 
     @IBAction func sendButton(sender: UIButton) {
         
+        if Reachability.isConnectedToNetwork() == true
+        {
+            
         if amountText.text == "" || amountText.text == "Pending" {
             let alert = UIAlertController(title: "Error!", message: "Please Enter Amount.", preferredStyle: .alert)
             let action = UIAlertAction(title: "OK", style: .default, handler: nil)
@@ -90,7 +94,43 @@ class AdminBookDetailViewController: UIViewController {
             present(alert, animated: true, completion: nil)
         }
         
+            // Sending Message Begin
+            
+            // Make sure the device can send text messages
+            if (messageComposer.canSendText()) {
+                // Obtain a configured MFMessageComposeViewController
+                let messageComposeVC = messageComposer.configuredMessageComposeViewController()
+                
+                // Present the configured MFMessageComposeViewController instance
+                present(messageComposeVC, animated: true, completion: nil)
+            } else {
+                // Let the user know if his/her device isn't able to send text messages
+                let alert = UIAlertController(title: "Cannot Send Text Message", message: "Your device is not able to send text messages.", preferredStyle: .alert)
+                let action = UIAlertAction(title: "Ok", style: .default, handler: nil)
+                alert.addAction(action)
+                present(alert, animated: true, completion: nil)
+                
+            }
+        
+            // Sending Message End
+            
         self.performSegue(withIdentifier: "adminBookListSegue", sender: nil)
+        }else{
+            self.showAlert(title: "Failure", message: "Internet Connection not Available!") //Show Failure Message
+        }
+    
     }
     
+    func showAlert(title: String, message: String){
+        
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let action = UIAlertAction(title: "Ok", style: .default, handler: nil)
+        alertController.addAction(action)
+        self.present(alertController, animated: true, completion: nil)
+        
+    }
+
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
 }

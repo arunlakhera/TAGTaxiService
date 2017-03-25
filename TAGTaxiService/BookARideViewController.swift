@@ -213,6 +213,9 @@ class BookARideViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     
     @IBAction func askQuoteButton(_ sender: UIButton) {
         
+        if Reachability.isConnectedToNetwork() == true
+        {
+            
         if checkFields(){
             
             // Get the unique Booking ID
@@ -221,7 +224,7 @@ class BookARideViewController: UIViewController, UIPickerViewDelegate, UIPickerV
             let formatter = DateFormatter()
             formatter.dateFormat = "dd-MMM-YYYY"
             
-            rideBookID.child("RiderID").setValue(riderID)
+            rideBookID.child("RiderID").setValue(AuthService.instance.riderID!)
             rideBookID.child("VehicleID").setValue("")
             rideBookID.child("DriverID").setValue("")
             rideBookID.child("DateOfBooking").setValue(String(describing: travelMinDate))
@@ -232,9 +235,9 @@ class BookARideViewController: UIViewController, UIPickerViewDelegate, UIPickerV
             rideBookID.child("RoundTrip").setValue(roundTripLabel.text?.capitalized)
             rideBookID.child("NoOfTravellers").setValue(noOfTravellersLabel.text)
             rideBookID.child("CreatedOnDate").setValue(String(describing: travelMinDate))
-            rideBookID.child("CreatedBy").setValue(riderID)
+            rideBookID.child("CreatedBy").setValue(AuthService.instance.riderID!)
             rideBookID.child("LastUpdatedOnDate").setValue(String(describing: travelMinDate))
-            rideBookID.child("UpdatedBy").setValue(riderID)
+            rideBookID.child("UpdatedBy").setValue(AuthService.instance.riderID!)
             
             // Set Default Admin Values
             rideBookID.child("Status").setValue("Pending")
@@ -243,12 +246,15 @@ class BookARideViewController: UIViewController, UIPickerViewDelegate, UIPickerV
             
             // Make Entry in Riders Table to know which Rider did the booking
             
-            DataService.ds.REF_RIDER.child(riderID).child("Booking").child(rideBookID.key).setValue("True")
-            
+            //DataService.ds.REF_RIDER.child(riderID).child("Booking").child(rideBookID.key).setValue("True")
+            DataService.ds.REF_RIDER.child(AuthService.instance.riderID!).child("Booking").child(rideBookID.key).setValue("True")
             // Perform Segue to Booking Status List
             self.performSegue(withIdentifier: "bookingStatusSegue", sender: UIButton())
         }
-        
+        }else{
+            self.showAlert(title: "Failure", message: "Internet Connection not Available!") //Show Failure Message
+
+        }
     }
     
     // Function to check required data in fields and making the field with error as the first responder for the user

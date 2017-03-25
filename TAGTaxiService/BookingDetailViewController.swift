@@ -83,28 +83,55 @@ class BookingDetailViewController: UIViewController {
 
     // Action when Accept button is pressed
     @IBAction func acceptBooking(sender: UIButton) {
+        // Check if internet connection is available
+        if Reachability.isConnectedToNetwork() == true
+        {
+            
         bookStatus = "Accepted"
         DataService.ds.REF_RIDEBOOKING.child(bookKey).child("Status").setValue(bookStatus)
         viewDidLoad()
+        }else{
+            self.showAlert(title: "Failure", message: "Internet Connection not Available!") //Show Failure Message
+            
+        }
+
     }
     
     
     // Action when Decline button is pressed
     @IBAction func declineBooking(sender: UIButton) {
+        // Check if internet connection is available
+        if Reachability.isConnectedToNetwork() == true
+        {
+            
         bookStatus = "Declined"
         DataService.ds.REF_RIDEBOOKING.child(bookKey).child("Status").setValue(bookStatus)
         viewDidLoad()
+        }else{
+            self.showAlert(title: "Failure", message: "Internet Connection not Available!") //Show Failure Message
+            
+        }
+
     }
     
     
     // Action when Cancel button is pressed
     @IBAction func cancelBooking(sender: AnyObject) {
+        // Check if internet connection is available
+        if Reachability.isConnectedToNetwork() == true
+        {
+            
         let bookingCancel = bookingAction(bookingTitle: "Cancel Booking", bookingMessage: "Do you want to Cancel this Booking?")
         if bookingCancel == "Yes"{
             bookStatus = "Cancelled"
             DataService.ds.REF_RIDEBOOKING.child(bookKey).child("Status").setValue(bookStatus)
             viewDidLoad()
         }
+        }else{
+            self.showAlert(title: "Failure", message: "Internet Connection not Available!") //Show Failure Message
+            
+        }
+
     }
     // Action to ask if user really wants to cancel the booking
     func bookingAction(bookingTitle: String, bookingMessage: String) -> String{
@@ -124,4 +151,14 @@ class BookingDetailViewController: UIViewController {
         }
     return flag
 }
+    
+    func showAlert(title: String, message: String){
+        
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let action = UIAlertAction(title: "Ok", style: .default, handler: nil)
+        alertController.addAction(action)
+        self.present(alertController, animated: true, completion: nil)
+        
+    }
+
 }

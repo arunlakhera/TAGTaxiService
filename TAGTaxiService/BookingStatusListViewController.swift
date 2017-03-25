@@ -15,8 +15,10 @@ class BookingStatusListViewController: UIViewController, UITableViewDelegate, UI
     @IBOutlet weak var tableView: UITableView!
     
     // MARK: Variables
+   
+   // var TAGRiderBooking = DataService.ds.REF_RIDER.child(riderID).child("Booking")
+    var TAGRiderBooking = DataService.ds.REF_RIDER.child(AuthService.instance.riderID!).child("Booking")
     
-    var TAGRiderBooking = DataService.ds.REF_RIDER.child(riderID).child("Booking")
     var bookings = [RideBooking]()
     var riderName = AuthService.instance.userName!
     var riderEmail = AuthService.instance.riderEmail!
@@ -29,8 +31,7 @@ class BookingStatusListViewController: UIViewController, UITableViewDelegate, UI
         tableView.dataSource = self
         
         // Load all the bookings of the User
-   
-        showAlert(title: "RIDER BOOKING", message: "------>>>\(TAGRiderBooking)")
+        
         self.tableView.reloadData()
         
         TAGRiderBooking.observe(.value, with: { snapshot in
@@ -80,12 +81,15 @@ class BookingStatusListViewController: UIViewController, UITableViewDelegate, UI
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return bookings.count
+            return bookings.count
+        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
+       
         let cell = tableView.dequeueReusableCell(withIdentifier: "bookListCell", for: indexPath) as? BookListTableViewCell
+        
         let book = bookings.reversed()[indexPath.row]
         
         let rideFrom = String(book.rideFrom!)
@@ -95,7 +99,7 @@ class BookingStatusListViewController: UIViewController, UITableViewDelegate, UI
         let indexTo = rideTo?.index((rideTo!.startIndex), offsetBy: 3)
        
         let riderProfile = DataService.ds.REF_RIDER.child(book.riderID!).child("Profile")
-        
+       
         riderProfile.observeSingleEvent(of: .value, with: { (snapshot) in
             
             let value = snapshot.value as? NSDictionary
@@ -127,8 +131,7 @@ class BookingStatusListViewController: UIViewController, UITableViewDelegate, UI
         }else if book.status! == "Completed"{
             cell?.statusLabel.textColor = UIColor.white
         }
-        
-        
+    
         return cell!
     }
     

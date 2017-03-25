@@ -116,7 +116,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-512" y="353"/>
+            <point key="canvasLocation" x="-513.75" y="352.81690140845069"/>
         </scene>
         <!--Admin Main Booking View Controller-->
         <scene sceneID="FoJ-6T-E1a">
@@ -2328,10 +2328,10 @@
         <image name="TAG.png" width="1240" height="938"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="WU8-fk-y1f"/>
         <segue reference="WnU-if-1Kn"/>
         <segue reference="PmN-yX-nTi"/>
+        <segue reference="ifq-uS-T1V"/>
         <segue reference="B6Q-0j-Obk"/>
-        <segue reference="O5E-SP-dtd"/>
+        <segue reference="WU8-fk-y1f"/>
     </inferredMetricsTieBreakers>
 </document>
