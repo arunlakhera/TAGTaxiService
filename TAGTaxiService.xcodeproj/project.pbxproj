@@ -12,6 +12,9 @@
 		D81235E81E7382E300519F6A /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D81235E71E7382E300519F6A /* CoreLocation.framework */; };
 		D81235EA1E746F2100519F6A /* PhotoAvatar.png in Resources */ = {isa = PBXBuildFile; fileRef = D81235E91E746F2100519F6A /* PhotoAvatar.png */; };
 		D814879C1E860AF2000CC0E5 /* MessageComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D814879B1E860AF2000CC0E5 /* MessageComposer.swift */; };
+		D81B07B31E8A880400BBBEEC /* DriverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81B07B21E8A880400BBBEEC /* DriverViewController.swift */; };
+		D81B07B51E8AA7E700BBBEEC /* DriverListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81B07B41E8AA7E700BBBEEC /* DriverListTableViewCell.swift */; };
+		D81B07B71E8AC4FE00BBBEEC /* AddDriverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81B07B61E8AC4FE00BBBEEC /* AddDriverViewController.swift */; };
 		D83D363D1E7A6EF0003166AA /* AdminBookListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83D363C1E7A6EF0003166AA /* AdminBookListTableViewCell.swift */; };
 		D83D363F1E7AAB7B003166AA /* AdminBookDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83D363E1E7AAB7B003166AA /* AdminBookDetailViewController.swift */; };
 		D83D366A1E7D3881003166AA /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83D36691E7D3881003166AA /* AuthService.swift */; };
@@ -74,6 +77,9 @@
 		D81235E71E7382E300519F6A /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		D81235E91E746F2100519F6A /* PhotoAvatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PhotoAvatar.png; sourceTree = "<group>"; };
 		D814879B1E860AF2000CC0E5 /* MessageComposer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageComposer.swift; sourceTree = "<group>"; };
+		D81B07B21E8A880400BBBEEC /* DriverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DriverViewController.swift; sourceTree = "<group>"; };
+		D81B07B41E8AA7E700BBBEEC /* DriverListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DriverListTableViewCell.swift; sourceTree = "<group>"; };
+		D81B07B61E8AC4FE00BBBEEC /* AddDriverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddDriverViewController.swift; sourceTree = "<group>"; };
 		D83D363C1E7A6EF0003166AA /* AdminBookListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdminBookListTableViewCell.swift; sourceTree = "<group>"; };
 		D83D363E1E7AAB7B003166AA /* AdminBookDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdminBookDetailViewController.swift; sourceTree = "<group>"; };
 		D83D36691E7D3881003166AA /* AuthService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
@@ -237,6 +243,8 @@
 				D8C422A31E7934E1007EA962 /* AdminMainBookingViewController.swift */,
 				D8C422A51E79A8AD007EA962 /* AdminBookStatusListViewController.swift */,
 				D83D363E1E7AAB7B003166AA /* AdminBookDetailViewController.swift */,
+				D81B07B21E8A880400BBBEEC /* DriverViewController.swift */,
+				D81B07B61E8AC4FE00BBBEEC /* AddDriverViewController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -260,6 +268,7 @@
 				D85F1D741E6FEFF20076C3CA /* BookListTableViewCell.swift */,
 				D83D363C1E7A6EF0003166AA /* AdminBookListTableViewCell.swift */,
 				D88F12541E80D8E80066DCCE /* TextField.swift */,
+				D81B07B41E8AA7E700BBBEEC /* DriverListTableViewCell.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -464,6 +473,7 @@
 				D8FF564A1E69E4D600A99B75 /* Rider.swift in Sources */,
 				D88F12551E80D8E80066DCCE /* TextField.swift in Sources */,
 				D85F1D731E6F84CB0076C3CA /* BookingStatusListViewController.swift in Sources */,
+				D81B07B31E8A880400BBBEEC /* DriverViewController.swift in Sources */,
 				D8C422A41E7934E1007EA962 /* AdminMainBookingViewController.swift in Sources */,
 				D8C422A61E79A8AD007EA962 /* AdminBookStatusListViewController.swift in Sources */,
 				D83D366A1E7D3881003166AA /* AuthService.swift in Sources */,
@@ -477,10 +487,12 @@
 				D8FF564E1E69FDE700A99B75 /* Driver.swift in Sources */,
 				D861EE721E6D852200CCF371 /* BookARideViewController.swift in Sources */,
 				D83D363F1E7AAB7B003166AA /* AdminBookDetailViewController.swift in Sources */,
+				D81B07B51E8AA7E700BBBEEC /* DriverListTableViewCell.swift in Sources */,
 				D8FF564C1E69FDDA00A99B75 /* Vehicle.swift in Sources */,
 				D83D363D1E7A6EF0003166AA /* AdminBookListTableViewCell.swift in Sources */,
 				D8FF562D1E69AD9D00A99B75 /* AppDelegate.swift in Sources */,
 				D814879C1E860AF2000CC0E5 /* MessageComposer.swift in Sources */,
+				D81B07B71E8AC4FE00BBBEEC /* AddDriverViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
