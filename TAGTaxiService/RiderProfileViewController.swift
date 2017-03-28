@@ -13,7 +13,7 @@ import Photos
 class RiderProfileViewController: UIViewController, /*UINavigationControllerDelegate, UIImagePickerControllerDelegate,*/UIPickerViewDataSource, UIPickerViewDelegate {
 
     // MARK: Outlets
-    @IBOutlet weak var riderPhotoImageView: UIImageView!
+    //@IBOutlet weak var riderPhotoImageView: UIImageView!
     @IBOutlet weak var firstNameTextField: UITextField!
     @IBOutlet weak var lastNameTextField: UITextField!
     @IBOutlet weak var address1TextField: UITextField!
@@ -58,7 +58,6 @@ class RiderProfileViewController: UIViewController, /*UINavigationControllerDele
         dateOfBirthTextField.inputView = dateOfBirthPicker
         dateOfBirthPicker.addTarget(self, action: #selector(self.datePickerValueChanged), for: UIControlEvents.valueChanged)
         
-        
         // Check if internet connection is available
         if Reachability.isConnectedToNetwork() == true
         {
@@ -72,18 +71,16 @@ class RiderProfileViewController: UIViewController, /*UINavigationControllerDele
         // MARK: Create variable and assign return properties from addDoneButton()
         let toolBarWithDoneButton =  addDoneButton()
       
-        firstNameTextField.inputView = toolBarWithDoneButton
-        lastNameTextField.inputView = toolBarWithDoneButton
-        address1TextField.inputView = toolBarWithDoneButton
-        address2TextField.inputView = toolBarWithDoneButton
-        cityTextField.inputView = toolBarWithDoneButton
-        stateTextField.inputView = toolBarWithDoneButton
-        phoneTextField.inputView = toolBarWithDoneButton
-        
-        
+        firstNameTextField.inputAccessoryView = toolBarWithDoneButton
+        lastNameTextField.inputAccessoryView = toolBarWithDoneButton
+        address1TextField.inputAccessoryView = toolBarWithDoneButton
+        address2TextField.inputAccessoryView = toolBarWithDoneButton
+        cityTextField.inputAccessoryView = toolBarWithDoneButton
+        phoneTextField.inputAccessoryView = toolBarWithDoneButton
+      
     }
     
-    
+  
     // MARK: Function to add toolbar to the Keyboard
     func addDoneButton() -> UIToolbar{
         
@@ -364,16 +361,12 @@ class RiderProfileViewController: UIViewController, /*UINavigationControllerDele
         }else if textField == address2TextField{
             self.cityTextField.becomeFirstResponder()
         }else if textField == cityTextField{
-            self.stateTextField.becomeFirstResponder()
-        }else if textField == stateTextField{
             self.phoneTextField.becomeFirstResponder()
-        }else if textField == phoneTextField{
-            self.firstNameTextField.becomeFirstResponder()
         }
         
         return true
     }
-    
+ 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }

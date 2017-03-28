@@ -22,6 +22,13 @@ class AdminMainBookingViewController: UIViewController {
     @IBOutlet weak var cancelledCountButton: UIButton!
     @IBOutlet weak var completedCountButton: UIButton!
     
+    
+    @IBOutlet weak var driverButton: UIButton!
+    @IBOutlet weak var bookingButton: UIButton!
+    @IBOutlet weak var vehicleButton: UIButton!
+    @IBOutlet weak var moreButton: UIButton!
+    
+    
     // MARK: Variables
     var pendingCount = 0
     var quotedCount = 0
@@ -30,9 +37,26 @@ class AdminMainBookingViewController: UIViewController {
     var cancelledCount = 0
     var completedCount = 0
     
+    var driverButtonCenter: CGPoint!
+    var bookingButtonCenter: CGPoint!
+    var vehicleButtonCenter: CGPoint!
+    
+    override func viewWillAppear(_ animated: Bool) {
+        driverButtonCenter = driverButton.center
+        bookingButtonCenter = bookingButton.center
+        vehicleButtonCenter = vehicleButton.center
+        
+        driverButton.center = moreButton.center
+        bookingButton.center = moreButton.center
+        vehicleButton.center = moreButton.center
+
+        toggleButtonImage(button: bookingButton, onImage: #imageLiteral(resourceName: "BookingsButtonOn"), offImage: #imageLiteral(resourceName: "BookingsButtonOff"))
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        
+        
         DataService.ds.REF_RIDEBOOKING.observe(.value, with: { (snapshot) in
        
             if let snapshots = snapshot.children.allObjects as? [FIRDataSnapshot]{
@@ -107,12 +131,98 @@ class AdminMainBookingViewController: UIViewController {
     }
     
     @IBAction func signOut(_ sender: Any) {
+        
+        AuthService.instance.isLoggedIn = false
+        AuthService.instance.riderID = ""
+        AuthService.instance.riderEmail = ""
+        AuthService.instance.userName = ""
+        
+        
         do{
             try FIRAuth.auth()?.signOut()
-            AuthService.instance.isLoggedIn = false
             self.performSegue(withIdentifier: "adminLogoutSegue", sender: self)
         }catch{
             print("Error While Signing Out")
+        }
+    }
+    
+    /// More Button Outlets
+    
+    @IBAction func moreButtonClicked(_ sender: UIButton) {
+        
+        if moreButton.currentImage == #imageLiteral(resourceName: "MoreButtonOff"){
+            UIView.animate(withDuration: 0.3, animations: {
+                // animations here
+                
+                self.driverButton.alpha = 1
+                self.bookingButton.alpha = 1
+                self.vehicleButton.alpha = 1
+                
+                self.driverButton.center = self.driverButtonCenter
+                self.bookingButton.center = self.bookingButtonCenter
+                self.vehicleButton.center = self.vehicleButtonCenter
+            })
+        }else{
+            UIView.animate(withDuration: 0.3, animations: {
+                
+                self.driverButton.alpha = 0
+                self.bookingButton.alpha = 0
+                self.vehicleButton.alpha = 0
+                
+                self.driverButton.center = self.moreButton.center
+                self.bookingButton.center = self.moreButton.center
+                self.vehicleButton.center = self.moreButton.center
+            })
+        }
+        
+        toggleButtonImage(button: moreButton, onImage: #imageLiteral(resourceName: "MoreButtonOn"), offImage: #imageLiteral(resourceName: "MoreButtonOff"))
+    }
+    
+    @IBAction func driverButtonClicked(_ sender: UIButton) {
+        toggleButtonImage(button: driverButton , onImage: #imageLiteral(resourceName: "DriverButtonOn"), offImage: #imageLiteral(resourceName: "DriverButtonOff"))
+        
+        if bookingButton.currentImage == #imageLiteral(resourceName: "BookingsButtonOn"){
+        toggleButtonImage(button: bookingButton, onImage: #imageLiteral(resourceName: "BookingsButtonOn"), offImage: #imageLiteral(resourceName: "BookingsButtonOff"))
+        }
+        if vehicleButton.currentImage == #imageLiteral(resourceName: "VehicleButtonOn"){
+            toggleButtonImage(button: vehicleButton, onImage: #imageLiteral(resourceName: "VehicleButtonOn"), offImage: #imageLiteral(resourceName: "VehicleButtonOff"))
+        }
+        
+        
+    }
+    
+    @IBAction func bookingButtonClicked(_ sender: UIButton) {
+        toggleButtonImage(button: bookingButton, onImage: #imageLiteral(resourceName: "BookingsButtonOn"), offImage: #imageLiteral(resourceName: "BookingsButtonOff"))
+        
+        if driverButton.currentImage == #imageLiteral(resourceName: "DriverButtonOn"){
+            toggleButtonImage(button: driverButton , onImage: #imageLiteral(resourceName: "DriverButtonOn"), offImage: #imageLiteral(resourceName: "DriverButtonOff"))
+        }
+        if vehicleButton.currentImage == #imageLiteral(resourceName: "VehicleButtonOn"){
+            toggleButtonImage(button: vehicleButton, onImage: #imageLiteral(resourceName: "VehicleButtonOn"), offImage: #imageLiteral(resourceName: "VehicleButtonOff"))
+        }
+
+        
+    }
+    
+    @IBAction func vehicleButtonClicked(_ sender: UIButton) {
+        toggleButtonImage(button: vehicleButton, onImage: #imageLiteral(resourceName: "VehicleButtonOn"), offImage: #imageLiteral(resourceName: "VehicleButtonOff"))
+        
+        if driverButton.currentImage == #imageLiteral(resourceName: "DriverButtonOn"){
+            toggleButtonImage(button: driverButton , onImage: #imageLiteral(resourceName: "DriverButtonOn"), offImage: #imageLiteral(resourceName: "DriverButtonOff"))
+        }
+        if bookingButton.currentImage == #imageLiteral(resourceName: "BookingsButtonOn"){
+            toggleButtonImage(button: bookingButton, onImage: #imageLiteral(resourceName: "BookingsButtonOn"), offImage: #imageLiteral(resourceName: "BookingsButtonOff"))
+        }
+        
+    }
+    
+
+    func toggleButtonImage(button: UIButton, onImage: UIImage, offImage: UIImage){
+        
+        if button.currentImage == offImage{
+            button.setImage(onImage, for: .normal)
+        }else{
+            button.setImage(offImage, for: .normal)
         }
     }
     

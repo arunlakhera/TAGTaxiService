@@ -74,8 +74,27 @@ class AdminBookStatusListViewController: UIViewController, UITableViewDelegate, 
            
             let riderProfile = Rider(riderID: book.riderID!, dictionary: snapshot.value as! Dictionary<String, AnyObject>)
            
-            self.riderName = riderProfile.firstName! + " " + riderProfile.lastName!
-            self.riderEmail = riderProfile.emailID!
+            if (riderProfile.firstName?.characters.count)! > 0 {
+                self.riderName = (riderProfile.firstName)!
+            }else{
+                self.riderName = ""
+            }
+            
+            if (riderProfile.lastName?.characters.count)! > 0 {
+                self.riderName = self.riderName + " " + (riderProfile.lastName)!
+            }else{
+                self.riderName = self.riderName + " " + ""
+            }
+            
+            if (self.riderName.characters.count) > 0 {
+                
+            }else{
+                self.riderName = String(describing: riderProfile.emailID)
+            }
+            
+            
+           // self.riderName = (riderProfile.firstName)! + " " + (riderProfile.lastName)!
+            //self.riderEmail = (riderProfile.emailID)!
             self.riderPhone = riderProfile.phoneNumber!
    
             cell?.nameLabel.text = self.riderName

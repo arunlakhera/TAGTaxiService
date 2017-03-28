@@ -16,6 +16,7 @@ class SignInViewController: UIViewController {
     
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,23 +58,17 @@ class SignInViewController: UIViewController {
        setUserName()
        
         // MARK: Check if the user is logged in already and if yes take user to Main screen else ask for sign in
-    
-        if AuthService.instance.isLoggedIn{
-            if AuthService.instance.isAdmin{
-                self.performSegue(withIdentifier: "adminMainSegue", sender: nil)
-            } else{
-                  self.performSegue(withIdentifier: "signInSegue", sender: nil)
-            }
-        }
- /*
-        if AuthService.instance.isLoggedIn && AuthService.instance.isAdmin{
-            self.performSegue(withIdentifier: "adminMainSegue", sender: nil)
-        }
         
         if AuthService.instance.isLoggedIn{
-            self.performSegue(withIdentifier: "signInSegue", sender: nil)
-        }*/
-    }
+                if AuthService.instance.isLoggedIn{
+                    self.performSegue(withIdentifier: "adminMainSegue", sender: nil)
+            } else{
+                    self.performSegue(withIdentifier: "signInSegue", sender: nil)
+            }
+        }
+        
+        
+     }
     
     // MARK: Function to extract user name from Email id for the user to show in Main Screen
     func setUserName(){
@@ -151,27 +146,33 @@ class SignInViewController: UIViewController {
                     // Get the current user
                     let riderID = AuthService.instance.riderID!
                 
+                    
                     // Get Admin flag Path from Firebase
                     let riderProfile = DataService.ds.REF_RIDER.child(riderID).child("Profile").child("AdminFlag")
-                      
+                    
                     // Check for Admin flag value and depending on perform segue to Admin or user screen
                     riderProfile.observe(.value, with: { (snapshot) in
-                        let adminFlag = (snapshot.value)! as? String
-                    
-                        if adminFlag == "Yes"{
-                            AuthService.instance.isAdmin = true    // Set the Admin flag to true
+                        
+                        let adminFlag = ((snapshot.value)! as! String)
+                       
+                        if adminFlag == "true"{
+                            AuthService.instance.isAdmin = true   // Set the Admin flag to true
+                            AuthService.instance.isLoggedIn = true
                             self.performSegue(withIdentifier: "adminMainSegue", sender: nil)
+                         
                         }else{
-                            AuthService.instance.isAdmin = false    // Set the Admin flag to false
+                            AuthService.instance.isLoggedIn = true
                             self.performSegue(withIdentifier: "signInSegue", sender: nil)
                         }
-                    
                     }, withCancel: { (error) in
+                        print("Sign In Error")
                     })
+                
+                
                 }else{
                     self.showAlert(title: "Failure", message: message) //Show Failure Message
                 }
-            }
+            } // Auth Service End
         }
         else
         {
