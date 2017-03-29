@@ -9,10 +9,11 @@
 import UIKit
 import Firebase
 
-class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
+class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate{
 
     // MARK: OUTLETS
     
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var driverImageView: UIImageView!
     @IBOutlet weak var firstNameTextField: UITextField!
     @IBOutlet weak var lastNameTextField: UITextField!
@@ -29,11 +30,15 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     @IBOutlet weak var bloodGroupTextField: UITextField!
     @IBOutlet weak var activeLabel: UILabel!
     @IBOutlet weak var activeSwitch: UISwitch!
+    @IBOutlet weak var editButton: UIBarButtonItem!
+    @IBOutlet weak var saveButton: UIButton!
     
     // MARK: VARIABLES
 
     // Variable for Date of Birth picker
     let dateOfBirthPicker = UIDatePicker()
+    let dateDLValidFromPicker = UIDatePicker()
+    let dateDLValidTillPicker = UIDatePicker()
 
     // Variable to set States Picker
     var states = ["Andra Pradesh","Arunachal Pradesh","Assam","Bihar","Chhattisgarh","Goa","Gujarat","Haryana","Himachal Pradesh","Jammu and Kashmir","Jharkhand","Karnataka","Kerala","Madya Pradesh","Maharashtra","Manipur","Meghalaya","Mizoram","Nagaland","Orissa","Punjab","Rajasthan","Sikkim","Tamil Nadu","Tripura","Uttaranchal","Uttar Pradesh","West Bengal"]
@@ -45,13 +50,36 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     var bloodGroup = ["O+","O-","A+","A-","B+","B-","AB+","AB-"]
     let bloodGroupPicker = UIPickerView()
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        firstNameTextField.delegate = self
+        lastNameTextField.delegate = self
+        dateOfBirthTextField.delegate = self
+        phoneNumberTextField.delegate = self
+        address1TextField.delegate = self
+        address2TextField.delegate = self
+        cityTextField.delegate = self
+        stateTextField.delegate = self
+        DLNumberTextField.delegate = self
+        DLValidFromTextField.delegate = self
+        DLValidTillTextField.delegate = self
+        policeVerifiedTextField.delegate = self
+        bloodGroupTextField.delegate = self
+        
         dateOfBirthPicker.datePickerMode = UIDatePickerMode.date
         dateOfBirthTextField.inputView = dateOfBirthPicker
-        dateOfBirthPicker.addTarget(self, action: #selector(self.datePickerValueChanged), for: UIControlEvents.valueChanged)
+        dateOfBirthPicker.addTarget(self, action: #selector(self.datePickerValueChanged), for: .valueChanged)
 
+        dateDLValidFromPicker.datePickerMode = UIDatePickerMode.date
+        DLValidFromTextField.inputView = dateDLValidFromPicker
+        dateDLValidFromPicker.addTarget(self, action: #selector(self.dateDLValidFromPickerValueChanged), for: .valueChanged)
+       
+        dateDLValidTillPicker.datePickerMode = UIDatePickerMode.date
+        DLValidTillTextField.inputView = dateDLValidTillPicker
+        dateDLValidTillPicker.addTarget(self, action: #selector(self.dateDLValidTillPickerValueChanged), for: .valueChanged)
+        
         statesPicker.delegate = self
         statesPicker.dataSource = self
 
@@ -75,6 +103,22 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
         cityTextField.inputAccessoryView = toolBarWithDoneButton
         DLNumberTextField.inputAccessoryView = toolBarWithDoneButton
         
+    }
+    
+    func dateDLValidFromPickerValueChanged(_ sender: UIDatePicker){
+        let dateformatter = DateFormatter()
+        dateformatter.dateFormat = "dd-MM-YYYY"
+        
+        DLValidFromTextField.text = dateformatter.string(from: sender.date)
+         self.view.endEditing(true)
+    }
+    
+    func dateDLValidTillPickerValueChanged(_ sender: UIDatePicker){
+        let dateformatter = DateFormatter()
+        dateformatter.dateFormat = "dd-MM-YYYY"
+        
+        DLValidTillTextField.text = dateformatter.string(from: sender.date)
+         self.view.endEditing(true)
     }
 
     func datePickerValueChanged(_ sender: UIDatePicker){
@@ -162,6 +206,8 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     // MARK: ACTIONS
     
     @IBAction func uploadButtonClicked(_ sender: UIButton) {
+        
+        // Upload Image of Driver
     }
     
     @IBAction func activeSwitchClicked(_ sender: Any) {
@@ -170,13 +216,82 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
         }else{
             activeLabel.text = "No"
         }
+        scrollView.setContentOffset(CGPoint.init(x: 0, y: 0), animated: true)
+        
     }
     
     @IBAction func saveButtonClicked(_ sender: UIButton) {
+        //Save Driver Details
+        if Reachability.isConnectedToNetwork() == true
+        {
+            if checkFields(){
+                
+                let driverID = DataService.ds.REF_DRIVER.childByAutoId()
+                let formatter = DateFormatter()
+                formatter.dateFormat = "dd-MMM-YYYY"
+                
+                driverID.child("FirstName").setValue(firstNameTextField.text)
+                driverID.child("LastName").setValue(lastNameTextField.text)
+                driverID.child("PhoneNumber").setValue(phoneNumberTextField.text)
+                driverID.child("DateOfBirth").setValue(dateOfBirthTextField.text)
+                driverID.child("Address1").setValue(address1TextField.text)
+                driverID.child("Address2").setValue(address2TextField.text)
+                driverID.child("City").setValue(cityTextField.text)
+                driverID.child("State").setValue(stateTextField.text)
+                driverID.child("DLNumber").setValue(DLNumberTextField.text)
+                driverID.child("DLValidFrom").setValue(DLValidFromTextField.text)
+                driverID.child("DLValidTill").setValue(DLValidTillTextField.text)
+                driverID.child("PoliceVerified").setValue(policeVerifiedTextField.text)
+                driverID.child("BloodGroup").setValue(bloodGroupTextField.text)
+                driverID.child("Active").setValue(activeLabel.text)
+                
+                self.performSegue(withIdentifier: "driverListSegue", sender: nil)
+                
+            }
+        
+        }else{
+            self.showAlert(title: "Failure", message: "Internet Connection not Available!") //Show Failure Message
+        }
+        
+    }
+    
+    func checkFields() -> Bool{
+       
+        var checkFlag = true
+        guard let firstName = firstNameTextField.text, let lastName = lastNameTextField.text, let dateOfBirth = dateOfBirthTextField.text , let phoneNumber = phoneNumberTextField.text, let address1 = address1TextField.text, let address2 = address2TextField.text, let city = cityTextField.text, let state = stateTextField.text, let  DLNumber = DLNumberTextField.text, let DLValidFrom = DLValidFromTextField.text, let DLValidTill = DLValidTillTextField.text, let policeVerified = policeVerifiedTextField.text, let bloodGroup = bloodGroupTextField.text else {
+            checkFlag = false
+       showAlert(title: "Error", message: "Please povide all the fields!!")
+            return checkFlag
+        }
+        
+        guard firstName != "", lastName != "", dateOfBirth != "", phoneNumber != "", address1 != "", address2 != "", city != "", state != "", DLNumber != "", DLValidFrom != "", DLValidTill != "", policeVerified != "", bloodGroup != "" else {
+            checkFlag = false
+             showAlert(title: "Error", message: "Please povide all the fields!!")
+            return checkFlag
+        }
+        
+        return checkFlag
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        if (textField == DLNumberTextField) || (textField == DLValidFromTextField) || (textField == DLValidTillTextField) || (textField == policeVerifiedTextField) || (textField == bloodGroupTextField)
+        {
+            scrollView.setContentOffset(CGPoint.init(x: 0, y: 70), animated: true)
+        }
+        
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        scrollView.setContentOffset(CGPoint.init(x: 0, y: 0), animated: true)
     }
     
     func showAlert(title: String, message: String){

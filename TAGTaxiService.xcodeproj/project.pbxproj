@@ -15,6 +15,7 @@
 		D81B07B31E8A880400BBBEEC /* DriverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81B07B21E8A880400BBBEEC /* DriverViewController.swift */; };
 		D81B07B51E8AA7E700BBBEEC /* DriverListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81B07B41E8AA7E700BBBEEC /* DriverListTableViewCell.swift */; };
 		D81B07B71E8AC4FE00BBBEEC /* AddDriverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81B07B61E8AC4FE00BBBEEC /* AddDriverViewController.swift */; };
+		D82EC2371E8C2DB3009DA30A /* EditDriverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82EC2361E8C2DB3009DA30A /* EditDriverViewController.swift */; };
 		D83D363D1E7A6EF0003166AA /* AdminBookListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83D363C1E7A6EF0003166AA /* AdminBookListTableViewCell.swift */; };
 		D83D363F1E7AAB7B003166AA /* AdminBookDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83D363E1E7AAB7B003166AA /* AdminBookDetailViewController.swift */; };
 		D83D366A1E7D3881003166AA /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83D36691E7D3881003166AA /* AuthService.swift */; };
@@ -80,6 +81,7 @@
 		D81B07B21E8A880400BBBEEC /* DriverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DriverViewController.swift; sourceTree = "<group>"; };
 		D81B07B41E8AA7E700BBBEEC /* DriverListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DriverListTableViewCell.swift; sourceTree = "<group>"; };
 		D81B07B61E8AC4FE00BBBEEC /* AddDriverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddDriverViewController.swift; sourceTree = "<group>"; };
+		D82EC2361E8C2DB3009DA30A /* EditDriverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditDriverViewController.swift; sourceTree = "<group>"; };
 		D83D363C1E7A6EF0003166AA /* AdminBookListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdminBookListTableViewCell.swift; sourceTree = "<group>"; };
 		D83D363E1E7AAB7B003166AA /* AdminBookDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdminBookDetailViewController.swift; sourceTree = "<group>"; };
 		D83D36691E7D3881003166AA /* AuthService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
@@ -245,6 +247,7 @@
 				D83D363E1E7AAB7B003166AA /* AdminBookDetailViewController.swift */,
 				D81B07B21E8A880400BBBEEC /* DriverViewController.swift */,
 				D81B07B61E8AC4FE00BBBEEC /* AddDriverViewController.swift */,
+				D82EC2361E8C2DB3009DA30A /* EditDriverViewController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -484,6 +487,7 @@
 				D81235E41E715FA800519F6A /* BookingDetailViewController.swift in Sources */,
 				D861EE361E6A94EA00CCF371 /* SignInViewController.swift in Sources */,
 				D86B9E6A1E856BD000C31FDD /* Reachability.swift in Sources */,
+				D82EC2371E8C2DB3009DA30A /* EditDriverViewController.swift in Sources */,
 				D8FF564E1E69FDE700A99B75 /* Driver.swift in Sources */,
 				D861EE721E6D852200CCF371 /* BookARideViewController.swift in Sources */,
 				D83D363F1E7AAB7B003166AA /* AdminBookDetailViewController.swift in Sources */,

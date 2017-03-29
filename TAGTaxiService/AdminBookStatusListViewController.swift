@@ -25,6 +25,8 @@ class AdminBookStatusListViewController: UIViewController, UITableViewDelegate, 
         
         tableView.delegate = self
         tableView.dataSource = self
+        
+        
         toolBarTitle.text = "\(bookingStatusList) List"
    
         DataService.ds.REF_RIDEBOOKING.observe(.value, with: { (snapshot) in

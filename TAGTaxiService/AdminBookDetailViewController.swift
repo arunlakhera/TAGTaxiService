@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AdminBookDetailViewController: UIViewController {
+class AdminBookDetailViewController: UIViewController, UITextFieldDelegate {
 
     var bookName = "NA"
     var bookTravelDate = "NA"
@@ -25,6 +25,7 @@ class AdminBookDetailViewController: UIViewController {
     var bookKey = ""
     var bStatus = ""
     
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var phoneLabel: UILabel!
     @IBOutlet weak var travelDateLabel: UILabel!
@@ -38,12 +39,18 @@ class AdminBookDetailViewController: UIViewController {
     @IBOutlet weak var send: UIButton!
     @IBOutlet weak var statusText: UITextField!
     
+    
     // Create a MessageComposer
     let messageComposer = MessageComposer()
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        
+        amountText.delegate = self
+        vehicleText.delegate = self
+        statusText.delegate = self
+        
         nameLabel.text = bookName
         phoneLabel.text = bookPhone
         travelDateLabel.text = bookTravelDate
@@ -130,7 +137,23 @@ class AdminBookDetailViewController: UIViewController {
         
     }
 
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        if (textField == amountText) || (textField == vehicleText){
+            scrollView.setContentOffset(CGPoint.init(x: 0, y: 250), animated: true)
+        }
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        scrollView.setContentOffset(CGPoint.init(x: 0, y: 0), animated: true)
+    }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
+        
+    }
+ 
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }

@@ -13,64 +13,71 @@ class Driver{
     private var _driverID: String!
     private var _firstName: String!
     private var _lastName: String!
-    private var _address: String!
+    private var _phoneNumber: String!
+    private var _dateOfBirth: String!
+    private var _address1: String!
+    private var _address2: String!
     private var _city: String!
     private var _state: String!
-    private var _pinCode: String!
-    private var _phoneNumber: String!
     private var _drivingLicenseNo: String!
-    private var _drivingLicenseExpDate: String!
-    private var _policeVerifiedFlag: String!
-    private var _isActiveFlag: String!
-    private var _inactiveDate: String!
+    private var _drivingLicenseValidFrom: String!
+    private var _drivingLicenseValidTill: String!
+    private var _bloodGroup: String!
+    
+    private var _policeVerified: String!
+    private var _active: String!
     
     var driverID: String?{ return _driverID }
     var firstName: String?{ return _firstName }
     var lastName: String?{ return _lastName }
-    var address: String?{ return _address }
+    var phoneNumber: String?{ return _phoneNumber }
+    var dateOfBirth: String?{ return _dateOfBirth }
+    var address1: String?{ return _address1 }
+    var address2: String?{ return _address2 }
     var city: String?{ return _city }
     var state: String?{ return _state }
-    var pinCode: String?{ return _pinCode }
-    var phoneNumber: String?{ return _phoneNumber }
     var drivingLicenseNo: String?{ return _drivingLicenseNo }
-    var drivingLicenseExpDate: String?{ return _drivingLicenseExpDate }
-    var policeVerifiedFlag: String?{ return _policeVerifiedFlag }
-    var isActiveFlag: String?{ return _isActiveFlag }
-    var inactiveDate: String?{ return _inactiveDate }
+    var drivingLicenseValidFrom: String?{ return _drivingLicenseValidFrom }
+    var drivingLicenseValidTill: String?{ return _drivingLicenseValidTill }
+    var bloodGroup: String?{ return _bloodGroup }
+    var policeVerified: String?{ return _policeVerified }
+    var active: String?{ return _active }
     
-    init(driverID: String, firstName: String, lastName: String, address: String, city: String, state: String, pinCode: String, phoneNumber: String, drivingLicenseNo: String, drivingLicenseExpDate: String, policeVerifiedFlag: String, isActiveFlag: String, inactiveDate: String) {
+    init(driverID: String, firstName: String, lastName: String, phoneNumber: String, address1: String, address2: String, city: String, state: String, drivingLicenseNo: String, drivingLicenseValidFrom: String, drivingLicenseValidTill: String, bloodGroup: String, policeVerified: String, active: String) {
        
         self._driverID = driverID
         self._firstName = firstName
         self._lastName = lastName
-        self._address = address
+        self._phoneNumber = phoneNumber
+        self._address1 = address1
+        self._address2 = address2
         self._city = city
         self._state = state
-        self._pinCode = pinCode
-        self._phoneNumber = phoneNumber
         self._drivingLicenseNo = drivingLicenseNo
-        self._drivingLicenseExpDate = drivingLicenseExpDate
-        self._policeVerifiedFlag = policeVerifiedFlag
-        self._isActiveFlag = isActiveFlag
-        self._inactiveDate = inactiveDate
+        self._drivingLicenseValidFrom = drivingLicenseValidFrom
+        self._drivingLicenseValidTill = drivingLicenseValidTill
+        self._bloodGroup = bloodGroup
+        self._policeVerified = policeVerified
+        self._active = active
     
     }
     
     init(driverID: String, dictionary: Dictionary<String, AnyObject>) {
         self._driverID = driverID
         
-        if let firstName = dictionary["firstname"] as? String{ self._firstName = firstName}
-        if let lastName = dictionary["lastName"] as? String{ self._lastName  = lastName}
-        if let address = dictionary["address"] as? String{ self._address = address}
-        if let city = dictionary["city"] as? String{ self._city = city}
-        if let state = dictionary["state"] as? String{ self._state = state}
-        if let pinCode = dictionary["pincode"] as? String{ self._pinCode = pinCode}
-        if let phoneNumber = dictionary["phonenumber"] as? String{ self._phoneNumber = phoneNumber}
-        if let drivingLicenseNo = dictionary["drivinglicenseno"] as? String{ self._drivingLicenseNo = drivingLicenseNo}
-        if let drivingLicenseExpDate = dictionary["drivinglicenseexpdate"] as? String{ self._drivingLicenseExpDate = drivingLicenseExpDate}
-        if let policeVerifiedFlag = dictionary["policeverifiedflag"] as? String{ self._policeVerifiedFlag = policeVerifiedFlag}
-        if let isActiveFlag = dictionary["isactiveflag"] as? String{ self._isActiveFlag = isActiveFlag}
-        if let inactiveDate = dictionary["inactivedate"] as? String{ self._inactiveDate = inactiveDate}
+        if let firstName = dictionary["FirstName"] as? String{ self._firstName = firstName}
+        if let lastName = dictionary["LastName"] as? String{ self._lastName  = lastName}
+        if let phoneNumber = dictionary["PhoneNumber"] as? String{ self._phoneNumber = phoneNumber}
+        if let address1 = dictionary["Address1"] as? String{ self._address1 = address1}
+        if let address2 = dictionary["Address2"] as? String{ self._address2 = address2}
+        if let city = dictionary["City"] as? String{ self._city = city}
+        if let state = dictionary["State"] as? String{ self._state = state}
+        if let drivingLicenseNo = dictionary["DLNumber"] as? String{ self._drivingLicenseNo = drivingLicenseNo}
+        if let drivingLicenseValidFrom = dictionary["DLValidFrom"] as? String{ self._drivingLicenseValidFrom = drivingLicenseValidFrom}
+        if let drivingLicenseValidTill = dictionary["DLValidTill"] as? String{ self._drivingLicenseValidTill = drivingLicenseValidTill}
+        if let policeVerified = dictionary["PoliceVerified"] as? String{ self._policeVerified = policeVerified}
+        if let bloodGroup = dictionary["BloodGroup"] as? String{ self._bloodGroup = bloodGroup}
+        if let active = dictionary["Active"] as? String{ self._active = active}
         
     }
     
