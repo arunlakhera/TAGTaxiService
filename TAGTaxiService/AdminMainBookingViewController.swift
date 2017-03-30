@@ -101,6 +101,7 @@ class AdminMainBookingViewController: UIViewController {
     }
 
     @IBAction func pendingButton(_ sender: UIButton) {
+  
         bookingStatusList = "Pending"
         self.performSegue(withIdentifier: "adminBookListSegue", sender: nil)
     }
