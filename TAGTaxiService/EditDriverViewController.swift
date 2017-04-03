@@ -31,6 +31,7 @@ class EditDriverViewController: UIViewController {
     @IBOutlet weak var editButton: UIBarButtonItem!
     @IBOutlet weak var saveButton: UIButton!
     
+    var driverKey = ""
     var firstName = "NA"
     var lastName = "NA"
     var dateOfBirth = "NA"
@@ -82,6 +83,7 @@ class EditDriverViewController: UIViewController {
         policeVerifiedTextField.isEnabled = false
         bloodGroupTextField.isEnabled = false
         activeLabel.isEnabled = false
+        activeSwitch.isEnabled = false
         
     }
 
@@ -113,6 +115,7 @@ class EditDriverViewController: UIViewController {
         policeVerifiedTextField.isEnabled = true
         bloodGroupTextField.isEnabled = true
         activeLabel.isEnabled = true
+        activeSwitch.isEnabled = true
     }
     
     @IBAction func saveButtonClicked(_ sender: UIButton) {
@@ -121,24 +124,24 @@ class EditDriverViewController: UIViewController {
         {
             if checkFields(){
                 
-                let driverID = DataService.ds.REF_DRIVER.childByAutoId()
+                let driver = DataService.ds.REF_DRIVER.child(driverKey)
                 let formatter = DateFormatter()
                 formatter.dateFormat = "dd-MMM-YYYY"
                 
-                driverID.child("FirstName").setValue(firstNameTextField.text)
-                driverID.child("LastName").setValue(lastNameTextField.text)
-                driverID.child("PhoneNumber").setValue(phoneNumberTextField.text)
-                driverID.child("DateOfBirth").setValue(dateOfBirthTextField.text)
-                driverID.child("Address1").setValue(address1TextField.text)
-                driverID.child("Address2").setValue(address2TextField.text)
-                driverID.child("City").setValue(cityTextField.text)
-                driverID.child("State").setValue(stateTextField.text)
-                driverID.child("DLNumber").setValue(DLNumberTextField.text)
-                driverID.child("DLValidFrom").setValue(DLValidFromTextField.text)
-                driverID.child("DLValidTill").setValue(DLValidTillTextField.text)
-                driverID.child("PoliceVerified").setValue(policeVerifiedTextField.text)
-                driverID.child("BloodGroup").setValue(bloodGroupTextField.text)
-                driverID.child("Active").setValue(activeLabel.text)
+                driver.child("FirstName").setValue(firstNameTextField.text)
+                driver.child("LastName").setValue(lastNameTextField.text)
+                driver.child("PhoneNumber").setValue(phoneNumberTextField.text)
+                driver.child("DateOfBirth").setValue(dateOfBirthTextField.text)
+                driver.child("Address1").setValue(address1TextField.text)
+                driver.child("Address2").setValue(address2TextField.text)
+                driver.child("City").setValue(cityTextField.text)
+                driver.child("State").setValue(stateTextField.text)
+                driver.child("DLNumber").setValue(DLNumberTextField.text)
+                driver.child("DLValidFrom").setValue(DLValidFromTextField.text)
+                driver.child("DLValidTill").setValue(DLValidTillTextField.text)
+                driver.child("PoliceVerified").setValue(policeVerifiedTextField.text)
+                driver.child("BloodGroup").setValue(bloodGroupTextField.text)
+                driver.child("Active").setValue(activeLabel.text)
                 
                 self.performSegue(withIdentifier: "driverListSegue", sender: nil)
                 

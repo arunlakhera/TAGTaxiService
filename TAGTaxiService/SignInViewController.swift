@@ -17,6 +17,24 @@ class SignInViewController: UIViewController {
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
 
+    var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
+    
+    func startActivity(){
+        
+        activityIndicator.center = self.view.center
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.activityIndicatorViewStyle = .whiteLarge
+        view.addSubview(activityIndicator)
+        activityIndicator.startAnimating()
+        
+    }
+    
+    func stopActivity(){
+        
+        activityIndicator.stopAnimating()
+        
+    }
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,28 +71,68 @@ class SignInViewController: UIViewController {
         self.view.endEditing(true)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        self.startActivity()
+        // Call function to Set the username
+        setUserName()
+        
+        // MARK: Check if the user is logged in already and if yes take user to Main screen else ask for sign in
+        if AuthService.instance.isLoggedIn{
+            // Get Admin flag Path from Firebase
+            let riderProfile = DataService.ds.REF_RIDER.child(AuthService.instance.riderID!).child("Profile").child("AdminFlag")
+            
+            // Check for Admin flag value and depending on perform segue to Admin or user screen
+            riderProfile.observe(.value, with: { (snapshot) in
+                let adminFlag = ((snapshot.value)! as! String)
+                if adminFlag == "true"{
+                    AuthService.instance.isAdmin = true   // Set the Admin flag to true
+                    AuthService.instance.isLoggedIn = true
+                    self.performSegue(withIdentifier: "adminMainSegue", sender: nil)
+                }else{
+                    AuthService.instance.isLoggedIn = true
+                    self.performSegue(withIdentifier: "signInSegue", sender: nil)
+                }
+            }, withCancel: { (error) in
+                print("Sign In Error")
+            })
+            
+        }
+        self.stopActivity()
+    }
+   /*
     override func viewDidAppear(_ animated: Bool) {
         // Call function to Set the username
        setUserName()
        
         // MARK: Check if the user is logged in already and if yes take user to Main screen else ask for sign in
-        
         if AuthService.instance.isLoggedIn{
-                if AuthService.instance.isLoggedIn{
+            // Get Admin flag Path from Firebase
+            let riderProfile = DataService.ds.REF_RIDER.child(AuthService.instance.riderID!).child("Profile").child("AdminFlag")
+            
+            // Check for Admin flag value and depending on perform segue to Admin or user screen
+            riderProfile.observe(.value, with: { (snapshot) in
+                let adminFlag = ((snapshot.value)! as! String)
+                if adminFlag == "true"{
+                    AuthService.instance.isAdmin = true   // Set the Admin flag to true
+                    AuthService.instance.isLoggedIn = true
                     self.performSegue(withIdentifier: "adminMainSegue", sender: nil)
-            } else{
+                }else{
+                    AuthService.instance.isLoggedIn = true
                     self.performSegue(withIdentifier: "signInSegue", sender: nil)
-            }
+                }
+            }, withCancel: { (error) in
+                print("Sign In Error")
+            })
+
         }
-        
-        
-     }
-    
+      }
+    */
     // MARK: Function to extract user name from Email id for the user to show in Main Screen
     func setUserName(){
     
         if let user = FIRAuth.auth()?.currentUser{
             AuthService.instance.isLoggedIn = true
+            
             AuthService.instance.riderID = user.uid
             AuthService.instance.riderEmail = user.email
             

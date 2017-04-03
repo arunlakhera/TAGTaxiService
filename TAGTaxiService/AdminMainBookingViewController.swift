@@ -41,6 +41,22 @@ class AdminMainBookingViewController: UIViewController {
     var bookingButtonCenter: CGPoint!
     var vehicleButtonCenter: CGPoint!
     
+    var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
+    
+    func startActivity(){
+        
+        activityIndicator.center = self.view.center
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.activityIndicatorViewStyle = .gray
+        view.addSubview(activityIndicator)
+        activityIndicator.startAnimating()
+        
+    }
+    
+    func stopActivity(){
+        activityIndicator.stopAnimating()
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         driverButtonCenter = driverButton.center
         bookingButtonCenter = bookingButton.center
@@ -54,11 +70,10 @@ class AdminMainBookingViewController: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        self.startActivity()
         
         
         DataService.ds.REF_RIDEBOOKING.observe(.value, with: { (snapshot) in
-       
             if let snapshots = snapshot.children.allObjects as? [FIRDataSnapshot]{
                 
                 for snap in snapshots{
@@ -67,23 +82,24 @@ class AdminMainBookingViewController: UIViewController {
                         let key = snap.key
                         let bookings = RideBooking(bookingID: key, dictionary: bookDict as Dictionary<String, AnyObject>)
                     
-                        if bookings.status! == "Pending"{
+                        if bookings.status == "Pending"{
                             self.pendingCount = self.pendingCount + 1
-                        }else if bookings.status! == "Quoted"{
+                        }else if bookings.status == "Quoted"{
                             self.quotedCount = self.quotedCount + 1
-                        }else if bookings.status! == "Accepted"{
+                        }else if bookings.status == "Accepted"{
                             self.acceptedCount = self.acceptedCount + 1
-                        }else if bookings.status! == "Declined"{
+                        }else if bookings.status == "Declined"{
                             self.declinedCount = self.declinedCount + 1
-                        }else if bookings.status! == "Cancelled"{
+                        }else if bookings.status == "Cancelled"{
                             self.cancelledCount = self.cancelledCount + 1
-                        }else if bookings.status! == "Completed"{
+                        }else if bookings.status == "Completed"{
                             self.completedCount = self.completedCount + 1
                         }
-                        
                     
                     }
                 }
+            } else{
+                print("No Records Fetched...")
             }
             
             self.pendingCountButton.setTitle(String(self.pendingCount), for: .normal)
@@ -92,11 +108,12 @@ class AdminMainBookingViewController: UIViewController {
             self.declinedCountButton.setTitle(String(self.declinedCount), for: .normal)
             self.cancelledCountButton.setTitle(String(self.cancelledCount), for: .normal)
             self.completedCountButton.setTitle(String(self.completedCount), for: .normal)
-            
         
         }) { (error) in
             print("Error Occured while calculating Admin data")
         }
+    
+        self.stopActivity()
         
     }
 
@@ -134,10 +151,10 @@ class AdminMainBookingViewController: UIViewController {
     @IBAction func signOut(_ sender: Any) {
         
         AuthService.instance.isLoggedIn = false
+        AuthService.instance.isAdmin = false
         AuthService.instance.riderID = ""
         AuthService.instance.riderEmail = ""
         AuthService.instance.userName = ""
-        
         
         do{
             try FIRAuth.auth()?.signOut()

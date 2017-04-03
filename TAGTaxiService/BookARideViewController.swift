@@ -27,7 +27,6 @@ class BookARideViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     var travelFrom = ""
     var noOfTravellers = 1
     
-    
     var travelMinDate = NSDate() // Assign current date as minimum travel begin date
     var travelMaxDate: NSDate {
         return (Calendar.current as NSCalendar).date(byAdding: .day, value: 90, to: Date(), options: [])! as NSDate

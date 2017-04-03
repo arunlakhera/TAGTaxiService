@@ -42,6 +42,25 @@ class RiderProfileViewController: UIViewController, /*UINavigationControllerDele
     // Variable for Date of Birth picker
     let dateOfBirthPicker = UIDatePicker()
     
+    var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
+    
+    func startActivity(){
+        
+        activityIndicator.center = self.view.center
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.activityIndicatorViewStyle = .gray
+        view.addSubview(activityIndicator)
+        activityIndicator.startAnimating()
+        
+    }
+    
+    func stopActivity(){
+        
+        activityIndicator.stopAnimating()
+        
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
       
@@ -175,6 +194,7 @@ class RiderProfileViewController: UIViewController, /*UINavigationControllerDele
         // Function to load the profile data if it already exists
     func loadProfile(){
         
+            self.startActivity()
            riderProfile.observe(.value, with: { snapshot in
             
             // if snapshot does not exists return
@@ -213,8 +233,8 @@ class RiderProfileViewController: UIViewController, /*UINavigationControllerDele
             }
         })
         
-
-       enableFields()
+        self.stopActivity()
+        enableFields()
         
     }
     /*

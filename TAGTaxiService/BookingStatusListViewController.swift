@@ -23,6 +23,23 @@ class BookingStatusListViewController: UIViewController, UITableViewDelegate, UI
     var riderName = AuthService.instance.userName!
     var riderEmail = AuthService.instance.riderEmail!
     var riderPhone = ""
+    var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
+    
+    func startActivity(){
+        
+        activityIndicator.center = self.view.center
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.activityIndicatorViewStyle = .whiteLarge
+        view.addSubview(activityIndicator)
+        activityIndicator.startAnimating()
+        
+    }
+    
+    func stopActivity(){
+        
+        activityIndicator.stopAnimating()
+        
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,48 +49,41 @@ class BookingStatusListViewController: UIViewController, UITableViewDelegate, UI
         
         // Load all the bookings of the User
         
+        self.startActivity()
+        
         self.tableView.reloadData()
         
         TAGRiderBooking.observe(.value, with: { snapshot in
-            
                 self.bookings = []
                 if let snapshots = snapshot.children.allObjects as? [FIRDataSnapshot]{
-                    
+                    if snapshots.count > 0 {
                     for snap in snapshots{
                         DataService.ds.REF_RIDEBOOKING.observe(.value, with: { bookingSnap in
-                           
                             if let bookSnap = bookingSnap.children.allObjects as? [FIRDataSnapshot]{
                                 for book in bookSnap {
-                                    
                                     if book.key == snap.key{
-                                        
                                         if let bookDict = book.value as? Dictionary<String, String>{
-
                                             let key = book.key
                                             let book = RideBooking(bookingID: key, dictionary: bookDict as Dictionary<String, AnyObject>)
                                             self.bookings.append(book)
-                                            
-                                        }
-                                        
+                                         }
                                     }
                                 }
-                                
                             }
                             self.tableView.reloadData()
-                            
                         }, withCancel: { error in
                             self.showAlert(title: "ERROR", message: "Error occured whilte fetching Booking Record -- \(error.localizedDescription)")
-                            
-                        })
-                        
-                    }
+                    })
+                }
+                }else{
+                            self.showAlert(title: "Booking Status", message: "Currently there are no bookings to show!")
+                }
+                    
             }
-            
         }) { error in
             self.showAlert(title: "ERROR", message: "Not to able to fetch the booking list.")
-            
-        }
-        
+    }
+        self.stopActivity()
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -131,7 +141,7 @@ class BookingStatusListViewController: UIViewController, UITableViewDelegate, UI
         }else if book.status! == "Completed"{
             cell?.statusLabel.textColor = UIColor.white
         }
-    
+        
         return cell!
     }
     
