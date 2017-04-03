@@ -12,65 +12,70 @@ class Vehicle{
     
     private var _vehicleID: String!
     private var _companyName: String!
-    private var _model: String!
-    private var _type: String!
-    private var _plateNumber: String!
-    private var _registrationID: String!
+    private var _modelName: String!
+    private var _vehicleNumber: String!
+    private var _vehicleType: String!
+    private var _registrationNumber: String!
+    private var _modelYear: String!
     private var _insuranceNumber: String!
     private var _insuranceExpDate: String!
+    private var _pollutionCertNumber: String!
     private var _pollutionCertExpDate: String!
-    private var _permitExpDate: String!
-    private var _nextServiceDueDate: String!
+    private var _mileage: String!
+    private var _lastServiceDate: String!
     private var _inServiceFlag: String!
-    private var _inactiveDate: String!
-    
+   
     var vehicleID: String?{ return _vehicleID}
     var companyName: String?{ return _companyName}
-    var model: String?{ return _model}
-    var type: String?{ return _type}
-    var plateNumber: String?{ return _plateNumber}
-    var registrationID: String?{ return _registrationID}
+    var modelName: String?{ return _modelName}
+    var vehicleNumber: String?{ return _vehicleNumber}
+    var vehicleType: String?{ return _vehicleType}
+    var registrationNumber: String?{ return _registrationNumber}
+    var modelYear: String?{ return _modelYear}
     var insuranceNumber: String?{ return _insuranceNumber}
     var insurnaceExpDate : String?{ return _insuranceExpDate}
+    var pollutionCertNumber: String?{ return _pollutionCertNumber}
     var pollutionCertExpDate: String?{ return _pollutionCertExpDate}
-    var permitExpDate: String?{ return _permitExpDate}
-    var nextServiceDueDate: String?{ return _nextServiceDueDate}
+    var mileage: String?{ return _mileage}
+    var lastServiceDate: String?{ return _lastServiceDate}
     var inServiceFlag: String?{ return _inServiceFlag}
-    var inactiveDate: String?{ return _inactiveDate}
+   
     
-    init(vehicleID: String, companyName: String, model: String, type: String, plateNumber: String, registrationID: String, insuranceNumber: String, insurnaceExpDate: String, pollutionCertExpDate: String, permitExpDate: String, nextServiceDueDate: String, inServiceFlag: String, inactiveDate: String) {
+    init(vehicleID: String, companyName: String, modelName: String, vehicleNumber: String, vehicleType: String, registrationNumber: String, modelYear: String, insuranceNumber: String, insurnaceExpDate: String, pollutionCertNumber: String, pollutionCertExpDate: String, mileage: String, lastServiceDate: String, inServiceFlag: String) {
         
         self._vehicleID = vehicleID
         self._companyName = companyName
-        self._model = model
-        self._type = type
-        self._plateNumber = plateNumber
-        self._registrationID = registrationID
+        self._modelName = modelName
+        self._vehicleNumber = vehicleNumber
+        self._vehicleType = vehicleType
+        self._registrationNumber = registrationNumber
+        self._modelYear = modelYear
         self._insuranceNumber = insuranceNumber
         self._insuranceExpDate = insurnaceExpDate
+        self._pollutionCertNumber = pollutionCertNumber
         self._pollutionCertExpDate = pollutionCertExpDate
-        self._permitExpDate = permitExpDate
-        self._nextServiceDueDate = nextServiceDueDate
+        self._mileage = mileage
+        self._lastServiceDate = lastServiceDate
         self._inServiceFlag = inServiceFlag
-        self._inactiveDate = inactiveDate
         
     }
     
     init(vehicleID: String, dictionary: Dictionary<String, AnyObject>) {
         self._vehicleID = vehicleID
         
-        if let companyName = dictionary["companyname"] as? String{ self._companyName = companyName }
-        if let model = dictionary["model"] as? String{ self._model = model }
-        if let type = dictionary["type"] as? String{ self._type = type }
-        if let plateNumber = dictionary["platenumber"] as? String{ self._plateNumber = plateNumber }
-        if let registrationID = dictionary["registrationID"] as? String{ self._registrationID = registrationID }
-        if let insuranceNumber = dictionary["insurancenumber"] as? String{ self._insuranceNumber = insuranceNumber }
-        if let insurnaceExpDate = dictionary["insurnaceexpdate"] as? String{ self._insuranceExpDate = insurnaceExpDate }
-        if let pollutionCertExpDate = dictionary["pollutionCertExpDate"] as? String{ self._pollutionCertExpDate = pollutionCertExpDate}
-        if let permitExpDate = dictionary["permitexpdate"] as? String{ self._permitExpDate = permitExpDate }
-        if let nextServiceDueDate = dictionary["nextserviceduedate"] as? String{ self._nextServiceDueDate = nextServiceDueDate }
-        if let inServiceFlag = dictionary["inserviceflag"] as? String{ self._inServiceFlag = inServiceFlag }
-        if let inactiveDate = dictionary["inactivedate"] as? String{ self._inactiveDate = inactiveDate }
+        if let companyName = dictionary["CompanyName"] as? String{ self._companyName = companyName }
+        if let modelName = dictionary["ModelName"] as? String{ self._modelName = modelName }
+        if let vehicleNumber = dictionary["VehicleNumber"] as? String{ self._vehicleNumber = vehicleNumber }
+        if let vehicleType = dictionary["VehicleType"] as? String{ self._vehicleType = vehicleType }
+        if let registrationNumber = dictionary["RegistrationNumber"] as? String{ self._registrationNumber = registrationNumber }
+        if let modelYear = dictionary["ModelYear"] as? String{ self._modelYear = modelYear }
+        if let insuranceNumber = dictionary["InsuranceNumber"] as? String{ self._insuranceNumber = insuranceNumber }
+        if let insurnaceExpDate = dictionary["InsuranceExpiryDate"] as? String{ self._insuranceExpDate = insurnaceExpDate }
+        if let pollutionCertNumber = dictionary["PollutionCertificateNumber"] as? String{ self._pollutionCertNumber = pollutionCertNumber }
+        if let pollutionCertExpDate = dictionary["PollutionCertificateExpiryDate"] as? String{ self._pollutionCertExpDate = pollutionCertExpDate}
+        if let mileage = dictionary["Mileage"] as? String{ self._mileage = mileage }
+        if let lastServiceDate = dictionary["LastServiceDate"] as? String{ self._lastServiceDate = lastServiceDate }
+        if let inServiceFlag = dictionary["Active"] as? String{ self._inServiceFlag = inServiceFlag }
         
     }
     

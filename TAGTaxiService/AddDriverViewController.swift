@@ -260,7 +260,7 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
         var checkFlag = true
         guard let firstName = firstNameTextField.text, let lastName = lastNameTextField.text, let dateOfBirth = dateOfBirthTextField.text , let phoneNumber = phoneNumberTextField.text, let address1 = address1TextField.text, let address2 = address2TextField.text, let city = cityTextField.text, let state = stateTextField.text, let  DLNumber = DLNumberTextField.text, let DLValidFrom = DLValidFromTextField.text, let DLValidTill = DLValidTillTextField.text, let policeVerified = policeVerifiedTextField.text, let bloodGroup = bloodGroupTextField.text else {
             checkFlag = false
-       showAlert(title: "Error", message: "Please povide all the fields!!")
+            showAlert(title: "Error", message: "Please povide all the fields!!")
             return checkFlag
         }
         

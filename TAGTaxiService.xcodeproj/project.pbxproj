@@ -58,6 +58,10 @@
 		D8C422A61E79A8AD007EA962 /* AdminBookStatusListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C422A51E79A8AD007EA962 /* AdminBookStatusListViewController.swift */; };
 		D8D12C481E83828700F1C364 /* Dropdown.png in Resources */ = {isa = PBXBuildFile; fileRef = D8D12C471E83828700F1C364 /* Dropdown.png */; };
 		D8D12C521E84E3AA00F1C364 /* Email Address.png in Resources */ = {isa = PBXBuildFile; fileRef = D8D12C511E84E3AA00F1C364 /* Email Address.png */; };
+		D8D6F6E01E924A9A00D41693 /* VehicleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D6F6DF1E924A9A00D41693 /* VehicleViewController.swift */; };
+		D8D6F6E21E924AB000D41693 /* AddVehicleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D6F6E11E924AB000D41693 /* AddVehicleViewController.swift */; };
+		D8D6F6E41E924AC000D41693 /* EditVehicleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D6F6E31E924AC000D41693 /* EditVehicleViewController.swift */; };
+		D8D6F6E61E924F0C00D41693 /* VehicleListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D6F6E51E924F0C00D41693 /* VehicleListTableViewCell.swift */; };
 		D8FF562D1E69AD9D00A99B75 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8FF562C1E69AD9D00A99B75 /* AppDelegate.swift */; };
 		D8FF56321E69AD9D00A99B75 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8FF56301E69AD9D00A99B75 /* Main.storyboard */; };
 		D8FF56341E69AD9D00A99B75 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8FF56331E69AD9D00A99B75 /* Assets.xcassets */; };
@@ -125,6 +129,10 @@
 		D8C422A51E79A8AD007EA962 /* AdminBookStatusListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdminBookStatusListViewController.swift; sourceTree = "<group>"; };
 		D8D12C471E83828700F1C364 /* Dropdown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Dropdown.png; sourceTree = "<group>"; };
 		D8D12C511E84E3AA00F1C364 /* Email Address.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Email Address.png"; sourceTree = "<group>"; };
+		D8D6F6DF1E924A9A00D41693 /* VehicleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VehicleViewController.swift; sourceTree = "<group>"; };
+		D8D6F6E11E924AB000D41693 /* AddVehicleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddVehicleViewController.swift; sourceTree = "<group>"; };
+		D8D6F6E31E924AC000D41693 /* EditVehicleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditVehicleViewController.swift; sourceTree = "<group>"; };
+		D8D6F6E51E924F0C00D41693 /* VehicleListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VehicleListTableViewCell.swift; sourceTree = "<group>"; };
 		D8FF56291E69AD9D00A99B75 /* TAGTaxiService.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TAGTaxiService.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8FF562C1E69AD9D00A99B75 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D8FF56311E69AD9D00A99B75 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -248,6 +256,9 @@
 				D81B07B21E8A880400BBBEEC /* DriverViewController.swift */,
 				D81B07B61E8AC4FE00BBBEEC /* AddDriverViewController.swift */,
 				D82EC2361E8C2DB3009DA30A /* EditDriverViewController.swift */,
+				D8D6F6DF1E924A9A00D41693 /* VehicleViewController.swift */,
+				D8D6F6E11E924AB000D41693 /* AddVehicleViewController.swift */,
+				D8D6F6E31E924AC000D41693 /* EditVehicleViewController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -272,6 +283,7 @@
 				D83D363C1E7A6EF0003166AA /* AdminBookListTableViewCell.swift */,
 				D88F12541E80D8E80066DCCE /* TextField.swift */,
 				D81B07B41E8AA7E700BBBEEC /* DriverListTableViewCell.swift */,
+				D8D6F6E51E924F0C00D41693 /* VehicleListTableViewCell.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -487,6 +499,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D85888E01E769F5800AB1DB9 /* RiderProfileViewController.swift in Sources */,
+				D8D6F6E01E924A9A00D41693 /* VehicleViewController.swift in Sources */,
 				D861EE6B1E6AA2C800CCF371 /* MainMenuViewController.swift in Sources */,
 				D8FF564A1E69E4D600A99B75 /* Rider.swift in Sources */,
 				D88F12551E80D8E80066DCCE /* TextField.swift in Sources */,
@@ -497,11 +510,14 @@
 				D83D366A1E7D3881003166AA /* AuthService.swift in Sources */,
 				D8FF56451E69D96200A99B75 /* DataService.swift in Sources */,
 				D85F1D751E6FEFF20076C3CA /* BookListTableViewCell.swift in Sources */,
+				D8D6F6E61E924F0C00D41693 /* VehicleListTableViewCell.swift in Sources */,
 				D861EE651E6A9B2C00CCF371 /* SignUpViewController.swift in Sources */,
 				D8FF56501E69FDF900A99B75 /* RideBooking.swift in Sources */,
 				D81235E41E715FA800519F6A /* BookingDetailViewController.swift in Sources */,
 				D861EE361E6A94EA00CCF371 /* SignInViewController.swift in Sources */,
 				D86B9E6A1E856BD000C31FDD /* Reachability.swift in Sources */,
+				D8D6F6E41E924AC000D41693 /* EditVehicleViewController.swift in Sources */,
+				D8D6F6E21E924AB000D41693 /* AddVehicleViewController.swift in Sources */,
 				D82EC2371E8C2DB3009DA30A /* EditDriverViewController.swift in Sources */,
 				D8FF564E1E69FDE700A99B75 /* Driver.swift in Sources */,
 				D861EE721E6D852200CCF371 /* BookARideViewController.swift in Sources */,
