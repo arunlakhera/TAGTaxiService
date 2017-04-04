@@ -43,12 +43,13 @@ class Driver{
     var policeVerified: String?{ return _policeVerified }
     var active: String?{ return _active }
     
-    init(driverID: String, firstName: String, lastName: String, phoneNumber: String, address1: String, address2: String, city: String, state: String, drivingLicenseNo: String, drivingLicenseValidFrom: String, drivingLicenseValidTill: String, bloodGroup: String, policeVerified: String, active: String) {
+    init(driverID: String, firstName: String, lastName: String, phoneNumber: String, dateOfBirth: String, address1: String, address2: String, city: String, state: String, drivingLicenseNo: String, drivingLicenseValidFrom: String, drivingLicenseValidTill: String, bloodGroup: String, policeVerified: String, active: String) {
        
         self._driverID = driverID
         self._firstName = firstName
         self._lastName = lastName
         self._phoneNumber = phoneNumber
+        self._dateOfBirth = dateOfBirth
         self._address1 = address1
         self._address2 = address2
         self._city = city
@@ -68,6 +69,7 @@ class Driver{
         if let firstName = dictionary["FirstName"] as? String{ self._firstName = firstName}
         if let lastName = dictionary["LastName"] as? String{ self._lastName  = lastName}
         if let phoneNumber = dictionary["PhoneNumber"] as? String{ self._phoneNumber = phoneNumber}
+        if let dateOfBirth = dictionary["DateOfBirth"] as? String{ self._dateOfBirth = dateOfBirth}
         if let address1 = dictionary["Address1"] as? String{ self._address1 = address1}
         if let address2 = dictionary["Address2"] as? String{ self._address2 = address2}
         if let city = dictionary["City"] as? String{ self._city = city}

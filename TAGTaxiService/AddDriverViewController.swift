@@ -30,7 +30,6 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     @IBOutlet weak var bloodGroupTextField: UITextField!
     @IBOutlet weak var activeLabel: UILabel!
     @IBOutlet weak var activeSwitch: UISwitch!
-    @IBOutlet weak var editButton: UIBarButtonItem!
     @IBOutlet weak var saveButton: UIButton!
     
     // MARK: VARIABLES

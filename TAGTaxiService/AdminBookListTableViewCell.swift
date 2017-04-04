@@ -15,8 +15,6 @@ class AdminBookListTableViewCell: UITableViewCell {
     @IBOutlet weak var travelDateLabel: UILabel!
     @IBOutlet weak var statusLabel: UILabel!
     
-    
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

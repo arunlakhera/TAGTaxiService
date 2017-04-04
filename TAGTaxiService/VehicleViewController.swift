@@ -66,5 +66,32 @@ class VehicleViewController: UIViewController, UITableViewDelegate,UITableViewDa
         return cell!
     }
   
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "editVehicleSegue"{
+            if let destinationVC = segue.destination as? EditVehicleViewController{
+                let ip = (self.tableView.indexPathForSelectedRow?.row)!
+                print("====ip \(ip)")
+                let vehicle = vehicleList[ip]
+                
+                destinationVC.vehicleID = vehicle.vehicleID!
+                destinationVC.vehicleCompanyName = vehicle.companyName!
+                destinationVC.vehicleNumber = vehicle.vehicleNumber!
+                destinationVC.vehicleRegistrationNumber = vehicle.registrationNumber!
+                destinationVC.vehicleType1 = vehicle.vehicleType!
+                destinationVC.vehicleModelName = vehicle.modelName!
+                destinationVC.vehicleModelYear = vehicle.modelYear!
+                destinationVC.insuranceNumber = vehicle.insuranceNumber!
+                destinationVC.insuranceExpiryDate = vehicle.insurnaceExpDate!
+                destinationVC.pollutionCertificateNumber = vehicle.pollutionCertNumber!
+                destinationVC.pollutionCertificateExpiryDate = vehicle.pollutionCertExpDate!
+                destinationVC.mileage = vehicle.mileage!
+                destinationVC.lastServiceDate = vehicle.lastServiceDate!
+                destinationVC.active = vehicle.isActiveFlag!
+               
+            }
+        }
+        
+    }
+    
 
 }

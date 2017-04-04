@@ -23,7 +23,7 @@ class Vehicle{
     private var _pollutionCertExpDate: String!
     private var _mileage: String!
     private var _lastServiceDate: String!
-    private var _inServiceFlag: String!
+    private var _isActiveFlag: String!
    
     var vehicleID: String?{ return _vehicleID}
     var companyName: String?{ return _companyName}
@@ -38,10 +38,10 @@ class Vehicle{
     var pollutionCertExpDate: String?{ return _pollutionCertExpDate}
     var mileage: String?{ return _mileage}
     var lastServiceDate: String?{ return _lastServiceDate}
-    var inServiceFlag: String?{ return _inServiceFlag}
+    var isActiveFlag: String?{ return _isActiveFlag}
    
     
-    init(vehicleID: String, companyName: String, modelName: String, vehicleNumber: String, vehicleType: String, registrationNumber: String, modelYear: String, insuranceNumber: String, insurnaceExpDate: String, pollutionCertNumber: String, pollutionCertExpDate: String, mileage: String, lastServiceDate: String, inServiceFlag: String) {
+    init(vehicleID: String, companyName: String, modelName: String, vehicleNumber: String, vehicleType: String, registrationNumber: String, modelYear: String, insuranceNumber: String, insurnaceExpDate: String, pollutionCertNumber: String, pollutionCertExpDate: String, mileage: String, lastServiceDate: String, isActiveFlag: String) {
         
         self._vehicleID = vehicleID
         self._companyName = companyName
@@ -56,7 +56,7 @@ class Vehicle{
         self._pollutionCertExpDate = pollutionCertExpDate
         self._mileage = mileage
         self._lastServiceDate = lastServiceDate
-        self._inServiceFlag = inServiceFlag
+        self._isActiveFlag = isActiveFlag
         
     }
     
@@ -75,7 +75,7 @@ class Vehicle{
         if let pollutionCertExpDate = dictionary["PollutionCertificateExpiryDate"] as? String{ self._pollutionCertExpDate = pollutionCertExpDate}
         if let mileage = dictionary["Mileage"] as? String{ self._mileage = mileage }
         if let lastServiceDate = dictionary["LastServiceDate"] as? String{ self._lastServiceDate = lastServiceDate }
-        if let inServiceFlag = dictionary["Active"] as? String{ self._inServiceFlag = inServiceFlag }
+        if let isActiveFlag = dictionary["Active"] as? String{ self._isActiveFlag = isActiveFlag }
         
     }
     

@@ -15,7 +15,6 @@ class AddVehicleViewController: UIViewController, UIPickerViewDelegate,UIPickerV
     
     @IBOutlet weak var vehicleImageView: UIImageView!
     @IBOutlet weak var uploadButton: UIButton!
-    
     @IBOutlet weak var vehicleCompanyNameTextField: UITextField!
     @IBOutlet weak var vehicleModelNameTextField: UITextField!
     @IBOutlet weak var vehicleNumberTextField: UITextField!
@@ -29,8 +28,6 @@ class AddVehicleViewController: UIViewController, UIPickerViewDelegate,UIPickerV
     @IBOutlet weak var mileageTextField: UITextField!
     @IBOutlet weak var lastServiceDateTextField: UITextField!
     @IBOutlet weak var scrollView: UIScrollView!
-    
-    
     @IBOutlet weak var activeLabel: UILabel!
     @IBOutlet weak var activeSwitch: UISwitch!
     

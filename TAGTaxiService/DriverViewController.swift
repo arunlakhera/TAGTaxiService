@@ -70,7 +70,12 @@ class DriverViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 destinationVC.firstName = driver.firstName!
                 destinationVC.lastName = driver.lastName!
                 destinationVC.phoneNumber = driver.phoneNumber!
-                destinationVC.dateOfBirth = String(describing: driver.dateOfBirth)
+                
+                print("===================")
+                print("=====DOB in MAIN===\(driver.dateOfBirth)===========")
+                print("===================")
+                
+                destinationVC.dateOfBirth = driver.dateOfBirth! //String(describing: driver.dateOfBirth)
                 destinationVC.address1 = driver.address1!
                 destinationVC.address2 = driver.address2!
                 destinationVC.city = driver.city!
@@ -78,7 +83,8 @@ class DriverViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 destinationVC.DLNumber = driver.drivingLicenseNo!
                 destinationVC.DLValidFrom = driver.drivingLicenseValidFrom!
                 destinationVC.DLValidTill = driver.drivingLicenseValidTill!
-                destinationVC.bloodGroup = driver.bloodGroup!
+                destinationVC.driverBloodGroup = driver.bloodGroup!
+                destinationVC.policeVerified = driver.policeVerified!
                 destinationVC.active = driver.active!
             }
         }

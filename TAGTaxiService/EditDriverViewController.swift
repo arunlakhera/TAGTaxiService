@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class EditDriverViewController: UIViewController {
+class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate{
 
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var driverImageView: UIImageView!
@@ -44,12 +44,78 @@ class EditDriverViewController: UIViewController {
     var DLValidFrom = "NA"
     var DLValidTill = "NA"
     var policeVerified = "NA"
-    var bloodGroup = "NA"
+    var driverBloodGroup = "NA"
     var active = "NA"
+    
+    // MARK: VARIABLES
+    
+    // Variable for Date of Birth picker
+    let dateOfBirthPicker = UIDatePicker()
+    let dateDLValidFromPicker = UIDatePicker()
+    let dateDLValidTillPicker = UIDatePicker()
+    
+    // Variable to set States Picker
+    var statesArray = ["Andra Pradesh","Arunachal Pradesh","Assam","Bihar","Chhattisgarh","Goa","Gujarat","Haryana","Himachal Pradesh","Jammu and Kashmir","Jharkhand","Karnataka","Kerala","Madya Pradesh","Maharashtra","Manipur","Meghalaya","Mizoram","Nagaland","Orissa","Punjab","Rajasthan","Sikkim","Tamil Nadu","Tripura","Uttaranchal","Uttar Pradesh","West Bengal"]
+    let statesPicker = UIPickerView()
+    
+    var policeVerfiedArray = ["Yes","No"]
+    let policeVerifiedPicker = UIPickerView()
+    
+    var bloodGroupArray = ["O+","O-","A+","A-","B+","B-","AB+","AB-"]
+    let bloodGroupPicker = UIPickerView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        firstNameTextField.delegate = self
+        lastNameTextField.delegate = self
+        dateOfBirthTextField.delegate = self
+        phoneNumberTextField.delegate = self
+        address1TextField.delegate = self
+        address2TextField.delegate = self
+        cityTextField.delegate = self
+        stateTextField.delegate = self
+        DLNumberTextField.delegate = self
+        DLValidFromTextField.delegate = self
+        DLValidTillTextField.delegate = self
+        policeVerifiedTextField.delegate = self
+        bloodGroupTextField.delegate = self
+        
+        dateOfBirthPicker.datePickerMode = UIDatePickerMode.date
+        dateOfBirthTextField.inputView = dateOfBirthPicker
+        dateOfBirthPicker.addTarget(self, action: #selector(self.datePickerValueChanged), for: .valueChanged)
+        
+        dateDLValidFromPicker.datePickerMode = UIDatePickerMode.date
+        DLValidFromTextField.inputView = dateDLValidFromPicker
+        dateDLValidFromPicker.addTarget(self, action: #selector(self.dateDLValidFromPickerValueChanged), for: .valueChanged)
+        
+        dateDLValidTillPicker.datePickerMode = UIDatePickerMode.date
+        DLValidTillTextField.inputView = dateDLValidTillPicker
+        dateDLValidTillPicker.addTarget(self, action: #selector(self.dateDLValidTillPickerValueChanged), for: .valueChanged)
+        
+        statesPicker.delegate = self
+        statesPicker.dataSource = self
+        
+        policeVerifiedPicker.delegate = self
+        policeVerifiedPicker.dataSource = self
+        
+        bloodGroupPicker.delegate = self
+        bloodGroupPicker.dataSource = self
+        
+        stateTextField.inputView = statesPicker
+        policeVerifiedTextField.inputView = policeVerifiedPicker
+        bloodGroupTextField.inputView = bloodGroupPicker
+        
+        let toolBarWithDoneButton =  addDoneButton()
+        
+        firstNameTextField.inputAccessoryView = toolBarWithDoneButton
+        lastNameTextField.inputAccessoryView = toolBarWithDoneButton
+        phoneNumberTextField.inputAccessoryView = toolBarWithDoneButton
+        address1TextField.inputAccessoryView = toolBarWithDoneButton
+        address2TextField.inputAccessoryView = toolBarWithDoneButton
+        cityTextField.inputAccessoryView = toolBarWithDoneButton
+        DLNumberTextField.inputAccessoryView = toolBarWithDoneButton
+        
         saveButton.isHidden = true
         
         firstNameTextField.text = firstName
@@ -59,13 +125,29 @@ class EditDriverViewController: UIViewController {
         address1TextField.text = address1
         address2TextField.text = address2
         cityTextField.text = city
-        stateTextField.text = state
         DLNumberTextField.text = DLNumber
         DLValidFromTextField.text = DLValidFrom
         DLValidTillTextField.text = DLValidTill
-        policeVerifiedTextField.text = policeVerified
-        bloodGroupTextField.text = bloodGroup
+       
+        for s in statesArray{
+            if s == state{
+                stateTextField.text = s
+            }
+        }
+        
+        for pv in policeVerfiedArray{
+            if pv == policeVerified{
+                policeVerifiedTextField.text = pv
+            }
+        }
+        
         activeLabel.text = active
+     
+        for bg in bloodGroupArray{
+            if bg == driverBloodGroup{
+                bloodGroupTextField.text = bg
+            }
+        }
         
         // Disable all fields
         
@@ -87,9 +169,111 @@ class EditDriverViewController: UIViewController {
         
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    func dateDLValidFromPickerValueChanged(_ sender: UIDatePicker){
+      let dateformatter = DateFormatter()
+     dateformatter.dateFormat = "dd-MM-YYYY"
+        
+        DLValidFromTextField.text = dateformatter.string(from: sender.date)
+        self.view.endEditing(true)
+    }
+    
+    func dateDLValidTillPickerValueChanged(_ sender: UIDatePicker){
+       let dateformatter = DateFormatter()
+       dateformatter.dateFormat = "dd-MM-YYYY"
+        
+        DLValidTillTextField.text = dateformatter.string(from: sender.date)
+        self.view.endEditing(true)
+    }
+    
+    func datePickerValueChanged(_ sender: UIDatePicker){
+        let dateformatter = DateFormatter()
+        
+        dateformatter.dateFormat = "dd-MM-YYYY"
+        if ((sender.date).compare(NSDate() as Date).rawValue >= 0 ){
+            
+            showAlert(title: "Error!", message: "Date of Birth Needs to be corrected")
+            
+        }else{
+            dateOfBirthTextField.text = dateformatter.string(from: sender.date)
+            self.view.endEditing(true)
+            
+        }
+    }
+    
+    func addDoneButton() -> UIToolbar{
+        
+        // MARK: Create toolbar with button
+        let toolBar = UIToolbar()   // Create toolbar View
+        toolBar.sizeToFit()             // calls sizeThatFits: with current view bounds and changes bounds size of toolbar.
+        
+        // Adds space on toolbar so that Done Button appears on right side of the toolbar
+        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+        // Adds Done button to the toolbar
+        let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(self.doneClicked))
+        
+        // Adds Space and Done button to the Toolbar
+        toolBar.setItems([flexibleSpace,doneButton], animated: true)
+        
+        return toolBar
+        
+    }
+    
+    // Function to Dismiss keyboards once Done button is clicked
+    func doneClicked(){
+        self.view.endEditing(true)
+    }
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        var rows = 0
+        
+        if pickerView == statesPicker{
+            rows = statesArray.count
+        }else if pickerView == policeVerifiedPicker{
+            rows = policeVerfiedArray.count
+        }else if pickerView == bloodGroupPicker{
+            rows = bloodGroupArray.count
+        }
+        
+        return rows
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        var rowTitle = "--"
+        if pickerView == statesPicker{
+            rowTitle = statesArray[row]
+        }else if pickerView == policeVerifiedPicker{
+            rowTitle = policeVerfiedArray[row]
+        }else if pickerView == bloodGroupPicker{
+            rowTitle = bloodGroupArray[row]
+        }
+        
+        return rowTitle
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        
+        if pickerView == statesPicker{
+            stateTextField.text  = statesArray[row]
+        }else if pickerView == policeVerifiedPicker{
+            policeVerifiedTextField.text  = policeVerfiedArray[row]
+        }else if pickerView == bloodGroupPicker{
+            bloodGroupTextField.text  = bloodGroupArray[row]
+        }
+        
+        self.view.endEditing(true)
+    }
+   
+    @IBAction func activeSwitchClicked(_ sender: UISwitch) {
+        if activeSwitch.isOn{
+            activeLabel.text = "Yes"
+        }else{
+            activeLabel.text = "No"
+        }
+        scrollView.setContentOffset(CGPoint.init(x: 0, y: 0), animated: true)
+        
     }
     
     @IBAction func editButtonClicked(_ sender: Any) {
@@ -143,6 +327,10 @@ class EditDriverViewController: UIViewController {
                 driver.child("BloodGroup").setValue(bloodGroupTextField.text)
                 driver.child("Active").setValue(activeLabel.text)
                 
+                // Enable Edit Button once changes have been saved
+                editButton.isEnabled = true
+                saveButton.isHidden = true
+                
                 self.performSegue(withIdentifier: "driverListSegue", sender: nil)
                 
             }
@@ -150,11 +338,7 @@ class EditDriverViewController: UIViewController {
         }else{
             self.showAlert(title: "Failure", message: "Internet Connection not Available!") //Show Failure Message
         }
-        
-        
-    // Enable Edit Button once changes have been saved 
-        editButton.isEnabled = true
-        saveButton.isHidden = true
+   
     }
     
     func checkFields() -> Bool{
@@ -175,6 +359,26 @@ class EditDriverViewController: UIViewController {
         return checkFlag
     }
 
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        if (textField == DLNumberTextField) || (textField == DLValidFromTextField) || (textField == DLValidTillTextField) || (textField == policeVerifiedTextField) || (textField == bloodGroupTextField)
+        {
+            scrollView.setContentOffset(CGPoint.init(x: 0, y: 70), animated: true)
+        }
+        
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        scrollView.setContentOffset(CGPoint.init(x: 0, y: 0), animated: true)
+    }
     
     func showAlert(title: String, message: String){
         
