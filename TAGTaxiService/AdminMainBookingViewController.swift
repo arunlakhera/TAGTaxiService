@@ -24,7 +24,7 @@ class AdminMainBookingViewController: UIViewController {
     
     
     @IBOutlet weak var driverButton: UIButton!
-    @IBOutlet weak var bookingButton: UIButton!
+    //@IBOutlet weak var bookingButton: UIButton!
     @IBOutlet weak var vehicleButton: UIButton!
     @IBOutlet weak var moreButton: UIButton!
     
@@ -38,7 +38,7 @@ class AdminMainBookingViewController: UIViewController {
     var completedCount = 0
     
     var driverButtonCenter: CGPoint!
-    var bookingButtonCenter: CGPoint!
+    //var bookingButtonCenter: CGPoint!
     var vehicleButtonCenter: CGPoint!
     
     var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
@@ -48,25 +48,27 @@ class AdminMainBookingViewController: UIViewController {
         activityIndicator.center = self.view.center
         activityIndicator.hidesWhenStopped = true
         activityIndicator.activityIndicatorViewStyle = .gray
+        activityIndicator.isHidden = false
         view.addSubview(activityIndicator)
         activityIndicator.startAnimating()
         
     }
     
     func stopActivity(){
+        //activityIndicator.isHidden = true
         activityIndicator.stopAnimating()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         driverButtonCenter = driverButton.center
-        bookingButtonCenter = bookingButton.center
+        //bookingButtonCenter = bookingButton.center
         vehicleButtonCenter = vehicleButton.center
         
         driverButton.center = moreButton.center
-        bookingButton.center = moreButton.center
+       // bookingButton.center = moreButton.center
         vehicleButton.center = moreButton.center
 
-        toggleButtonImage(button: bookingButton, onImage: #imageLiteral(resourceName: "BookingsButtonOn"), offImage: #imageLiteral(resourceName: "BookingsButtonOff"))
+      //  toggleButtonImage(button: bookingButton, onImage: #imageLiteral(resourceName: "BookingsButtonOn"), offImage: #imageLiteral(resourceName: "BookingsButtonOff"))
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -173,22 +175,22 @@ class AdminMainBookingViewController: UIViewController {
                 // animations here
                 
                 self.driverButton.alpha = 1
-                self.bookingButton.alpha = 1
+               // self.bookingButton.alpha = 1
                 self.vehicleButton.alpha = 1
                 
                 self.driverButton.center = self.driverButtonCenter
-                self.bookingButton.center = self.bookingButtonCenter
+                //self.bookingButton.center = self.bookingButtonCenter
                 self.vehicleButton.center = self.vehicleButtonCenter
             })
         }else{
             UIView.animate(withDuration: 0.3, animations: {
                 
                 self.driverButton.alpha = 0
-                self.bookingButton.alpha = 0
+                //self.bookingButton.alpha = 0
                 self.vehicleButton.alpha = 0
                 
                 self.driverButton.center = self.moreButton.center
-                self.bookingButton.center = self.moreButton.center
+                //self.bookingButton.center = self.moreButton.center
                 self.vehicleButton.center = self.moreButton.center
             })
         }
@@ -198,17 +200,18 @@ class AdminMainBookingViewController: UIViewController {
     
     @IBAction func driverButtonClicked(_ sender: UIButton) {
         toggleButtonImage(button: driverButton , onImage: #imageLiteral(resourceName: "DriverButtonOn"), offImage: #imageLiteral(resourceName: "DriverButtonOff"))
-        
+        /*
         if bookingButton.currentImage == #imageLiteral(resourceName: "BookingsButtonOn"){
         toggleButtonImage(button: bookingButton, onImage: #imageLiteral(resourceName: "BookingsButtonOn"), offImage: #imageLiteral(resourceName: "BookingsButtonOff"))
         }
+        */
         if vehicleButton.currentImage == #imageLiteral(resourceName: "VehicleButtonOn"){
             toggleButtonImage(button: vehicleButton, onImage: #imageLiteral(resourceName: "VehicleButtonOn"), offImage: #imageLiteral(resourceName: "VehicleButtonOff"))
         }
         
         
     }
-    
+  /*
     @IBAction func bookingButtonClicked(_ sender: UIButton) {
         toggleButtonImage(button: bookingButton, onImage: #imageLiteral(resourceName: "BookingsButtonOn"), offImage: #imageLiteral(resourceName: "BookingsButtonOff"))
         
@@ -221,17 +224,17 @@ class AdminMainBookingViewController: UIViewController {
 
         
     }
-    
+    */
     @IBAction func vehicleButtonClicked(_ sender: UIButton) {
         toggleButtonImage(button: vehicleButton, onImage: #imageLiteral(resourceName: "VehicleButtonOn"), offImage: #imageLiteral(resourceName: "VehicleButtonOff"))
         
         if driverButton.currentImage == #imageLiteral(resourceName: "DriverButtonOn"){
             toggleButtonImage(button: driverButton , onImage: #imageLiteral(resourceName: "DriverButtonOn"), offImage: #imageLiteral(resourceName: "DriverButtonOff"))
         }
-        if bookingButton.currentImage == #imageLiteral(resourceName: "BookingsButtonOn"){
+      /*  if bookingButton.currentImage == #imageLiteral(resourceName: "BookingsButtonOn"){
             toggleButtonImage(button: bookingButton, onImage: #imageLiteral(resourceName: "BookingsButtonOn"), offImage: #imageLiteral(resourceName: "BookingsButtonOff"))
         }
-        
+        */
     }
     
 

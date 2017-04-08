@@ -8,8 +8,9 @@
 
 import UIKit
 import Firebase
+import Photos
 
-class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate{
+class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate{
 
     // MARK: OUTLETS
     
@@ -34,6 +35,8 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     
     // MARK: VARIABLES
 
+    let imagePicker = UIImagePickerController()
+  
     // Variable for Date of Birth picker
     let dateOfBirthPicker = UIDatePicker()
     let dateDLValidFromPicker = UIDatePicker()
@@ -66,6 +69,8 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
         DLValidTillTextField.delegate = self
         policeVerifiedTextField.delegate = self
         bloodGroupTextField.delegate = self
+        
+        imagePicker.delegate = self
         
         dateOfBirthPicker.datePickerMode = UIDatePickerMode.date
         dateOfBirthTextField.inputView = dateOfBirthPicker
@@ -204,9 +209,53 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     
     // MARK: ACTIONS
     
-    @IBAction func uploadButtonClicked(_ sender: UIButton) {
+    @IBAction func uploadButtonClicked(_ sender: Any) {
         
         // Upload Image of Driver
+        let actionSheet = UIAlertController(title: "Upload Photo", message: "Choose a Source", preferredStyle: .actionSheet)
+        
+        actionSheet.addAction(UIAlertAction(title: "Camera", style: .default, handler: { (action: UIAlertAction) in
+            
+            if UIImagePickerController.isSourceTypeAvailable(.camera){
+                
+                self.imagePicker.sourceType = .camera
+                self.present(self.imagePicker, animated: true, completion: nil)
+            }else{
+                self.showAlert(title: "Camera Alert", message: "Camera is Not Available!")            }
+        }))
+        
+        actionSheet.addAction(UIAlertAction(title: "Photo Library", style: .default, handler: { (action: UIAlertAction) in
+            
+            if UIImagePickerController.isSourceTypeAvailable(.photoLibrary){
+                self.imagePicker.sourceType = .photoLibrary
+               
+                self.present(self.imagePicker, animated: true, completion: nil)
+            }else{
+                self.showAlert(title: "Photo Library Alert", message: "Photo Library is Not Available!")
+            }
+        }))
+        
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
+        self.present(actionSheet, animated: true, completion: nil)
+        
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        
+        if let driverImage = info[UIImagePickerControllerOriginalImage] as? UIImage{
+            self.dismiss(animated: true, completion: nil)
+            
+            driverImageView.image = driverImage
+            
+        }else{
+            //Error
+            self.showAlert(title: "Image Error", message: "Error in presenting the Image")
+        }
+
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        self.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func activeSwitchClicked(_ sender: Any) {
@@ -244,8 +293,39 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
                 driverID.child("BloodGroup").setValue(bloodGroupTextField.text)
                 driverID.child("Active").setValue(activeLabel.text)
                 
-                self.performSegue(withIdentifier: "driverListSegue", sender: nil)
                 
+               guard let image = driverImageView.image else{
+                    print("Need to select an image")
+                    return
+                }
+               
+               
+                let driverIDWithPath = String(describing: driverID)
+                let driverPath = String(describing: DataService.ds.REF_DRIVER)
+                
+                let driverImageID = driverIDWithPath.replacingOccurrences(of: driverPath, with: "")
+            
+              
+                if let imgData = UIImageJPEGRepresentation(image, 0.2){
+                    let metadata = FIRStorageMetadata()
+                    metadata.contentType = "image/jpeg"
+                    
+                    DataService.ds.REF_DRIVER_IMAGE.child("\(driverImageID)").put(imgData, metadata: metadata) { (metadata, error) in
+                        
+                        if error != nil{
+                            print("Unable to upload image")
+                        }else{
+                            print("Successfully Uploaded image")
+                            let downloadURL = metadata?.downloadURL()?.absoluteString
+                            print("========\(downloadURL)")
+                        }
+                    }
+                   
+                    
+                }
+                
+                self.performSegue(withIdentifier: "driverListSegue", sender: nil)
+            
             }
         
         }else{
@@ -253,6 +333,7 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
         }
         
     }
+    
     
     func checkFields() -> Bool{
        

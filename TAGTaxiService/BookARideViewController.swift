@@ -56,6 +56,8 @@ class BookARideViewController: UIViewController, UIPickerViewDelegate, UIPickerV
         
         // By default show today date as travel date
        
+       // showAlert(title: "Phone Number", message: AuthService.instance)
+        
         formatter.dateFormat = "dd-MMM-YYYY"
         travelBeginDateTextField.text = formatter.string(from: travelMinDate as Date)
         travelBeginDatePicker.minimumDate = travelMinDate as  Date
@@ -285,6 +287,7 @@ class BookARideViewController: UIViewController, UIPickerViewDelegate, UIPickerV
         
         return checkFlag
     }
+    
     
    
     // Alert function to show messages

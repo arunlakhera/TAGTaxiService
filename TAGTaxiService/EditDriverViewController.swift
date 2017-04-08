@@ -64,6 +64,25 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
     var bloodGroupArray = ["O+","O-","A+","A-","B+","B-","AB+","AB-"]
     let bloodGroupPicker = UIPickerView()
     
+    
+    var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
+    
+    func startActivity(){
+        
+        activityIndicator.center = self.view.center
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.activityIndicatorViewStyle = .gray
+        view.addSubview(activityIndicator)
+        activityIndicator.startAnimating()
+        
+    }
+    
+    func stopActivity(){
+        
+        activityIndicator.stopAnimating()
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -302,15 +321,14 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
         activeSwitch.isEnabled = true
     }
     
+    
     @IBAction func saveButtonClicked(_ sender: UIButton) {
     
         if Reachability.isConnectedToNetwork() == true
         {
             if checkFields(){
-                
+                startActivity()
                 let driver = DataService.ds.REF_DRIVER.child(driverKey)
-                let formatter = DateFormatter()
-                formatter.dateFormat = "dd-MMM-YYYY"
                 
                 driver.child("FirstName").setValue(firstNameTextField.text)
                 driver.child("LastName").setValue(lastNameTextField.text)
@@ -330,7 +348,7 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
                 // Enable Edit Button once changes have been saved
                 editButton.isEnabled = true
                 saveButton.isHidden = true
-                
+                stopActivity()
                 self.performSegue(withIdentifier: "driverListSegue", sender: nil)
                 
             }

@@ -17,7 +17,9 @@ class AuthService{
     var isLoggedIn = false
     var isAdmin = false
     var riderID: String?
-    var  riderEmail: String?
+    var riderEmail: String?
+    var riderPhone: String?
+    
     
     func emailSignIn(email: String, password: String, Completion: @escaping(_ success: Bool, _ message: String) -> Void ){
         

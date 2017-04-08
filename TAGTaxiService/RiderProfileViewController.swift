@@ -26,6 +26,8 @@ class RiderProfileViewController: UIViewController, /*UINavigationControllerDele
     @IBOutlet weak var emailIDTextField: UITextField!
     @IBOutlet weak var saveButton: UIButton!
     
+    @IBOutlet weak var scrollView: UIScrollView!
+    
     // Rider Link
     //let riderProfile = DataService.ds.REF_RIDER.child(riderID).child("Profile")
     let riderID = AuthService.instance.riderID!
@@ -48,7 +50,8 @@ class RiderProfileViewController: UIViewController, /*UINavigationControllerDele
         
         activityIndicator.center = self.view.center
         activityIndicator.hidesWhenStopped = true
-        activityIndicator.activityIndicatorViewStyle = .gray
+        activityIndicator.activityIndicatorViewStyle = .whiteLarge
+        activityIndicator.isHidden = false
         view.addSubview(activityIndicator)
         activityIndicator.startAnimating()
         
@@ -129,12 +132,12 @@ class RiderProfileViewController: UIViewController, /*UINavigationControllerDele
         let dateformatter = DateFormatter()
         
         dateformatter.dateFormat = "dd-MM-YYYY"
-        if ((sender.date).compare(NSDate() as Date).rawValue > 0 ){
+        if ((sender.date).compare(NSDate() as Date).rawValue >= 0 ){
+            showAlert(title: "Error!", message: "Date of Birth Needs to be corrected")
+        }else{
             dateOfBirthTextField.text = dateformatter.string(from: sender.date)
             self.view.endEditing(true)
-        }else{
-            
-         showAlert(title: "Error!", message: "Date of Birth Needs to be corrected")
+         
             
         }
     }
@@ -194,7 +197,7 @@ class RiderProfileViewController: UIViewController, /*UINavigationControllerDele
         // Function to load the profile data if it already exists
     func loadProfile(){
         
-            self.startActivity()
+           self.startActivity()
            riderProfile.observe(.value, with: { snapshot in
             
             // if snapshot does not exists return
@@ -370,23 +373,26 @@ class RiderProfileViewController: UIViewController, /*UINavigationControllerDele
           return checkFlag
     }
     
-    
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        if textField == firstNameTextField{
-            self.lastNameTextField.becomeFirstResponder()
-        }else if textField == lastNameTextField{
-            self.address1TextField.becomeFirstResponder()
-        }else if textField == address1TextField{
-            self.address2TextField.becomeFirstResponder()
-        }else if textField == address2TextField{
-            self.cityTextField.becomeFirstResponder()
-        }else if textField == cityTextField{
-            self.phoneTextField.becomeFirstResponder()
-        }
-        
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
         return true
     }
- 
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        if (textField == dateOfBirthTextField) || (textField == genderTextField)
+        {
+            self.scrollView.setContentOffset(CGPoint.init(x: 0, y: 70), animated: true)
+        }
+        
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+            scrollView.setContentOffset(CGPoint.init(x: 0, y: 0), animated: true)
+    }
+
+    
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }

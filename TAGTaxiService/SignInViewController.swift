@@ -207,12 +207,17 @@ class SignInViewController: UIViewController {
                     
                     // Get Admin flag Path from Firebase
                     let riderProfile = DataService.ds.REF_RIDER.child(riderID).child("Profile").child("AdminFlag")
+                    let phone = DataService.ds.REF_RIDER.child(riderID).child("Profile").child("PhoneNumber")
+                    
+                    phone.observe(.value, with: { (snapshot) in
+                        AuthService.instance.riderPhone = ((snapshot.value)! as! String)
+                    })
                     
                     // Check for Admin flag value and depending on perform segue to Admin or user screen
                     riderProfile.observe(.value, with: { (snapshot) in
                         
                         let adminFlag = ((snapshot.value)! as! String)
-                       
+                        
                         if adminFlag == "true"{
                             AuthService.instance.isAdmin = true   // Set the Admin flag to true
                             AuthService.instance.isLoggedIn = true

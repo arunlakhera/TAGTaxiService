@@ -70,12 +70,7 @@ class DriverViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 destinationVC.firstName = driver.firstName!
                 destinationVC.lastName = driver.lastName!
                 destinationVC.phoneNumber = driver.phoneNumber!
-                
-                print("===================")
-                print("=====DOB in MAIN===\(driver.dateOfBirth)===========")
-                print("===================")
-                
-                destinationVC.dateOfBirth = driver.dateOfBirth! //String(describing: driver.dateOfBirth)
+                destinationVC.dateOfBirth = driver.dateOfBirth!
                 destinationVC.address1 = driver.address1!
                 destinationVC.address2 = driver.address2!
                 destinationVC.city = driver.city!

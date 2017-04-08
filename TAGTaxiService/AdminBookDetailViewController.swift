@@ -46,6 +46,7 @@ class AdminBookDetailViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        let toolBarWithDoneButton =  addDoneButton()
         
         amountText.delegate = self
         vehicleText.delegate = self
@@ -75,8 +76,36 @@ class AdminBookDetailViewController: UIViewController, UITextFieldDelegate {
             send.isHidden = true
         }
 
+        amountText.inputAccessoryView = toolBarWithDoneButton
+        vehicleText.inputAccessoryView = toolBarWithDoneButton
     
     }
+    
+    
+    // MARK: Function to add toolbar to the Keyboard
+    func addDoneButton() -> UIToolbar{
+        
+        // MARK: Create toolbar with button
+        let toolBar = UIToolbar()   // Create toolbar View
+        toolBar.sizeToFit()             // calls sizeThatFits: with current view bounds and changes bounds size of toolbar.
+        
+        // Adds space on toolbar so that Done Button appears on right side of the toolbar
+        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+        // Adds Done button to the toolbar
+        let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(self.doneClicked))
+        
+        // Adds Space and Done button to the Toolbar
+        toolBar.setItems([flexibleSpace,doneButton], animated: true)
+        
+        return toolBar
+        
+    }
+    
+    // Function to Dismiss keyboards once Done button is clicked
+    func doneClicked(){
+        self.view.endEditing(true)
+    }
+
 
     @IBAction func sendButton(sender: UIButton) {
         
@@ -139,19 +168,18 @@ class AdminBookDetailViewController: UIViewController, UITextFieldDelegate {
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if (textField == amountText) || (textField == vehicleText){
-            scrollView.setContentOffset(CGPoint.init(x: 0, y: 250), animated: true)
+            scrollView.setContentOffset(CGPoint.init(x: 0, y: 90), animated: true)
         }
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         scrollView.setContentOffset(CGPoint.init(x: 0, y: 0), animated: true)
     }
-    
+ 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
-        
     }
- 
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
