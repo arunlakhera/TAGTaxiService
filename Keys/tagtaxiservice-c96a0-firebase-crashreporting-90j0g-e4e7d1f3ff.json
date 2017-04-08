@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "tagtaxiservice-c96a0",
+  "private_key_id": "e4e7d1f3ff5c4a687716aa28e4543775dd51071f",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCex9CE4nk9haEc\niGOZImrtA+kjq1+Y3EIpj+EzCz5uMP7b9iNurVduIVIetmmqFOa7L9XZaxkFvWW4\nME3Hw4FQR05Ojme+Zf6YgQe9zJS3wywUBWOk/5Q8Mw4y0/UjqF6qRHp9xg4oV4Vm\nkfn5sKa48ufbnYHczXT/ZJ/PVlggAdV7RDWsBmWtdbs/rl2YAv00JmDc4IVv1M1F\n2E5tlRaoDW/a6NMcgZPT/tm/UMM/QgOUh6NeWm2KOZlSRNA5oPtKWAWHRT02FerT\nhCUfP09ECR5pKyhEPh4OrNVlEOrXwHMri+GtN3IBv1NL4sdHu7euK/x6iemto+ni\nWlhe8wRLAgMBAAECggEBAIKMT0my23RV9o17Jki2H6wYVwvYz5TjJBMAFWzehcob\nxrAbxC4vn38RLm/KEz6gSMUHI5DLmZs6ifPS42Cnwh67Qgsc0vec7KN/E1peZrhg\nZFFhzPfQm5STdc0csKVMvejIvN3EhcdtjmUzCJDfSXUvYqsS6b8dvmBt32ed2n8V\nNwjuKp4Hrh71IWO0Mgy4XZhKE4AGrXrCBD6ogo3+5rbpTboT4lepGw3t/vPrZLgc\nmT3KRe3BoWqEakmLwIIX8Tc0iw4z1eyYrXBzHjGj2V2vxab48qDPnQrIZqbpHnnF\ntD+rr7HucZ2LQ+yH5N4XzkG+ADa5tVgBcaEPmpK8qMECgYEA0zMYU+ci2FG1fM7P\nhh0EU5e7yJPZHPnuHVY/ZROgCdtrBSk+FwYMSrII0suywVEO6X9GTRgqh2E99OtY\nMtxpkXVUlF+R9nCd0/0WXGU02FX7e2/++QcGw+XG8OJ3b5elaZbyErGebMOg03iL\nUpBFcIMRNgj0TH9GTZvdrH03fNMCgYEAwHYsgtz+Z2BVnK08689l6wm1bso+jMUc\nfeBynPaZOGeIwjWaQaYD7yeBUho9ouUXLcwwHvQ50q41tsT23fMAjYGY8/usfdLC\nZ0GbiFt35KGnE4npfh2Qc78Y2pzJr/2+WKruOfKKsZtnj9jCMYw+hOxfMtGe1Jtl\nacoVFWExz6kCgYEAio8XAtS9M5ZHrx4vYBlhYUZG2IzHAA+ofG69IJ8De/QL/lLU\nfV5magrrZwBkwhdf5SivAp08KZ1OfIR6VMPuLpP/bWhV5oxzv0Rniy6KwPOIDa+o\nY9CMS7FQF3E8UmX3C5MQNdt5yHl/5b1MClrEc9BJVl4BiL5nbTs475Um9ikCgYA1\nXxAM4jfydvaG0ku4oPUEbtbPeGpMI0U5awqdmIz45U05fh/e4KjqoyvrlrdM+vao\njp0xmEyIriLbIlfLSN34X94ImtxEsDOU6s60y5i94E4yzuXfQVeToYTE6wHLOjSU\n5iHWE/p+MjhP3a5MizWzKtFjiFnhX46J/a5HFYL4sQKBgHR55IluZUz8Q78gI8G7\nifQ2/HRkcZgOiG2wvdFcBfmad/FXLltmiRH15ZFk5zU6XlTpqK1liEjIvJhrbEEi\n3xqAitBrHV7T4FBNTUvROeAMRdOqb9VA5DJelMrcnQEQH6r6fzcQq920trox3zMD\nyUwBIYgaO3G1WAAn0k/eZSOR\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-crashreporting-90j0g@tagtaxiservice-c96a0.iam.gserviceaccount.com",
+  "client_id": "101044105659595374221",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-crashreporting-90j0g%40tagtaxiservice-c96a0.iam.gserviceaccount.com"
+}
