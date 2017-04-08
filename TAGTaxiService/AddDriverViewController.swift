@@ -299,12 +299,9 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
                     return
                 }
                
-               
                 let driverIDWithPath = String(describing: driverID)
                 let driverPath = String(describing: DataService.ds.REF_DRIVER)
-                
                 let driverImageID = driverIDWithPath.replacingOccurrences(of: driverPath, with: "")
-            
               
                 if let imgData = UIImageJPEGRepresentation(image, 0.2){
                     let metadata = FIRStorageMetadata()
@@ -317,15 +314,11 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
                         }else{
                             print("Successfully Uploaded image")
                             let downloadURL = metadata?.downloadURL()?.absoluteString
-                            print("========\(downloadURL)")
+                            driverID.child("ImageURL").setValue(downloadURL)
                         }
                     }
-                   
-                    
                 }
-                
                 self.performSegue(withIdentifier: "driverListSegue", sender: nil)
-            
             }
         
         }else{

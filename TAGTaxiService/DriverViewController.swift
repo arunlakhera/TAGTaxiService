@@ -63,7 +63,6 @@ class DriverViewController: UIViewController, UITableViewDelegate, UITableViewDa
         if segue.identifier == "driverEditSegue"{
             if let destinationVC = segue.destination as? EditDriverViewController{
                 let ip = (self.tableView.indexPathForSelectedRow?.row)!
-                print("====ip \(ip)")
                 let driver = driverList[ip]
                 
                 destinationVC.driverKey = driver.driverID!
@@ -81,6 +80,7 @@ class DriverViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 destinationVC.driverBloodGroup = driver.bloodGroup!
                 destinationVC.policeVerified = driver.policeVerified!
                 destinationVC.active = driver.active!
+                
             }
         }
     

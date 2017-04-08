@@ -48,6 +48,8 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
     var active = "NA"
     
     // MARK: VARIABLES
+    var storage: FIRStorage!
+    
     
     // Variable for Date of Birth picker
     let dateOfBirthPicker = UIDatePicker()
@@ -86,6 +88,8 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        storage = FIRStorage.storage()
+        
         firstNameTextField.delegate = self
         lastNameTextField.delegate = self
         dateOfBirthTextField.delegate = self
@@ -167,6 +171,22 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
                 bloodGroupTextField.text = bg
             }
         }
+        
+       // IMAGE LOAD FOR DRIVER
+        
+        let driverImageRef = DataService.ds.REF_DRIVER.child("\(driverKey)").child("ImageURL")
+        driverImageRef.observe(.value, with: { (snapshot) in
+            let downloadURL = snapshot.value as? String
+            let storageRef = self.storage.reference(forURL: downloadURL!)
+            storageRef.data(withMaxSize: 1 * 1024 * 1024, completion: { (data, error) in
+                let pic = UIImage(data: data!)
+                self.driverImageView.image = pic
+                
+            })
+        })
+        
+        
+        // END IMAGE LOAD FOR DRIVER
         
         // Disable all fields
         

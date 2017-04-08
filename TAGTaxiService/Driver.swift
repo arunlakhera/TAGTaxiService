@@ -23,9 +23,9 @@ class Driver{
     private var _drivingLicenseValidFrom: String!
     private var _drivingLicenseValidTill: String!
     private var _bloodGroup: String!
-    
     private var _policeVerified: String!
     private var _active: String!
+    private var _imageURL: String!
     
     var driverID: String?{ return _driverID }
     var firstName: String?{ return _firstName }
@@ -42,8 +42,9 @@ class Driver{
     var bloodGroup: String?{ return _bloodGroup }
     var policeVerified: String?{ return _policeVerified }
     var active: String?{ return _active }
+    var imageURL: String?{ return _imageURL }
     
-    init(driverID: String, firstName: String, lastName: String, phoneNumber: String, dateOfBirth: String, address1: String, address2: String, city: String, state: String, drivingLicenseNo: String, drivingLicenseValidFrom: String, drivingLicenseValidTill: String, bloodGroup: String, policeVerified: String, active: String) {
+    init(driverID: String, firstName: String, lastName: String, phoneNumber: String, dateOfBirth: String, address1: String, address2: String, city: String, state: String, drivingLicenseNo: String, drivingLicenseValidFrom: String, drivingLicenseValidTill: String, bloodGroup: String, policeVerified: String, active: String, imageURL: String) {
        
         self._driverID = driverID
         self._firstName = firstName
@@ -60,6 +61,7 @@ class Driver{
         self._bloodGroup = bloodGroup
         self._policeVerified = policeVerified
         self._active = active
+        self._imageURL = imageURL
     
     }
     
@@ -80,7 +82,7 @@ class Driver{
         if let policeVerified = dictionary["PoliceVerified"] as? String{ self._policeVerified = policeVerified}
         if let bloodGroup = dictionary["BloodGroup"] as? String{ self._bloodGroup = bloodGroup}
         if let active = dictionary["Active"] as? String{ self._active = active}
-        
+        if let imageURL = dictionary["ImageURL"] as? String{ self._imageURL = imageURL }
     }
     
 }
