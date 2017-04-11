@@ -322,6 +322,8 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
         enableFields()
     }
     
+    
+    
     func enableFields(){
         
         firstNameTextField.isEnabled = true
@@ -369,6 +371,33 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
                 editButton.isEnabled = true
                 saveButton.isHidden = true
                 stopActivity()
+                
+                guard let image = driverImageView.image else{
+                    print("Need to select an image")
+                    return
+                }
+                
+                let driverIDWithPath = String(describing: driverKey)
+                let driverPath = String(describing: DataService.ds.REF_DRIVER)
+                let driverImageID = driverIDWithPath.replacingOccurrences(of: driverPath, with: "")
+                
+                if let imgData = UIImageJPEGRepresentation(image, 0.2){
+                    let metadata = FIRStorageMetadata()
+                    metadata.contentType = "image/jpeg"
+                    
+                    DataService.ds.REF_DRIVER_IMAGE.child("\(driverImageID)").put(imgData, metadata: metadata) { (metadata, error) in
+                        
+                        if error != nil{
+                            print("Unable to upload image")
+                        }else{
+                            print("Successfully Uploaded image")
+                            let downloadURL = metadata?.downloadURL()?.absoluteString
+                            let driverID = DataService.ds.REF_DRIVER.child("\(self.driverKey)")
+                            driverID.child("ImageURL").setValue(downloadURL)
+                        }
+                    }
+                }
+                
                 self.performSegue(withIdentifier: "driverListSegue", sender: nil)
                 
             }

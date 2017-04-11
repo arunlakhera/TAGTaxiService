@@ -32,7 +32,7 @@ class AuthService{
                 self.riderID = FIRAuth.auth()?.currentUser?.uid
                 self.riderEmail = (FIRAuth.auth()?.currentUser?.email)!
           
-                Completion(true, "Welcome \(self.userName) !")
+                Completion(true, "Welcome \(String(describing: self.userName)) !")
                 
             }
         })
