@@ -13,7 +13,9 @@ class DriverViewController: UIViewController, UITableViewDelegate, UITableViewDa
 
     @IBOutlet weak var tableView: UITableView!
     
+    var driverKey = ""
     var driverList = [Driver]()
+    var storage: FIRStorage!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,6 +34,7 @@ class DriverViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     if let driverDict = snap.value as? Dictionary<String, String>{
                         
                         let driver = Driver(driverID: snap.key, dictionary: driverDict as Dictionary<String, AnyObject>)
+                        self.driverKey = driver.driverID!
                         self.driverList.append(driver)
                     }
                 }
@@ -55,8 +58,21 @@ class DriverViewController: UIViewController, UITableViewDelegate, UITableViewDa
         
         cell?.nameLabel.text = driver.firstName! + " " + driver.lastName!
         cell?.phoneNumberLabel.text = driver.phoneNumber
-        cell?.driverImage.image = UIImage(named: "TAG.png")
+      
+        
+        let driverImageRef = DataService.ds.REF_DRIVER_IMAGE.child("\(String(describing: driver.driverID!))")
+        driverImageRef.data(withMaxSize: 1 * 1024 * 1024, completion: { (data, error) in
+            if data != nil{
+                if let pic = UIImage(data: data!){
+                    cell?.driverImage.image = pic
+                }
+            }else{
+                cell?.driverImage.image = UIImage(named: "PhotoAvatarJPG.jpg")
+            }
+        })
+        
         return cell!
+        
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -66,20 +82,22 @@ class DriverViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 let driver = driverList[ip]
                 
                 destinationVC.driverKey = driver.driverID!
-                destinationVC.firstName = driver.firstName!
-                destinationVC.lastName = driver.lastName!
-                destinationVC.phoneNumber = driver.phoneNumber!
-                destinationVC.dateOfBirth = driver.dateOfBirth!
-                destinationVC.address1 = driver.address1!
-                destinationVC.address2 = driver.address2!
-                destinationVC.city = driver.city!
-                destinationVC.state = driver.state!
-                destinationVC.DLNumber = driver.drivingLicenseNo!
-                destinationVC.DLValidFrom = driver.drivingLicenseValidFrom!
-                destinationVC.DLValidTill = driver.drivingLicenseValidTill!
-                destinationVC.driverBloodGroup = driver.bloodGroup!
-                destinationVC.policeVerified = driver.policeVerified!
-                destinationVC.active = driver.active!
+                destinationVC.firstName = driver.firstName != nil ? driver.firstName! : "Not Available"
+                destinationVC.lastName = driver.lastName != nil ? driver.lastName! : "Not Available"
+                destinationVC.phoneNumber = driver.phoneNumber != nil ? driver.phoneNumber! : "Not Available"
+                destinationVC.dateOfBirth = driver.dateOfBirth != nil ? driver.dateOfBirth! : "Not Available"
+                destinationVC.address1 = driver.address1 != nil ? driver.address1! : "Not Available"
+                destinationVC.address2 = driver.address2 != nil ? driver.address2! : "Not Available"
+                destinationVC.city = driver.city != nil ? driver.city! : "Not Available"
+                destinationVC.state = driver.state != nil ? driver.state! : "Not Available"
+                destinationVC.DLNumber = driver.drivingLicenseNo != nil ? driver.drivingLicenseNo! : "Not Available"
+                destinationVC.DLValidFrom = driver.drivingLicenseValidFrom != nil ? driver.drivingLicenseValidFrom! : "Not Available"
+                destinationVC.DLValidTill = driver.drivingLicenseValidTill != nil ? driver.drivingLicenseValidTill! : "Not Available"
+                destinationVC.driverBloodGroup = driver.bloodGroup  != nil ? driver.bloodGroup! : "Not Available"
+                destinationVC.policeVerified = driver.policeVerified != nil ? driver.policeVerified! : "Not Available"
+                destinationVC.active = driver.active != nil ? driver.active! : "Not Available"
+                
+                
                 
             }
         }

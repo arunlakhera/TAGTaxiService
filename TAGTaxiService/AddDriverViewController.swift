@@ -32,25 +32,54 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     @IBOutlet weak var activeLabel: UILabel!
     @IBOutlet weak var activeSwitch: UISwitch!
     @IBOutlet weak var saveButton: UIButton!
+    @IBOutlet weak var backButton: UIBarButtonItem!
     
     // MARK: VARIABLES
 
     let imagePicker = UIImagePickerController()
-  
+    var image: UIImage?
+    
     // Variable for Date of Birth picker
     let dateOfBirthPicker = UIDatePicker()
     let dateDLValidFromPicker = UIDatePicker()
     let dateDLValidTillPicker = UIDatePicker()
 
     // Variable to set States Picker
-    var states = ["Andra Pradesh","Arunachal Pradesh","Assam","Bihar","Chhattisgarh","Goa","Gujarat","Haryana","Himachal Pradesh","Jammu and Kashmir","Jharkhand","Karnataka","Kerala","Madya Pradesh","Maharashtra","Manipur","Meghalaya","Mizoram","Nagaland","Orissa","Punjab","Rajasthan","Sikkim","Tamil Nadu","Tripura","Uttaranchal","Uttar Pradesh","West Bengal"]
+    var states = ["---","Andra Pradesh","Arunachal Pradesh","Assam","Bihar","Chhattisgarh","Goa","Gujarat","Haryana","Himachal Pradesh","Jammu and Kashmir","Jharkhand","Karnataka","Kerala","Madya Pradesh","Maharashtra","Manipur","Meghalaya","Mizoram","Nagaland","Orissa","Punjab","Rajasthan","Sikkim","Tamil Nadu","Tripura","Uttaranchal","Uttar Pradesh","West Bengal"]
     let statesPicker = UIPickerView()
     
-    var policeVerfied = ["Yes","No"]
+    var policeVerfied = ["---","Yes","No"]
     let policeVerifiedPicker = UIPickerView()
     
-    var bloodGroup = ["O+","O-","A+","A-","B+","B-","AB+","AB-"]
+    var bloodGroup = ["---","O+","O-","A+","A-","B+","B-","AB+","AB-"]
     let bloodGroupPicker = UIPickerView()
+    
+    
+    var activityIndicator: UIActivityIndicatorView!
+    
+    
+    func startActivity(){
+        
+        activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+        activityIndicator.frame = CGRect(x: 150, y: 330, width: 100, height: 100)
+        activityIndicator.center = view.center
+        activityIndicator.backgroundColor = UIColor.white
+        activityIndicator.color = UIColor.yellow
+        activityIndicator.hidesWhenStopped = true
+        self.scrollView.addSubview(activityIndicator)
+        
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
+        backButton.isEnabled = false
+        UIApplication.shared.beginIgnoringInteractionEvents()
+        
+    }
+    
+    func stopActivity(){
+        activityIndicator.isHidden = true
+        activityIndicator.stopAnimating()
+        UIApplication.shared.endIgnoringInteractionEvents()
+    }
     
     
     override func viewDidLoad() {
@@ -96,6 +125,10 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
         stateTextField.inputView = statesPicker
         policeVerifiedTextField.inputView = policeVerifiedPicker
         bloodGroupTextField.inputView = bloodGroupPicker
+        
+        stateTextField.text = states[0]
+        policeVerifiedTextField.text = policeVerfied[0]
+        bloodGroupTextField.text = bloodGroup[0]
         
         let toolBarWithDoneButton =  addDoneButton()
         
@@ -181,7 +214,7 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        var rowTitle = "--"
+        var rowTitle = "---"
         if pickerView == statesPicker{
             rowTitle = states[row]
         }else if pickerView == policeVerifiedPicker{
@@ -220,6 +253,7 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
                 
                 self.imagePicker.sourceType = .camera
                 self.present(self.imagePicker, animated: true, completion: nil)
+                
             }else{
                 self.showAlert(title: "Camera Alert", message: "Camera is Not Available!")            }
         }))
@@ -229,7 +263,8 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
             if UIImagePickerController.isSourceTypeAvailable(.photoLibrary){
                 self.imagePicker.sourceType = .photoLibrary
                
-                self.present(self.imagePicker, animated: true, completion: nil)
+               self.present(self.imagePicker, animated: true, completion: nil)
+                
             }else{
                 self.showAlert(title: "Photo Library Alert", message: "Photo Library is Not Available!")
             }
@@ -243,9 +278,9 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         
         if let driverImage = info[UIImagePickerControllerOriginalImage] as? UIImage{
-            self.dismiss(animated: true, completion: nil)
             
             driverImageView.image = driverImage
+            self.dismiss(animated: true, completion: nil)
             
         }else{
             //Error
@@ -268,57 +303,70 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
         
     }
     
-    @IBAction func saveButtonClicked(_ sender: UIButton) {
-        //Save Driver Details
+    @IBAction func saveButtonClicked(_ sender: UIButton)
+    {
         if Reachability.isConnectedToNetwork() == true
         {
             if checkFields(){
+                self.startActivity()
                 
                 let driverID = DataService.ds.REF_DRIVER.childByAutoId()
                 let formatter = DateFormatter()
                 formatter.dateFormat = "dd-MMM-YYYY"
                 
-                driverID.child("FirstName").setValue(firstNameTextField.text)
-                driverID.child("LastName").setValue(lastNameTextField.text)
-                driverID.child("PhoneNumber").setValue(phoneNumberTextField.text)
-                driverID.child("DateOfBirth").setValue(dateOfBirthTextField.text)
-                driverID.child("Address1").setValue(address1TextField.text)
-                driverID.child("Address2").setValue(address2TextField.text)
-                driverID.child("City").setValue(cityTextField.text)
-                driverID.child("State").setValue(stateTextField.text)
-                driverID.child("DLNumber").setValue(DLNumberTextField.text)
-                driverID.child("DLValidFrom").setValue(DLValidFromTextField.text)
-                driverID.child("DLValidTill").setValue(DLValidTillTextField.text)
-                driverID.child("PoliceVerified").setValue(policeVerifiedTextField.text)
-                driverID.child("BloodGroup").setValue(bloodGroupTextField.text)
-                driverID.child("Active").setValue(activeLabel.text)
-                
-                
-               guard let image = driverImageView.image else{
-                    print("Need to select an image")
-                    return
-                }
-               
                 let driverIDWithPath = String(describing: driverID)
                 let driverPath = String(describing: DataService.ds.REF_DRIVER)
                 let driverImageID = driverIDWithPath.replacingOccurrences(of: driverPath, with: "")
-              
-                if let imgData = UIImageJPEGRepresentation(image, 0.2){
+                
+                if let driverImage = driverImageView.image {
+                    image = driverImage
+                                        
+                }else{
+                    image = UIImage(named: "PhotoAvatarJPG.jpg")
+                    
+                }
+                
+                if let imgData = UIImageJPEGRepresentation(image!, 0.2) {
                     let metadata = FIRStorageMetadata()
                     metadata.contentType = "image/jpeg"
                     
-                    DataService.ds.REF_DRIVER_IMAGE.child("\(driverImageID)").put(imgData, metadata: metadata) { (metadata, error) in
-                        
+                    let uploadTask = DataService.ds.REF_DRIVER_IMAGE.child("\(driverImageID)").put(imgData, metadata: metadata) { (metadata, error) in
                         if error != nil{
                             print("Unable to upload image")
                         }else{
                             print("Successfully Uploaded image")
                             let downloadURL = metadata?.downloadURL()?.absoluteString
-                            driverID.child("ImageURL").setValue(downloadURL)
+                            driverID.child("ImageURL").setValue(downloadURL) {(error) in print("Error while Writing Image URL to Database")}
+                            driverID.child("FirstName").setValue(self.firstNameTextField.text) {(error) in print("Error while Writing First Name to Database")}
+                            driverID.child("LastName").setValue(self.lastNameTextField.text) {(error) in print("Error while Writing Last Name to Database")}
+                            driverID.child("PhoneNumber").setValue(self.phoneNumberTextField.text) {(error) in print("Error while Writing Phone Number to Database")}
+                            driverID.child("DateOfBirth").setValue(self.dateOfBirthTextField.text) {(error) in print("Error while Writing Date of Birth to Database")}
+                            driverID.child("Address1").setValue(self.address1TextField.text) {(error) in print("Error while Writing Address 1 to Database")}
+                            driverID.child("Address2").setValue(self.address2TextField.text) {(error) in print("Error while Writing Address 2 to Database")}
+                            driverID.child("City").setValue(self.cityTextField.text) {(error) in print("Error while Writing Cty to Database")}
+                            driverID.child("State").setValue(self.stateTextField.text) {(error) in print("Error while Writing State to Database")}
+                            driverID.child("DLNumber").setValue(self.DLNumberTextField.text) {(error) in print("Error while Writing DLNumber to Database")}
+                            driverID.child("DLValidFrom").setValue(self.DLValidFromTextField.text) {(error) in print("Error while Writing DL Valid From to Database")}
+                            driverID.child("DLValidTill").setValue(self.DLValidTillTextField.text) {(error) in print("Error while Writing DL Valid Till to Database")}
+                            driverID.child("PoliceVerified").setValue(self.policeVerifiedTextField.text) {(error) in print("Error while Writing DL Valid From to Database")}
+                            driverID.child("BloodGroup").setValue(self.bloodGroupTextField.text) {(error) in print("Error while Writing Blood Group to Database")}
+                            driverID.child("Active").setValue(self.activeLabel.text) {(error) in print("Error while Writing Active to Database")}
+                        
                         }
                     }
+                    uploadTask.observe(.success, handler: { (snapshot) in
+                        
+                        self.showAlert(title: "Saved", message: "Record Saved Successfully!")
+                        print(snapshot)
+                        self.performSegue(withIdentifier: "driverListSegue", sender: nil)
+                    })
+                    
                 }
-                self.performSegue(withIdentifier: "driverListSegue", sender: nil)
+                
+               self.stopActivity()
+               backButton.isEnabled = true
+               saveButton.isHidden = true
+              // self.performSegue(withIdentifier: "driverListSegue", sender: nil)
             }
         
         }else{
@@ -331,16 +379,44 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     func checkFields() -> Bool{
        
         var checkFlag = true
-        guard let firstName = firstNameTextField.text, let lastName = lastNameTextField.text, let dateOfBirth = dateOfBirthTextField.text , let phoneNumber = phoneNumberTextField.text, let address1 = address1TextField.text, let address2 = address2TextField.text, let city = cityTextField.text, let state = stateTextField.text, let  DLNumber = DLNumberTextField.text, let DLValidFrom = DLValidFromTextField.text, let DLValidTill = DLValidTillTextField.text, let policeVerified = policeVerifiedTextField.text, let bloodGroup = bloodGroupTextField.text else {
-            checkFlag = false
-            showAlert(title: "Error", message: "Please povide all the fields!!")
-            return checkFlag
-        }
+        guard
+            let firstName = firstNameTextField.text,
+            let lastName = lastNameTextField.text,
+            let dateOfBirth = dateOfBirthTextField.text ,
+            let phoneNumber = phoneNumberTextField.text,
+            let address1 = address1TextField.text,
+            let address2 = address2TextField.text,
+            let city = cityTextField.text,
+            let state = stateTextField.text,
+            let  DLNumber = DLNumberTextField.text,
+            let DLValidFrom = DLValidFromTextField.text,
+            let DLValidTill = DLValidTillTextField.text,
+            let policeVerified = policeVerifiedTextField.text,
+            let bloodGroup = bloodGroupTextField.text
+            else {
+                checkFlag = false
+                showAlert(title: "Error", message: "Please povide all the fields!!")
+                return checkFlag
+            }
         
         guard firstName != "", lastName != "", dateOfBirth != "", phoneNumber != "", address1 != "", address2 != "", city != "", state != "", DLNumber != "", DLValidFrom != "", DLValidTill != "", policeVerified != "", bloodGroup != "" else {
             checkFlag = false
              showAlert(title: "Error", message: "Please povide all the fields!!")
             return checkFlag
+        }
+        
+        if state == "---" {
+            checkFlag = false
+            showAlert(title: "Error", message: "Please povide all the fields!!")
+
+        } else if policeVerified == "---" {
+            checkFlag = false
+            showAlert(title: "Error", message: "Please povide all the fields!!")
+
+        }else if bloodGroup == "---"{
+            checkFlag = false
+            showAlert(title: "Error", message: "Please povide all the fields!!")
+
         }
         
         return checkFlag

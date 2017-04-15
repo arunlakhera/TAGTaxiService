@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate{
+class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate,UINavigationControllerDelegate, UIImagePickerControllerDelegate{
 
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var driverImageView: UIImageView!
@@ -30,6 +30,7 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
     @IBOutlet weak var activeSwitch: UISwitch!
     @IBOutlet weak var editButton: UIBarButtonItem!
     @IBOutlet weak var saveButton: UIButton!
+    @IBOutlet weak var backButton: UIBarButtonItem!
     
     var driverKey = ""
     var firstName = "NA"
@@ -50,6 +51,8 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
     // MARK: VARIABLES
     var storage: FIRStorage!
     
+    let imagePicker = UIImagePickerController()
+    var image: UIImage?
     
     // Variable for Date of Birth picker
     let dateOfBirthPicker = UIDatePicker()
@@ -57,32 +60,38 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
     let dateDLValidTillPicker = UIDatePicker()
     
     // Variable to set States Picker
-    var statesArray = ["Andra Pradesh","Arunachal Pradesh","Assam","Bihar","Chhattisgarh","Goa","Gujarat","Haryana","Himachal Pradesh","Jammu and Kashmir","Jharkhand","Karnataka","Kerala","Madya Pradesh","Maharashtra","Manipur","Meghalaya","Mizoram","Nagaland","Orissa","Punjab","Rajasthan","Sikkim","Tamil Nadu","Tripura","Uttaranchal","Uttar Pradesh","West Bengal"]
+    var statesArray = ["---","Andra Pradesh","Arunachal Pradesh","Assam","Bihar","Chhattisgarh","Goa","Gujarat","Haryana","Himachal Pradesh","Jammu and Kashmir","Jharkhand","Karnataka","Kerala","Madya Pradesh","Maharashtra","Manipur","Meghalaya","Mizoram","Nagaland","Orissa","Punjab","Rajasthan","Sikkim","Tamil Nadu","Tripura","Uttaranchal","Uttar Pradesh","West Bengal"]
     let statesPicker = UIPickerView()
     
-    var policeVerfiedArray = ["Yes","No"]
+    var policeVerfiedArray = ["---","Yes","No"]
     let policeVerifiedPicker = UIPickerView()
     
-    var bloodGroupArray = ["O+","O-","A+","A-","B+","B-","AB+","AB-"]
+    var bloodGroupArray = ["---","O+","O-","A+","A-","B+","B-","AB+","AB-"]
     let bloodGroupPicker = UIPickerView()
     
-    
-    var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
+    var activityIndicator: UIActivityIndicatorView!
     
     func startActivity(){
         
-        activityIndicator.center = self.view.center
+        activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+        activityIndicator.frame = CGRect(x: 150, y: 330, width: 100, height: 100)
+        activityIndicator.center = view.center
+        activityIndicator.backgroundColor = UIColor.white
+        activityIndicator.color = UIColor.yellow
         activityIndicator.hidesWhenStopped = true
-        activityIndicator.activityIndicatorViewStyle = .gray
-        view.addSubview(activityIndicator)
+        self.view.addSubview(activityIndicator)
+        
+        backButton.isEnabled = true
+        activityIndicator.isHidden = false
         activityIndicator.startAnimating()
+        UIApplication.shared.beginIgnoringInteractionEvents()
         
     }
     
     func stopActivity(){
-        
+        activityIndicator.isHidden = true
         activityIndicator.stopAnimating()
-        
+        UIApplication.shared.endIgnoringInteractionEvents()
     }
     
     override func viewDidLoad() {
@@ -90,6 +99,7 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
 
         storage = FIRStorage.storage()
         
+        imagePicker.delegate = self
         firstNameTextField.delegate = self
         lastNameTextField.delegate = self
         dateOfBirthTextField.delegate = self
@@ -141,6 +151,8 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
         
         saveButton.isHidden = true
         
+        self.startActivity()
+        
         firstNameTextField.text = firstName
         lastNameTextField.text = lastName
         dateOfBirthTextField.text = dateOfBirth
@@ -166,25 +178,30 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
         
         activeLabel.text = active
      
+        if active == "No"{
+            activeSwitch.isOn = false
+        }else{
+            activeSwitch.isOn = true
+        }
+        
         for bg in bloodGroupArray{
             if bg == driverBloodGroup{
                 bloodGroupTextField.text = bg
             }
         }
-        
-       // IMAGE LOAD FOR DRIVER
-        
-        let driverImageRef = DataService.ds.REF_DRIVER.child("\(driverKey)").child("ImageURL")
-        driverImageRef.observe(.value, with: { (snapshot) in
-            let downloadURL = snapshot.value as? String
-            let storageRef = self.storage.reference(forURL: downloadURL!)
-            storageRef.data(withMaxSize: 1 * 1024 * 1024, completion: { (data, error) in
-                let pic = UIImage(data: data!)
+    
+        let driverImageRef = DataService.ds.REF_DRIVER_IMAGE.child("\(String(describing: driverKey))")
+        driverImageRef.data(withMaxSize: 1 * 1024 * 1024, completion: { (data, error) in
+            if let pic = UIImage(data: data!){
                 self.driverImageView.image = pic
-                
-            })
+
+            }else{
+                self.driverImageView.image = UIImage(named: "PhotoAvatarJPG.jpg")
+
+            }
         })
         
+        self.stopActivity()
         
         // END IMAGE LOAD FOR DRIVER
         
@@ -208,6 +225,58 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
         
     }
 
+    // MARK: ACTIONS
+    
+    @IBAction func uploadButtonClicked(_ sender: Any) {
+        
+        // Upload Image of Driver
+        let actionSheet = UIAlertController(title: "Upload Photo", message: "Choose a Source", preferredStyle: .actionSheet)
+        
+        actionSheet.addAction(UIAlertAction(title: "Camera", style: .default, handler: { (action: UIAlertAction) in
+            
+            if UIImagePickerController.isSourceTypeAvailable(.camera){
+                
+                self.imagePicker.sourceType = .camera
+                self.present(self.imagePicker, animated: true, completion: nil)
+            }else{
+                self.showAlert(title: "Camera Alert", message: "Camera is Not Available!")            }
+        }))
+        
+        actionSheet.addAction(UIAlertAction(title: "Photo Library", style: .default, handler: { (action: UIAlertAction) in
+            
+            if UIImagePickerController.isSourceTypeAvailable(.photoLibrary){
+                self.imagePicker.sourceType = .photoLibrary
+                
+                self.present(self.imagePicker, animated: true, completion: nil)
+            }else{
+                self.showAlert(title: "Photo Library Alert", message: "Photo Library is Not Available!")
+            }
+        }))
+        
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
+        self.present(actionSheet, animated: true, completion: nil)
+        
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        
+        if let driverImage = info[UIImagePickerControllerOriginalImage] as? UIImage{
+            
+            driverImageView.image = driverImage
+            self.dismiss(animated: true, completion: nil)
+            
+        }else{
+            //Error
+            self.showAlert(title: "Image Error", message: "Error in presenting the Image")
+        }
+        
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    
     func dateDLValidFromPickerValueChanged(_ sender: UIDatePicker){
       let dateformatter = DateFormatter()
      dateformatter.dateFormat = "dd-MM-YYYY"
@@ -350,55 +419,67 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
         {
             if checkFields(){
                 startActivity()
+                
                 let driver = DataService.ds.REF_DRIVER.child(driverKey)
                 
-                driver.child("FirstName").setValue(firstNameTextField.text)
-                driver.child("LastName").setValue(lastNameTextField.text)
-                driver.child("PhoneNumber").setValue(phoneNumberTextField.text)
-                driver.child("DateOfBirth").setValue(dateOfBirthTextField.text)
-                driver.child("Address1").setValue(address1TextField.text)
-                driver.child("Address2").setValue(address2TextField.text)
-                driver.child("City").setValue(cityTextField.text)
-                driver.child("State").setValue(stateTextField.text)
-                driver.child("DLNumber").setValue(DLNumberTextField.text)
-                driver.child("DLValidFrom").setValue(DLValidFromTextField.text)
-                driver.child("DLValidTill").setValue(DLValidTillTextField.text)
-                driver.child("PoliceVerified").setValue(policeVerifiedTextField.text)
-                driver.child("BloodGroup").setValue(bloodGroupTextField.text)
-                driver.child("Active").setValue(activeLabel.text)
                 
-                // Enable Edit Button once changes have been saved
-                editButton.isEnabled = true
-                saveButton.isHidden = true
-                stopActivity()
-                
-                guard let image = driverImageView.image else{
-                    print("Need to select an image")
-                    return
+                if let driverImage = driverImageView.image {
+                    image = driverImage
+                }else{
+                    image = UIImage(named: "PhotoAvatar.png")
                 }
                 
                 let driverIDWithPath = String(describing: driverKey)
                 let driverPath = String(describing: DataService.ds.REF_DRIVER)
                 let driverImageID = driverIDWithPath.replacingOccurrences(of: driverPath, with: "")
                 
-                if let imgData = UIImageJPEGRepresentation(image, 0.2){
+                if let imgData = UIImageJPEGRepresentation(image!, 0.2){
                     let metadata = FIRStorageMetadata()
                     metadata.contentType = "image/jpeg"
                     
-                    DataService.ds.REF_DRIVER_IMAGE.child("\(driverImageID)").put(imgData, metadata: metadata) { (metadata, error) in
+                    let uploadTask = DataService.ds.REF_DRIVER_IMAGE.child("\(driverImageID)").put(imgData, metadata: metadata) { (metadata, error) in
                         
                         if error != nil{
                             print("Unable to upload image")
                         }else{
                             print("Successfully Uploaded image")
+                            
                             let downloadURL = metadata?.downloadURL()?.absoluteString
                             let driverID = DataService.ds.REF_DRIVER.child("\(self.driverKey)")
-                            driverID.child("ImageURL").setValue(downloadURL)
+                            
+                            driverID.child("ImageURL").setValue(downloadURL) {(error) in print("Error while Writing Image URL to Database")}
+                            driver.child("FirstName").setValue(self.firstNameTextField.text) {(error) in print("Error while Writing First Name to Database")}
+                            driver.child("LastName").setValue(self.lastNameTextField.text) {(error) in print("Error while Writing Last Name to Database")}
+                            driver.child("PhoneNumber").setValue(self.phoneNumberTextField.text) {(error) in print("Error while Writing Phone Number to Database")}
+                            driver.child("DateOfBirth").setValue(self.dateOfBirthTextField.text) {(error) in print("Error while Writing Date Of Birth to Database")}
+                            driver.child("Address1").setValue(self.address1TextField.text) {(error) in print("Error while Writing Address 1 to Database")}
+                            driver.child("Address2").setValue(self.address2TextField.text) {(error) in print("Error while Writing Address 2 to Database")}
+                            driver.child("City").setValue(self.cityTextField.text) {(error) in print("Error while Writing City to Database")}
+                            driver.child("State").setValue(self.stateTextField.text) {(error) in print("Error while Writing State to Database")}
+                            driver.child("DLNumber").setValue(self.DLNumberTextField.text) {(error) in print("Error while Writing DL Number to Database")}
+                            driver.child("DLValidFrom").setValue(self.DLValidFromTextField.text) {(error) in print("Error while Writing DL Valid From to Database")}
+                            driver.child("DLValidTill").setValue(self.DLValidTillTextField.text) {(error) in print("Error while Writing DL Valid Till to Database")}
+                            driver.child("PoliceVerified").setValue(self.policeVerifiedTextField.text) {(error) in print("Error while Writing Police Verified to Database")}
+                            driver.child("BloodGroup").setValue(self.bloodGroupTextField.text) {(error) in print("Error while Writing Blood Group to Database")}
+                            driver.child("Active").setValue(self.activeLabel.text) {(error) in print("Error while Writing Active to Database")}
+                            
+                            
                         }
                     }
+                    
+                    uploadTask.observe(.success, handler: { (snapshot) in
+                        
+                        self.showAlert(title: "Saved", message: "Record Saved Successfully!")
+                        
+                    })
                 }
                 
-                self.performSegue(withIdentifier: "driverListSegue", sender: nil)
+                // Enable Edit Button once changes have been saved
+                editButton.isEnabled = true
+                saveButton.isHidden = true
+                backButton.isEnabled = true
+                stopActivity()
+                //self.performSegue(withIdentifier: "driverListSegue", sender: nil)
                 
             }
             
@@ -422,7 +503,20 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
             showAlert(title: "Error", message: "Please povide all the fields!!")
             return checkFlag
         }
-        
+        if state == "---" {
+            checkFlag = false
+            showAlert(title: "Error", message: "Please povide all the fields!!")
+            
+        } else if policeVerified == "---" {
+            checkFlag = false
+            showAlert(title: "Error", message: "Please povide all the fields!!")
+            
+        }else if bloodGroup == "---"{
+            checkFlag = false
+            showAlert(title: "Error", message: "Please povide all the fields!!")
+            
+        }
+
         return checkFlag
     }
 

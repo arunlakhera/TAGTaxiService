@@ -21,7 +21,8 @@ class DataService{
      private var _REF_VEHICLE = TAGBase.child("VEHICLE")
      private var _REF_DRIVER = TAGBase.child("DRIVER")
      private var _REF_DRIVER_IMAGE = TAGStorageBase.child("driverPics")
-   
+    private var _REF_VEHICLE_IMAGE = TAGStorageBase.child("vehiclePics")
+    
     var REF_RIDER: FIRDatabaseReference{
         return _REF_RIDER
     }
@@ -40,5 +41,7 @@ class DataService{
     var REF_DRIVER_IMAGE: FIRStorageReference{
         return _REF_DRIVER_IMAGE
     }
-    
+    var REF_VEHICLE_IMAGE: FIRStorageReference{
+        return _REF_VEHICLE_IMAGE
+    }
 }

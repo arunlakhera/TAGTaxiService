@@ -24,6 +24,7 @@ class Vehicle{
     private var _mileage: String!
     private var _lastServiceDate: String!
     private var _isActiveFlag: String!
+    private var _imageURL: String!
    
     var vehicleID: String?{ return _vehicleID}
     var companyName: String?{ return _companyName}
@@ -39,9 +40,10 @@ class Vehicle{
     var mileage: String?{ return _mileage}
     var lastServiceDate: String?{ return _lastServiceDate}
     var isActiveFlag: String?{ return _isActiveFlag}
+    var imageURL: String?{ return _imageURL }
    
     
-    init(vehicleID: String, companyName: String, modelName: String, vehicleNumber: String, vehicleType: String, registrationNumber: String, modelYear: String, insuranceNumber: String, insurnaceExpDate: String, pollutionCertNumber: String, pollutionCertExpDate: String, mileage: String, lastServiceDate: String, isActiveFlag: String) {
+    init(vehicleID: String, companyName: String, modelName: String, vehicleNumber: String, vehicleType: String, registrationNumber: String, modelYear: String, insuranceNumber: String, insurnaceExpDate: String, pollutionCertNumber: String, pollutionCertExpDate: String, mileage: String, lastServiceDate: String, isActiveFlag: String, imageURL: String) {
         
         self._vehicleID = vehicleID
         self._companyName = companyName
@@ -57,6 +59,7 @@ class Vehicle{
         self._mileage = mileage
         self._lastServiceDate = lastServiceDate
         self._isActiveFlag = isActiveFlag
+        self._imageURL = imageURL
         
     }
     
@@ -76,6 +79,7 @@ class Vehicle{
         if let mileage = dictionary["Mileage"] as? String{ self._mileage = mileage }
         if let lastServiceDate = dictionary["LastServiceDate"] as? String{ self._lastServiceDate = lastServiceDate }
         if let isActiveFlag = dictionary["Active"] as? String{ self._isActiveFlag = isActiveFlag }
+        if let imageURL = dictionary["ImageURL"] as? String{ self._imageURL = imageURL }
         
     }
     

@@ -13,6 +13,8 @@ class VehicleViewController: UIViewController, UITableViewDelegate,UITableViewDa
 
     @IBOutlet weak var tableView: UITableView!
     var vehicleList = [Vehicle]()
+    var storage: FIRStorage!
+    var vehicleKey = ""
     
      override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,6 +33,7 @@ class VehicleViewController: UIViewController, UITableViewDelegate,UITableViewDa
                     if let vehicleDict = snap.value as? Dictionary<String, String>{
                         
                         let vehicle = Vehicle(vehicleID: snap.key, dictionary: vehicleDict as Dictionary<String, AnyObject>)
+                        self.vehicleKey = vehicle.vehicleID!
                         self.vehicleList.append(vehicle)
                     }
                 }
@@ -73,20 +76,20 @@ class VehicleViewController: UIViewController, UITableViewDelegate,UITableViewDa
                 print("====ip \(ip)")
                 let vehicle = vehicleList[ip]
                 
-                destinationVC.vehicleID = vehicle.vehicleID!
-                destinationVC.vehicleCompanyName = vehicle.companyName!
-                destinationVC.vehicleNumber = vehicle.vehicleNumber!
-                destinationVC.vehicleRegistrationNumber = vehicle.registrationNumber!
-                destinationVC.vehicleType1 = vehicle.vehicleType!
-                destinationVC.vehicleModelName = vehicle.modelName!
-                destinationVC.vehicleModelYear = vehicle.modelYear!
-                destinationVC.insuranceNumber = vehicle.insuranceNumber!
-                destinationVC.insuranceExpiryDate = vehicle.insurnaceExpDate!
-                destinationVC.pollutionCertificateNumber = vehicle.pollutionCertNumber!
-                destinationVC.pollutionCertificateExpiryDate = vehicle.pollutionCertExpDate!
-                destinationVC.mileage = vehicle.mileage!
-                destinationVC.lastServiceDate = vehicle.lastServiceDate!
-                destinationVC.active = vehicle.isActiveFlag!
+                destinationVC.vehicleKey = vehicle.vehicleID!
+                destinationVC.vehicleCompanyName = vehicle.companyName != nil ? vehicle.companyName! : "Not Available"
+                destinationVC.vehicleNumber = vehicle.vehicleNumber != nil ? vehicle.vehicleNumber! : "Not Available"
+                destinationVC.vehicleRegistrationNumber = vehicle.registrationNumber != nil ? vehicle.registrationNumber! : "Not Available"
+                destinationVC.vehicleType1 = vehicle.vehicleType != nil ? vehicle.vehicleType! : "Not Available"
+                destinationVC.vehicleModelName = vehicle.modelName != nil ? vehicle.modelName! : "Not Available"
+                destinationVC.vehicleModelYear = vehicle.modelYear != nil ? vehicle.modelYear! : "Not Available"
+                destinationVC.insuranceNumber = vehicle.insuranceNumber != nil ? vehicle.insuranceNumber! : "Not Available"
+                destinationVC.insuranceExpiryDate = vehicle.insurnaceExpDate != nil ? vehicle.insurnaceExpDate! : "Not Available"
+                destinationVC.pollutionCertificateNumber = vehicle.pollutionCertNumber != nil ? vehicle.pollutionCertNumber! : "Not Available"
+                destinationVC.pollutionCertificateExpiryDate = vehicle.pollutionCertExpDate != nil ? vehicle.pollutionCertExpDate! : "Not Available"
+                destinationVC.mileage = vehicle.mileage != nil ? vehicle.mileage! : "Not Available"
+                destinationVC.lastServiceDate = vehicle.lastServiceDate != nil ? vehicle.lastServiceDate! : "Not Available"
+                destinationVC.active = vehicle.isActiveFlag != nil ? vehicle.isActiveFlag! : "Not Available"
                
             }
         }

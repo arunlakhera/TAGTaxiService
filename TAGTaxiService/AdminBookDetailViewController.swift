@@ -61,7 +61,7 @@ class AdminBookDetailViewController: UIViewController, UITextFieldDelegate {
         noOfTravellersLabel.text = bookNoOfTravellers
         statusText.text = bookStatus
         amountText.text = bookAmount
-        vehicleText.text = "\(bookVehicleType)->\(bookVehicle)"
+        vehicleText.text = "\(bookVehicleType) \(bookVehicle)"
         
         statusText.isEnabled = false
         
