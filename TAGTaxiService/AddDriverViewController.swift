@@ -310,6 +310,8 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
             if checkFields(){
                 self.startActivity()
                 
+                var completeFlag = false
+                
                 let driverID = DataService.ds.REF_DRIVER.childByAutoId()
                 let formatter = DateFormatter()
                 formatter.dateFormat = "dd-MMM-YYYY"
@@ -357,8 +359,9 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
                     uploadTask.observe(.success, handler: { (snapshot) in
                         
                         self.showAlert(title: "Saved", message: "Record Saved Successfully!")
+                        completeFlag = true
                         print(snapshot)
-                        self.performSegue(withIdentifier: "driverListSegue", sender: nil)
+                        
                     })
                     
                 }
@@ -366,6 +369,9 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
                self.stopActivity()
                backButton.isEnabled = true
                saveButton.isHidden = true
+                if completeFlag == true {
+                    self.performSegue(withIdentifier: "driverListSegue", sender: nil)
+                }
               // self.performSegue(withIdentifier: "driverListSegue", sender: nil)
             }
         

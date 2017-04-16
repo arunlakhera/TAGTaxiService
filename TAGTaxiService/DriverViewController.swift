@@ -56,7 +56,7 @@ class DriverViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let cell = tableView.dequeueReusableCell(withIdentifier: "driverCell", for: indexPath) as? DriverListTableViewCell
         let driver = driverList[indexPath.row]
         
-        cell?.nameLabel.text = driver.firstName! + " " + driver.lastName!
+        cell?.nameLabel.text = (driver.firstName != nil ? driver.firstName! : "First Name"  ) + " " + (driver.lastName != nil ? driver.lastName! : "Last Name"  )
         cell?.phoneNumberLabel.text = driver.phoneNumber
       
         

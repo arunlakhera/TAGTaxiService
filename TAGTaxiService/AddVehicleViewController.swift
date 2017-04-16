@@ -230,7 +230,7 @@ class AddVehicleViewController: UIViewController, UIPickerViewDelegate,UIPickerV
     
     @IBAction func uploadPhoto(_ sender: UIButton) {
         
-        // Upload Image of Driver
+        // Upload Image of Vehicle
         let actionSheet = UIAlertController(title: "Upload Photo", message: "Choose a Source", preferredStyle: .actionSheet)
         
         actionSheet.addAction(UIAlertAction(title: "Camera", style: .default, handler: { (action: UIAlertAction) in
