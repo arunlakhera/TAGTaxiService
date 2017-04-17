@@ -153,7 +153,6 @@ class BookingStatusListViewController: UIViewController, UITableViewDelegate, UI
                 
                 let ip = (self.tableView.indexPathForSelectedRow?.row)!
                 let book = bookings.reversed()[ip]
-                
                 destinationVC.bookKey = book.bookingID!
                 
                 if self.riderName.characters.count > 0{
@@ -170,7 +169,6 @@ class BookingStatusListViewController: UIViewController, UITableViewDelegate, UI
                 destinationVC.bookNoOfTravellers = book.noOfTravellers!
                 destinationVC.bookAmount = book.amount!
                 destinationVC.bookStatus = book.status!.capitalized
-                
                 
                 if book.status! == "Quoted"{
                     destinationVC.bookStatus = "Quote Received"

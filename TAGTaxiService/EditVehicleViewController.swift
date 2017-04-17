@@ -82,6 +82,7 @@ class EditVehicleViewController: UIViewController, UIPickerViewDelegate,UIPicker
         activityIndicator.color = UIColor.yellow
         activityIndicator.hidesWhenStopped = true
         self.view.addSubview(activityIndicator)
+      
         backButton.isEnabled = false
         activityIndicator.isHidden = false
         activityIndicator.startAnimating()
@@ -388,6 +389,8 @@ class EditVehicleViewController: UIViewController, UIPickerViewDelegate,UIPicker
         {
             if checkfield(){
                 
+                let vehicleID = DataService.ds.REF_VEHICLE.child("\(self.vehicleKey)")
+                
                 let formatter = DateFormatter()
                 formatter.dateFormat = "dd-MMM-YYYY"
                 
@@ -412,7 +415,6 @@ class EditVehicleViewController: UIViewController, UIPickerViewDelegate,UIPicker
                         }else{
                             print("Successfully Uploaded image")
                             let downloadURL = metadata?.downloadURL()?.absoluteString
-                            let vehicleID = DataService.ds.REF_VEHICLE.child("\(self.vehicleKey)")
                             
                             vehicleID.child("ImageURL").setValue(downloadURL) {(error) in print("Error while Writing Image URL to Database")}
                             vehicleID.child("CompanyName").setValue(self.vehicleCompanyNameTextField.text) {(error) in print("Error while Writing Company Name to Database")}

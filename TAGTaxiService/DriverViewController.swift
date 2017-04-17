@@ -56,9 +56,7 @@ class DriverViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let cell = tableView.dequeueReusableCell(withIdentifier: "driverCell", for: indexPath) as? DriverListTableViewCell
         let driver = driverList[indexPath.row]
         
-        cell?.nameLabel.text = (driver.firstName != nil ? driver.firstName! : "First Name"  ) + " " + (driver.lastName != nil ? driver.lastName! : "Last Name"  )
-        cell?.phoneNumberLabel.text = driver.phoneNumber
-      
+        
         
         let driverImageRef = DataService.ds.REF_DRIVER_IMAGE.child("\(String(describing: driver.driverID!))")
         driverImageRef.data(withMaxSize: 1 * 1024 * 1024, completion: { (data, error) in
@@ -69,12 +67,17 @@ class DriverViewController: UIViewController, UITableViewDelegate, UITableViewDa
             }else{
                 cell?.driverImage.image = UIImage(named: "PhotoAvatarJPG.jpg")
             }
+            cell?.nameLabel.text = (driver.firstName != nil ? driver.firstName! : "First Name"  ) + " " + (driver.lastName != nil ? driver.lastName! : "Last Name"  )
+            cell?.phoneNumberLabel.text = driver.phoneNumber
+            cell?.DLValidTill.text = driver.drivingLicenseValidTill
+            
         })
         
         return cell!
         
     }
 
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "driverEditSegue"{
             if let destinationVC = segue.destination as? EditDriverViewController{
@@ -96,8 +99,6 @@ class DriverViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 destinationVC.driverBloodGroup = driver.bloodGroup  != nil ? driver.bloodGroup! : "Not Available"
                 destinationVC.policeVerified = driver.policeVerified != nil ? driver.policeVerified! : "Not Available"
                 destinationVC.active = driver.active != nil ? driver.active! : "Not Available"
-                
-                
                 
             }
         }

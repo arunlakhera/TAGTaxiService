@@ -59,11 +59,10 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     
     
     func startActivity(){
-        
         activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
         activityIndicator.frame = CGRect(x: 150, y: 330, width: 100, height: 100)
         activityIndicator.center = view.center
-        activityIndicator.backgroundColor = UIColor.white
+        activityIndicator.backgroundColor = UIColor.red
         activityIndicator.color = UIColor.yellow
         activityIndicator.hidesWhenStopped = true
         self.scrollView.addSubview(activityIndicator)
@@ -76,6 +75,8 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     }
     
     func stopActivity(){
+        
+       
         activityIndicator.isHidden = true
         activityIndicator.stopAnimating()
         UIApplication.shared.endIgnoringInteractionEvents()
@@ -154,8 +155,14 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
         let dateformatter = DateFormatter()
         dateformatter.dateFormat = "dd-MM-YYYY"
         
-        DLValidTillTextField.text = dateformatter.string(from: sender.date)
-         self.view.endEditing(true)
+        let DLValidFrom = DLValidFromTextField.text
+        let validFrom = dateformatter.date(from: DLValidFrom!)
+        if ((sender.date).compare(validFrom!).rawValue > 0){
+            DLValidTillTextField.text = dateformatter.string(from: sender.date)
+            self.view.endEditing(true)
+        }else{
+            self.showAlert(title: "Error", message: "DL Valid Till Date cannot be before DL Valid From Date")
+        }
     }
 
     func datePickerValueChanged(_ sender: UIDatePicker){
@@ -369,7 +376,7 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
                self.stopActivity()
                backButton.isEnabled = true
                saveButton.isHidden = true
-                if completeFlag == true {
+                if completeFlag {
                     self.performSegue(withIdentifier: "driverListSegue", sender: nil)
                 }
               // self.performSegue(withIdentifier: "driverListSegue", sender: nil)

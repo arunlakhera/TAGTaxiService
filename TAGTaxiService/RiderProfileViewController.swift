@@ -34,11 +34,12 @@ class RiderProfileViewController: UIViewController, /*UINavigationControllerDele
     let riderProfile = DataService.ds.REF_RIDER.child(AuthService.instance.riderID!).child("Profile")
     
 // Variable to set Gender picker
-    var gender = ["Male","Female"]
+    var gender = ["---","Male","Female"]
     let genderPicker = UIPickerView()
     
     // Variable to set States Picker
-    var states = ["Andra Pradesh","Arunachal Pradesh","Assam","Bihar","Chhattisgarh","Goa","Gujarat","Haryana","Himachal Pradesh","Jammu and Kashmir","Jharkhand","Karnataka","Kerala","Madya Pradesh","Maharashtra","Manipur","Meghalaya","Mizoram","Nagaland","Orissa","Punjab","Rajasthan","Sikkim","Tamil Nadu","Tripura","Uttaranchal","Uttar Pradesh","West Bengal"]
+    var states = ["---","Andra Pradesh","Arunachal Pradesh","Assam","Bihar","Chhattisgarh","Goa","Gujarat","Haryana","Himachal Pradesh","Jammu and Kashmir","Jharkhand","Karnataka","Kerala","Madya Pradesh","Maharashtra","Manipur","Meghalaya","Mizoram","Nagaland","Orissa","Punjab","Rajasthan","Sikkim","Tamil Nadu","Tripura","Uttaranchal","Uttar Pradesh","West Bengal"]
+    
     let statesPicker = UIPickerView()
 
     // Variable for Date of Birth picker
@@ -218,21 +219,7 @@ class RiderProfileViewController: UIViewController, /*UINavigationControllerDele
                 if let gender = rider.gender { self.genderTextField.text = gender}
                 if let emailID = rider.emailID { self.emailIDTextField.text = emailID}
                 
-                // Profile Photo
-                
-               /* let imagePath = FIRAuth.auth()!.currentUser!.uid + "/\(riderID).jpg"
-                
-                self.storageRef.child(imagePath).data(withMaxSize: 5 * 1024 * 1024, completion: { (data, error) in
-                    
-                    if error != nil{
-                            print("Error occured while downloading image")
-                    }else{
-                            print("Image Downloaded Successfully")
-                            let image = UIImage(data: data!)
-                            self.riderPhotoImageView.image = image
-                   }
-                })
-             */
+           
             }
         })
         
@@ -240,58 +227,7 @@ class RiderProfileViewController: UIViewController, /*UINavigationControllerDele
         enableFields()
         
     }
-    /*
-    @IBAction func uploadPhotoButton(_ sender: Any) {
-     
-       
-        image.delegate = self
-        
-        let actionSheet = UIAlertController(title: "Upload Photo", message: "Choose a Source", preferredStyle: .actionSheet)
-        
-        actionSheet.addAction(UIAlertAction(title: "Camera", style: .default, handler: { (action: UIAlertAction) in
-            
-            if UIImagePickerController.isSourceTypeAvailable(.camera){
-                self.image.sourceType = .camera
-                self.present(self.image, animated: true, completion: nil)
-            }else{
-                self.showAlert(title: "Camera Alert", message: "Camera is Not Available!")            }
-        }))
-        
-        actionSheet.addAction(UIAlertAction(title: "Photo Library", style: .default, handler: { (action: UIAlertAction) in
-            
-            if UIImagePickerController.isSourceTypeAvailable(.photoLibrary){
-                self.image.sourceType = .photoLibrary
-                self.present(self.image, animated: true, completion: nil)
-            }else{
-                self.showAlert(title: "Photo Library Alert", message: "Photo Library is Not Available!")
-            }
-        }))
-        
-        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
-        self.present(actionSheet, animated: true, completion: nil)
-        
-    }
- */
-    /*
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        
-        if  let image = info[UIImagePickerControllerOriginalImage] as? UIImage
-        {
-            riderPhotoImageView.image = image
-            
-        }else{
-            // Error
-            self.showAlert(title: "Error", message: "Error in presenting the Image")
-        }
-        self.dismiss(animated: true, completion: nil)
-
-    }
-    
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        self.dismiss(animated: true, completion: nil)
-    }
-    */
-    // Action to save the riders profile in firebase
+       // Action to save the riders profile in firebase
     @IBAction func saveButton(_ sender: Any) {
         
         if Reachability.isConnectedToNetwork() == true
@@ -314,20 +250,6 @@ class RiderProfileViewController: UIViewController, /*UINavigationControllerDele
                 riderProfile.child("CreatedBy").setValue(AuthService.instance.riderEmail!)
                 riderProfile.child("UpdatedBy").setValue(AuthService.instance.riderEmail!)
             
-          //  guard let imageData = UIImageJPEGRepresentation(riderPhotoImageView.image!, 0.8) else { return }
-           
-            //let imagePath = FIRAuth.auth()!.currentUser!.uid + "/\(riderID).jpg"
-            
-            //let metadata = FIRStorageMetadata()
-            //metadata.contentType = "image/jpeg"
-            //self.storageRef.child(imagePath).put(imageData, metadata: metadata) { (metadata, error) in
-              //      if let error = error {
-                //        print("Error uploading: \(error)")
-                       // self.urlTextView.text = "Upload Failed"
-                  //      return
-                    //}
-                    //self.uploadSuccess(metadata!, storagePath: imagePath)
-            //}
             }
         
         self.performSegue(withIdentifier: "riderToMainSegue", sender: nil)
@@ -338,15 +260,6 @@ class RiderProfileViewController: UIViewController, /*UINavigationControllerDele
         }
     }
 
-    /*
-    func uploadSuccess(_ metadata: FIRStorageMetadata, storagePath: String) {
-       
-        print("Upload Succeeded!")
-        UserDefaults.standard.set(storagePath, forKey: "storagePath")
-        UserDefaults.standard.synchronize()
-       
-    }
-    */
     func checkFields() -> Bool{
    
         var checkFlag = false

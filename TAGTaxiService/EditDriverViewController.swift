@@ -76,16 +76,17 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
         activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
         activityIndicator.frame = CGRect(x: 150, y: 330, width: 100, height: 100)
         activityIndicator.center = view.center
-        activityIndicator.backgroundColor = UIColor.white
+        activityIndicator.backgroundColor = UIColor.red
         activityIndicator.color = UIColor.yellow
         activityIndicator.hidesWhenStopped = true
-        self.view.addSubview(activityIndicator)
-        
-        backButton.isEnabled = true
         activityIndicator.isHidden = false
         activityIndicator.startAnimating()
-        UIApplication.shared.beginIgnoringInteractionEvents()
         
+        self.view.addSubview(activityIndicator)
+        
+        backButton.isEnabled = false
+        self.showAlert(title: "START", message: "STARTED")
+        UIApplication.shared.beginIgnoringInteractionEvents()
     }
     
     func stopActivity(){

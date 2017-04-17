@@ -31,13 +31,13 @@ class MainMenuViewController: UIViewController, CLLocationManagerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        leadingConstraint.constant = -170
+        
         // Menu Properties
         menuView.layer.shadowOpacity = 1
         menuView.layer.shadowRadius = 6
-        
-       // AuthService.instance.riderID = riderID
-        //AuthService.instance.riderEmail = riderEmail
-        
+     
         manager.delegate = self
         manager.desiredAccuracy = kCLLocationAccuracyBest
         manager.requestWhenInUseAuthorization()

@@ -22,11 +22,12 @@ class AdminMainBookingViewController: UIViewController {
     @IBOutlet weak var cancelledCountButton: UIButton!
     @IBOutlet weak var completedCountButton: UIButton!
     
-    
     @IBOutlet weak var driverButton: UIButton!
-    //@IBOutlet weak var bookingButton: UIButton!
     @IBOutlet weak var vehicleButton: UIButton!
     @IBOutlet weak var moreButton: UIButton!
+    
+    @IBOutlet weak var leadingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var menuView: UIView!
     
     
     // MARK: Variables
@@ -38,42 +39,25 @@ class AdminMainBookingViewController: UIViewController {
     var completedCount = 0
     
     var driverButtonCenter: CGPoint!
-    //var bookingButtonCenter: CGPoint!
     var vehicleButtonCenter: CGPoint!
-    
-    var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
-    
-    func startActivity(){
-        
-        activityIndicator.center = self.view.center
-        activityIndicator.hidesWhenStopped = true
-        activityIndicator.activityIndicatorViewStyle = .gray
-        activityIndicator.isHidden = false
-        view.addSubview(activityIndicator)
-        activityIndicator.startAnimating()
-        
-    }
-    
-    func stopActivity(){
-        //activityIndicator.isHidden = true
-        activityIndicator.stopAnimating()
-    }
+    var menuShow = true
     
     override func viewWillAppear(_ animated: Bool) {
         driverButtonCenter = driverButton.center
-        //bookingButtonCenter = bookingButton.center
         vehicleButtonCenter = vehicleButton.center
         
         driverButton.center = moreButton.center
-       // bookingButton.center = moreButton.center
         vehicleButton.center = moreButton.center
 
-      //  toggleButtonImage(button: bookingButton, onImage: #imageLiteral(resourceName: "BookingsButtonOn"), offImage: #imageLiteral(resourceName: "BookingsButtonOff"))
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.startActivity()
+       
+        // Menu Properties
         
+        leadingConstraint.constant = -170
+        menuView.layer.shadowOpacity = 1
+        menuView.layer.shadowRadius = 4
         
         DataService.ds.REF_RIDEBOOKING.observe(.value, with: { (snapshot) in
             if let snapshots = snapshot.children.allObjects as? [FIRDataSnapshot]{
@@ -114,13 +98,25 @@ class AdminMainBookingViewController: UIViewController {
         }) { (error) in
             print("Error Occured while calculating Admin data")
         }
-    
-        self.stopActivity()
         
     }
+    
+    @IBAction func menuButton(_ sender: Any){
+        if(menuShow){
+            leadingConstraint.constant = 0
+            
+        }else{
+            leadingConstraint.constant = -170
+            
+            UIView.animate(withDuration: 0.5, animations: {
+                self.view.layoutIfNeeded()
+            })
+        }
+        menuShow = !menuShow
+    }
+    
 
     @IBAction func pendingButton(_ sender: UIButton) {
-  
         bookingStatusList = "Pending"
         self.performSegue(withIdentifier: "adminBookListSegue", sender: nil)
     }
@@ -200,41 +196,19 @@ class AdminMainBookingViewController: UIViewController {
     
     @IBAction func driverButtonClicked(_ sender: UIButton) {
         toggleButtonImage(button: driverButton , onImage: #imageLiteral(resourceName: "DriverButtonOn"), offImage: #imageLiteral(resourceName: "DriverButtonOff"))
-        /*
-        if bookingButton.currentImage == #imageLiteral(resourceName: "BookingsButtonOn"){
-        toggleButtonImage(button: bookingButton, onImage: #imageLiteral(resourceName: "BookingsButtonOn"), offImage: #imageLiteral(resourceName: "BookingsButtonOff"))
-        }
-        */
         if vehicleButton.currentImage == #imageLiteral(resourceName: "VehicleButtonOn"){
             toggleButtonImage(button: vehicleButton, onImage: #imageLiteral(resourceName: "VehicleButtonOn"), offImage: #imageLiteral(resourceName: "VehicleButtonOff"))
         }
         
         
     }
-  /*
-    @IBAction func bookingButtonClicked(_ sender: UIButton) {
-        toggleButtonImage(button: bookingButton, onImage: #imageLiteral(resourceName: "BookingsButtonOn"), offImage: #imageLiteral(resourceName: "BookingsButtonOff"))
-        
-        if driverButton.currentImage == #imageLiteral(resourceName: "DriverButtonOn"){
-            toggleButtonImage(button: driverButton , onImage: #imageLiteral(resourceName: "DriverButtonOn"), offImage: #imageLiteral(resourceName: "DriverButtonOff"))
-        }
-        if vehicleButton.currentImage == #imageLiteral(resourceName: "VehicleButtonOn"){
-            toggleButtonImage(button: vehicleButton, onImage: #imageLiteral(resourceName: "VehicleButtonOn"), offImage: #imageLiteral(resourceName: "VehicleButtonOff"))
-        }
-
-        
-    }
-    */
+ 
     @IBAction func vehicleButtonClicked(_ sender: UIButton) {
         toggleButtonImage(button: vehicleButton, onImage: #imageLiteral(resourceName: "VehicleButtonOn"), offImage: #imageLiteral(resourceName: "VehicleButtonOff"))
         
         if driverButton.currentImage == #imageLiteral(resourceName: "DriverButtonOn"){
             toggleButtonImage(button: driverButton , onImage: #imageLiteral(resourceName: "DriverButtonOn"), offImage: #imageLiteral(resourceName: "DriverButtonOff"))
         }
-      /*  if bookingButton.currentImage == #imageLiteral(resourceName: "BookingsButtonOn"){
-            toggleButtonImage(button: bookingButton, onImage: #imageLiteral(resourceName: "BookingsButtonOn"), offImage: #imageLiteral(resourceName: "BookingsButtonOff"))
-        }
-        */
     }
     
 
@@ -247,5 +221,14 @@ class AdminMainBookingViewController: UIViewController {
         }
     }
     
+    // Main Menu Code
+    
+    @IBAction func driverMenuButtonClicked(_ sender: UIButton) {
+        self.performSegue(withIdentifier: "driverListSegue", sender: nil)
+    }
+    
+    @IBAction func vehicleMenuButtonClicked(_ sender: UIButton) {
+        self.performSegue(withIdentifier: "vehicleListSegue", sender: nil)
+    }
     
 }

@@ -14,6 +14,7 @@ class DriverListTableViewCell: UITableViewCell {
     @IBOutlet weak var driverImage: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var phoneNumberLabel: UILabel!
+    @IBOutlet weak var DLValidTill: UILabel!
     
     
     override func awakeFromNib() {
@@ -30,6 +31,7 @@ class DriverListTableViewCell: UITableViewCell {
     override func prepareForReuse() {
         nameLabel.text = ""
         phoneNumberLabel.text = ""
+        DLValidTill.text = ""
     }
 
 }

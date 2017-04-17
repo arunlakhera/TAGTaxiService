@@ -61,7 +61,8 @@ class AddVehicleViewController: UIViewController, UIPickerViewDelegate,UIPickerV
         activityIndicator.color = UIColor.yellow
         activityIndicator.hidesWhenStopped = true
         self.view.addSubview(activityIndicator)
-        backButton.isEnabled = false
+        
+        //backButton.isEnabled = false
         activityIndicator.isHidden = false
         activityIndicator.startAnimating()
         UIApplication.shared.beginIgnoringInteractionEvents()
@@ -364,7 +365,6 @@ class AddVehicleViewController: UIViewController, UIPickerViewDelegate,UIPickerV
 
                 stopActivity()
                 backButton.isEnabled = true
-                
                 
                 //self.performSegue(withIdentifier: "vehicleListSegue", sender: nil)
             }else{
