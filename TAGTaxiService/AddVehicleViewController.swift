@@ -128,10 +128,11 @@ class AddVehicleViewController: UIViewController, UIPickerViewDelegate,UIPickerV
         
         let toolBarWithDoneButton =  addDoneButton()
         vehicleModelNameTextField.inputAccessoryView = toolBarWithDoneButton
+        insuranceNumberTextField.inputAccessoryView = toolBarWithDoneButton
         vehicleNumberTextField.inputAccessoryView = toolBarWithDoneButton
         vehicleRegistrationNumberTextField.inputAccessoryView = toolBarWithDoneButton
         pollutionCertificateNumberTextField.inputAccessoryView = toolBarWithDoneButton
-        
+        mileageTextField.inputAccessoryView = toolBarWithDoneButton
     }
     
     func modelYearPickerValueChanged(_ sender: UIDatePicker){
@@ -145,7 +146,7 @@ class AddVehicleViewController: UIViewController, UIPickerViewDelegate,UIPickerV
     
     func insuranceExpiryDatePickerValueChanged(_ sender: UIDatePicker){
         let dateformatter = DateFormatter()
-        dateformatter.dateFormat = "dd-MM-YYYY"
+        dateformatter.dateFormat = "YYYY-MM-dd"
         
         insuranceExpiryDateTextField.text = dateformatter.string(from: sender.date)
         self.view.endEditing(true)
@@ -154,7 +155,7 @@ class AddVehicleViewController: UIViewController, UIPickerViewDelegate,UIPickerV
     
     func pollutionExpiryDatePickerValueChanged(_ sender: UIDatePicker){
         let dateformatter = DateFormatter()
-        dateformatter.dateFormat = "dd-MM-YYYY"
+        dateformatter.dateFormat = "YYYY-MM-dd"
         
         pollutionCertificateExpiryDateTextField.text = dateformatter.string(from: sender.date)
         self.view.endEditing(true)
@@ -163,7 +164,7 @@ class AddVehicleViewController: UIViewController, UIPickerViewDelegate,UIPickerV
     
     func lastServiceDatePickerValueChanged(_ sender: UIDatePicker){
         let dateformatter = DateFormatter()
-        dateformatter.dateFormat = "dd-MM-YYYY"
+        dateformatter.dateFormat = "YYYY-MM-dd"
         
         lastServiceDateTextField.text = dateformatter.string(from: sender.date)
         self.view.endEditing(true)
@@ -306,7 +307,7 @@ class AddVehicleViewController: UIViewController, UIPickerViewDelegate,UIPickerV
                 
                 let vehicleID = DataService.ds.REF_VEHICLE.childByAutoId()
                 let formatter = DateFormatter()
-                formatter.dateFormat = "dd-MMM-YYYY"
+                formatter.dateFormat = "YYYY-MM-dd"
                 
                 let vehicleIDWithPath = String(describing: vehicleID)
                 let vehiclePath = String(describing: DataService.ds.REF_VEHICLE)
@@ -414,10 +415,26 @@ class AddVehicleViewController: UIViewController, UIPickerViewDelegate,UIPickerV
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        if (textField == insuranceNumberTextField) || (textField == insuranceExpiryDateTextField) || (textField == pollutionCertificateNumberTextField) || (textField == pollutionCertificateExpiryDateTextField) || (textField == mileageTextField) || (textField == lastServiceDateTextField)
+        var yValue = 0
+        
+        if (textField == vehicleRegistrationNumberTextField) || (textField == vehicleModelYearTextField)
         {
-            scrollView.setContentOffset(CGPoint.init(x: 0, y: 70), animated: true)
+            yValue = 60
         }
+        if (textField == insuranceNumberTextField) || (textField == insuranceExpiryDateTextField)
+        {
+            yValue = 75
+        }
+        if  (textField == pollutionCertificateNumberTextField) || (textField == pollutionCertificateExpiryDateTextField)
+        {
+            yValue = 100
+        }
+        if (textField == mileageTextField) || (textField == lastServiceDateTextField)
+        {
+            yValue = 140
+        }
+        
+        scrollView.setContentOffset(CGPoint.init(x: 0, y: yValue), animated: true)
         
     }
     

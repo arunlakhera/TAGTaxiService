@@ -83,7 +83,27 @@ class SignInViewController: UIViewController {
             
             // Check for Admin flag value and depending on perform segue to Admin or user screen
             riderProfile.observe(.value, with: { (snapshot) in
-                let adminFlag = ((snapshot.value)! as! String)
+               //Check if snapshot exists and logout if snapshot does not exist
+                if !snapshot.exists(){
+                    print("========SNAPSHOT MISSING======")
+                    
+                    AuthService.instance.isLoggedIn = false
+                    AuthService.instance.riderID = ""
+                    AuthService.instance.riderEmail = ""
+                    AuthService.instance.userName = ""
+                    
+                    do{
+                        try FIRAuth.auth()?.signOut()
+                    }catch{
+                        self.showAlert(title: "Error", message: "Error Occured while Signing In! User Login Information not available!")
+                    }
+                    
+                }else if snapshot.value == nil{
+                    self.showAlert(title: "Error", message: "Error Occured while Signing In! Please check if you are Admin User!")
+                }else
+                {
+                let adminFlag = (snapshot.value! as! String)
+                
                 if adminFlag == "true"{
                     AuthService.instance.isAdmin = true   // Set the Admin flag to true
                     AuthService.instance.isLoggedIn = true
@@ -92,41 +112,15 @@ class SignInViewController: UIViewController {
                     AuthService.instance.isLoggedIn = true
                     self.performSegue(withIdentifier: "signInSegue", sender: nil)
                 }
+            }
             }, withCancel: { (error) in
-                print("Sign In Error")
+                self.showAlert(title: "Error", message: "Sign In Cancelled")
             })
             
         }
         self.stopActivity()
     }
-   /*
-    override func viewDidAppear(_ animated: Bool) {
-        // Call function to Set the username
-       setUserName()
-       
-        // MARK: Check if the user is logged in already and if yes take user to Main screen else ask for sign in
-        if AuthService.instance.isLoggedIn{
-            // Get Admin flag Path from Firebase
-            let riderProfile = DataService.ds.REF_RIDER.child(AuthService.instance.riderID!).child("Profile").child("AdminFlag")
-            
-            // Check for Admin flag value and depending on perform segue to Admin or user screen
-            riderProfile.observe(.value, with: { (snapshot) in
-                let adminFlag = ((snapshot.value)! as! String)
-                if adminFlag == "true"{
-                    AuthService.instance.isAdmin = true   // Set the Admin flag to true
-                    AuthService.instance.isLoggedIn = true
-                    self.performSegue(withIdentifier: "adminMainSegue", sender: nil)
-                }else{
-                    AuthService.instance.isLoggedIn = true
-                    self.performSegue(withIdentifier: "signInSegue", sender: nil)
-                }
-            }, withCancel: { (error) in
-                print("Sign In Error")
-            })
-
-        }
-      }
-    */
+  
     // MARK: Function to extract user name from Email id for the user to show in Main Screen
     func setUserName(){
     
@@ -203,18 +197,27 @@ class SignInViewController: UIViewController {
                     self.setUserName()
                     // Get the current user
                     let riderID = AuthService.instance.riderID!
-                
                     
                     // Get Admin flag Path from Firebase
                     let riderProfile = DataService.ds.REF_RIDER.child(riderID).child("Profile").child("AdminFlag")
                     let phone = DataService.ds.REF_RIDER.child(riderID).child("Profile").child("PhoneNumber")
                     
                     phone.observe(.value, with: { (snapshot) in
-                        AuthService.instance.riderPhone = ((snapshot.value)! as! String)
+                        if snapshot.exists(){
+                            AuthService.instance.riderPhone = ((snapshot.value)! as! String)
+                        }else{
+                            self.showAlert(title: "Error", message: "Could not retrieve Information")
+                        }
                     })
                     
                     // Check for Admin flag value and depending on perform segue to Admin or user screen
                     riderProfile.observe(.value, with: { (snapshot) in
+                        
+                        if !snapshot.exists(){
+                            self.showAlert(title: "Sign In Error", message: "User Information does not exist")
+                        }else if snapshot.value == nil{
+                            self.showAlert(title: "Sign In Error", message: "User Information does not exist. Please check if you are Admin")
+                        }else {
                         
                         let adminFlag = ((snapshot.value)! as! String)
                         
@@ -227,10 +230,11 @@ class SignInViewController: UIViewController {
                             AuthService.instance.isLoggedIn = true
                             self.performSegue(withIdentifier: "signInSegue", sender: nil)
                         }
+                    }
+                        
                     }, withCancel: { (error) in
-                        print("Sign In Error")
+                        self.showAlert(title: "Error", message: "Sign In Cancelled")
                     })
-                
                 
                 }else{
                     self.showAlert(title: "Failure", message: message) //Show Failure Message

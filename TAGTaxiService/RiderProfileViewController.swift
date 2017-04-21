@@ -132,7 +132,8 @@ class RiderProfileViewController: UIViewController, /*UINavigationControllerDele
     func datePickerValueChanged(_ sender: UIDatePicker){
         let dateformatter = DateFormatter()
         
-        dateformatter.dateFormat = "dd-MM-YYYY"
+        dateformatter.dateFormat = "YYYY-MM-dd"
+        
         if ((sender.date).compare(NSDate() as Date).rawValue >= 0 ){
             showAlert(title: "Error!", message: "Date of Birth Needs to be corrected")
         }else{

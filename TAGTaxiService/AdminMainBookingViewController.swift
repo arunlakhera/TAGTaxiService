@@ -231,4 +231,10 @@ class AdminMainBookingViewController: UIViewController {
         self.performSegue(withIdentifier: "vehicleListSegue", sender: nil)
     }
     
+    // To slide the menu back call menu button function
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        menuShow = false
+        menuButton(touches)
+    }
+    
 }

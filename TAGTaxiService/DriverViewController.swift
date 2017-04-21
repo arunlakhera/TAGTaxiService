@@ -16,12 +16,21 @@ class DriverViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var driverKey = ""
     var driverList = [Driver]()
     var storage: FIRStorage!
+  
+    var count = 0
+    var dname: String = ""
+    let dateformatter = DateFormatter()
+    let todayDate = Date()
+    var today: String?
+    var validTill: String?
+    var numberOfDaysForExpiry: Int?
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         tableView.delegate = self
         tableView.dataSource = self
+        dateformatter.dateFormat = "YYYY-MM-dd"
         
         tableView.reloadData()
         
@@ -35,10 +44,23 @@ class DriverViewController: UIViewController, UITableViewDelegate, UITableViewDa
                         
                         let driver = Driver(driverID: snap.key, dictionary: driverDict as Dictionary<String, AnyObject>)
                         self.driverKey = driver.driverID!
+                        
                         self.driverList.append(driver)
+               
+                        self.validTill = (driver.drivingLicenseValidTill != nil ? driver.drivingLicenseValidTill : "2000-01-01" )
+                        self.today = self.dateformatter.string(from: self.todayDate)
+                        
+                        self.numberOfDaysForExpiry = Int((self.dateformatter.date(from: self.validTill!)!.timeIntervalSince(self.dateformatter.date(from: self.today!)!) ) / ( 24 * 60 * 60))
+                   
+                        if self.numberOfDaysForExpiry! <= 30 {
+                            self.count += 1
+                            self.dname = self.dname + "\n" + "\(driver.firstName != nil ? driver.firstName! : "First Name" ) \(driver.lastName != nil ? driver.lastName! : "Last Name" )"
+                        }
+                        
                     }
                 }
-             self.tableView.reloadData()
+                self.showAlert(title: "Alert!!", message: "Driving License Expiring for \(self.count) Drivers: \(self.dname)")
+                self.tableView.reloadData()
             }
         })
         
@@ -55,9 +77,7 @@ class DriverViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "driverCell", for: indexPath) as? DriverListTableViewCell
         let driver = driverList[indexPath.row]
-        
-        
-        
+     
         let driverImageRef = DataService.ds.REF_DRIVER_IMAGE.child("\(String(describing: driver.driverID!))")
         driverImageRef.data(withMaxSize: 1 * 1024 * 1024, completion: { (data, error) in
             if data != nil{
@@ -71,8 +91,18 @@ class DriverViewController: UIViewController, UITableViewDelegate, UITableViewDa
             cell?.phoneNumberLabel.text = driver.phoneNumber
             cell?.DLValidTill.text = driver.drivingLicenseValidTill
             
+            self.validTill = (driver.drivingLicenseValidTill != nil ? driver.drivingLicenseValidTill : "2000-01-01" )
+            self.today = self.dateformatter.string(from: self.todayDate)
+
+            self.numberOfDaysForExpiry = Int((self.dateformatter.date(from: self.validTill!)!.timeIntervalSince(self.dateformatter.date(from: self.today!)!) ) / ( 24 * 60 * 60))
+            
+            if (self.numberOfDaysForExpiry! <= 30 && self.numberOfDaysForExpiry! >= 15 ) {
+                cell?.backgroundColor = UIColor.orange
+            }else if self.numberOfDaysForExpiry! < 15{
+                cell?.backgroundColor = UIColor.red
+            }
+            
         })
-        
         return cell!
         
     }
@@ -104,4 +134,14 @@ class DriverViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
     
     }
+    
+    func showAlert(title: String, message: String){
+        
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let action = UIAlertAction(title: "Ok", style: .default, handler: nil)
+        alertController.addAction(action)
+        self.present(alertController, animated: true, completion: nil)
+        
+    }
+    
 }

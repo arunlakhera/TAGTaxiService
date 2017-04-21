@@ -16,6 +16,17 @@ class VehicleViewController: UIViewController, UITableViewDelegate,UITableViewDa
     var storage: FIRStorage!
     var vehicleKey = ""
     
+    var insuranceExpiryCount = 0
+    var pollutionExpiryCount = 0
+    
+    let dateformatter = DateFormatter()
+    let todayDate = Date()
+    var today: String?
+    var numberOfDaysForInsuranceExpiry: Int?
+    var numberOfDaysForPollutionExpiry: Int?
+    var insuranceValidTill: String?
+    var pollutionValidTill: String?
+    
      override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -35,6 +46,24 @@ class VehicleViewController: UIViewController, UITableViewDelegate,UITableViewDa
                         let vehicle = Vehicle(vehicleID: snap.key, dictionary: vehicleDict as Dictionary<String, AnyObject>)
                         self.vehicleKey = vehicle.vehicleID!
                         self.vehicleList.append(vehicle)
+                   /*
+                        self.insuranceValidTill = (vehicle.insurnaceExpDate != nil ? vehicle.insurnaceExpDate : "2000-01-01" )
+                        self.pollutionValidTill = (vehicle.pollutionCertExpDate != nil ? vehicle.pollutionCertExpDate : "2000-01-01" )
+                        self.today = self.dateformatter.string(from: self.todayDate)
+                        
+                        self.numberOfDaysForInsuranceExpiry  = Int((self.dateformatter.date(from: self.insuranceValidTill!)!.timeIntervalSince(self.dateformatter.date(from: self.today!)!) ) / ( 24 * 60 * 60))
+                        
+                        self.numberOfDaysForPollutionExpiry  = Int((self.dateformatter.date(from: self.pollutionValidTill!)!.timeIntervalSince(self.dateformatter.date(from: self.today!)!) ) / ( 24 * 60 * 60))
+                        
+                        if self.numberOfDaysForInsuranceExpiry! <= 30 {
+                            self.insuranceExpiryCount += 1
+                        }
+                       
+                        if self.numberOfDaysForPollutionExpiry! <= 30 {
+                            self.pollutionExpiryCount += 1
+                        }
+                     */
+                        
                     }
                 }
                 self.tableView.reloadData()
@@ -61,10 +90,26 @@ class VehicleViewController: UIViewController, UITableViewDelegate,UITableViewDa
         let cell = self.tableView.dequeueReusableCell(withIdentifier: "vehicleCell", for: indexPath) as? VehicleListTableViewCell
         let vehicle = vehicleList[indexPath.row]
         
-        cell?.companyNameLabel.text = vehicle.companyName
-        cell?.modelNameLabel.text = vehicle.modelName
+        cell?.companyNameLabel.text = vehicle.companyName! + " " + vehicle.modelName!
         cell?.carNumberLabel.text = vehicle.vehicleNumber
-        cell?.modelYearLabel.text = vehicle.modelYear
+        cell?.insuranceExpiryDate.text = vehicle.insurnaceExpDate
+        cell?.pollutionCertExpiryDate.text = vehicle.pollutionCertExpDate
+       /*
+        self.today = self.dateformatter.string(from: self.todayDate)
+        
+        self.insuranceValidTill = (vehicle.insurnaceExpDate != nil ? vehicle.insurnaceExpDate : "2000-01-01" )
+        self.pollutionValidTill = (vehicle.pollutionCertExpDate != nil ? vehicle.pollutionCertExpDate : "2000-01-01" )
+        
+        self.numberOfDaysForInsuranceExpiry = Int((self.dateformatter.date(from: self.insuranceValidTill!)!.timeIntervalSince(self.dateformatter.date(from: self.today!)!) ) / ( 24 * 60 * 60))
+       
+        self.pollutionExpiryCount = Int((self.dateformatter.date(from: self.pollutionValidTill!)!.timeIntervalSince(self.dateformatter.date(from: self.today!)!) ) / ( 24 * 60 * 60))
+        
+        if (self.numberOfDaysForInsuranceExpiry! <= 30 && self.numberOfDaysForInsuranceExpiry! >= 15 ) || (self.numberOfDaysForPollutionExpiry! <= 30 && self.numberOfDaysForPollutionExpiry! >= 15 ){
+            cell?.backgroundColor = UIColor.orange
+        }else if (self.numberOfDaysForInsuranceExpiry! < 15) || (self.numberOfDaysForPollutionExpiry! < 15){
+            cell?.backgroundColor = UIColor.red
+        }
+        */
         
         return cell!
     }

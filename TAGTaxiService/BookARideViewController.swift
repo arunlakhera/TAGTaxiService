@@ -58,7 +58,7 @@ class BookARideViewController: UIViewController, UIPickerViewDelegate, UIPickerV
        
        // showAlert(title: "Phone Number", message: AuthService.instance)
         
-        formatter.dateFormat = "dd-MMM-YYYY"
+        formatter.dateFormat = "YYYY-MM-dd"
         travelBeginDateTextField.text = formatter.string(from: travelMinDate as Date)
         travelBeginDatePicker.minimumDate = travelMinDate as  Date
         travelBeginDatePicker.maximumDate = travelMaxDate as Date
@@ -223,7 +223,7 @@ class BookARideViewController: UIViewController, UIPickerViewDelegate, UIPickerV
             
             let rideBookID = DataService.ds.REF_RIDEBOOKING.childByAutoId()
             let formatter = DateFormatter()
-            formatter.dateFormat = "dd-MMM-YYYY"
+            formatter.dateFormat = "YYYY-MM-dd"
             
             rideBookID.child("RiderID").setValue(AuthService.instance.riderID!)
             rideBookID.child("VehicleID").setValue("")

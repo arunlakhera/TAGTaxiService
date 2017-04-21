@@ -54,9 +54,7 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     var bloodGroup = ["---","O+","O-","A+","A-","B+","B-","AB+","AB-"]
     let bloodGroupPicker = UIPickerView()
     
-    
     var activityIndicator: UIActivityIndicatorView!
-    
     
     func startActivity(){
         activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
@@ -145,7 +143,7 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     
     func dateDLValidFromPickerValueChanged(_ sender: UIDatePicker){
         let dateformatter = DateFormatter()
-        dateformatter.dateFormat = "dd-MM-YYYY"
+        dateformatter.dateFormat = "YYYY-MM-dd"
         
         DLValidFromTextField.text = dateformatter.string(from: sender.date)
          self.view.endEditing(true)
@@ -153,7 +151,7 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     
     func dateDLValidTillPickerValueChanged(_ sender: UIDatePicker){
         let dateformatter = DateFormatter()
-        dateformatter.dateFormat = "dd-MM-YYYY"
+        dateformatter.dateFormat = "YYYY-MM-dd"
         
         let DLValidFrom = DLValidFromTextField.text
         let validFrom = dateformatter.date(from: DLValidFrom!)
@@ -167,8 +165,8 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
 
     func datePickerValueChanged(_ sender: UIDatePicker){
         let dateformatter = DateFormatter()
+        dateformatter.dateFormat = "YYYY-MM-dd"
         
-        dateformatter.dateFormat = "dd-MM-YYYY"
         if ((sender.date).compare(NSDate() as Date).rawValue >= 0 ){
             
             showAlert(title: "Error!", message: "Date of Birth Needs to be corrected")
@@ -321,7 +319,7 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
                 
                 let driverID = DataService.ds.REF_DRIVER.childByAutoId()
                 let formatter = DateFormatter()
-                formatter.dateFormat = "dd-MMM-YYYY"
+                formatter.dateFormat = "YYYY-MM-dd"
                 
                 let driverIDWithPath = String(describing: driverID)
                 let driverPath = String(describing: DataService.ds.REF_DRIVER)
@@ -420,15 +418,15 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
         
         if state == "---" {
             checkFlag = false
-            showAlert(title: "Error", message: "Please povide all the fields!!")
+            showAlert(title: "Error", message: "Please povide State Name!!")
 
         } else if policeVerified == "---" {
             checkFlag = false
-            showAlert(title: "Error", message: "Please povide all the fields!!")
+            showAlert(title: "Error", message: "Please povide detail if Driver is Police Verified!!")
 
         }else if bloodGroup == "---"{
             checkFlag = false
-            showAlert(title: "Error", message: "Please povide all the fields!!")
+            showAlert(title: "Error", message: "Please povide Blood Group of Driver!")
 
         }
         
@@ -445,10 +443,23 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        if (textField == DLNumberTextField) || (textField == DLValidFromTextField) || (textField == DLValidTillTextField) || (textField == policeVerifiedTextField) || (textField == bloodGroupTextField)
+       
+        var yValue = 0
+        
+        if (textField == cityTextField) || (textField == stateTextField)
         {
-            scrollView.setContentOffset(CGPoint.init(x: 0, y: 70), animated: true)
+            yValue = 75
         }
+        if  (textField == DLNumberTextField) || (textField == DLValidFromTextField) || (textField == DLValidTillTextField)
+        {
+            yValue = 85
+        }
+        if (textField == policeVerifiedTextField) || (textField == bloodGroupTextField)
+        {
+            yValue = 125
+        }
+        
+        scrollView.setContentOffset(CGPoint.init(x: 0, y: yValue), animated: true)
         
     }
     

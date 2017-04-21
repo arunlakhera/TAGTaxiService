@@ -78,19 +78,21 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
         activityIndicator.center = view.center
         activityIndicator.backgroundColor = UIColor.red
         activityIndicator.color = UIColor.yellow
-        activityIndicator.hidesWhenStopped = true
+        //activityIndicator.hidesWhenStopped = true
         activityIndicator.isHidden = false
         activityIndicator.startAnimating()
         
         self.view.addSubview(activityIndicator)
         
-        backButton.isEnabled = false
-        self.showAlert(title: "START", message: "STARTED")
+        //backButton.isEnabled = false
+      
         UIApplication.shared.beginIgnoringInteractionEvents()
     }
     
     func stopActivity(){
         activityIndicator.isHidden = true
+      //  backButton.isEnabled = true
+        
         activityIndicator.stopAnimating()
         UIApplication.shared.endIgnoringInteractionEvents()
     }
@@ -280,7 +282,7 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
     
     func dateDLValidFromPickerValueChanged(_ sender: UIDatePicker){
       let dateformatter = DateFormatter()
-     dateformatter.dateFormat = "dd-MM-YYYY"
+     dateformatter.dateFormat = "YYYY-MM-dd"
         
         DLValidFromTextField.text = dateformatter.string(from: sender.date)
         self.view.endEditing(true)
@@ -288,16 +290,23 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
     
     func dateDLValidTillPickerValueChanged(_ sender: UIDatePicker){
        let dateformatter = DateFormatter()
-       dateformatter.dateFormat = "dd-MM-YYYY"
+       dateformatter.dateFormat = "YYYY-MM-dd"
         
-        DLValidTillTextField.text = dateformatter.string(from: sender.date)
+        let DLValidFrom = DLValidFromTextField.text
+        let validFrom = dateformatter.date(from: DLValidFrom!)
+        if ((sender.date).compare(validFrom!).rawValue > 0){
+            DLValidTillTextField.text = dateformatter.string(from: sender.date)
+            self.view.endEditing(true)
+        }else{
+            self.showAlert(title: "Error", message: "DL Valid Till Date cannot be before DL Valid From Date")
+        }
         self.view.endEditing(true)
     }
     
     func datePickerValueChanged(_ sender: UIDatePicker){
         let dateformatter = DateFormatter()
         
-        dateformatter.dateFormat = "dd-MM-YYYY"
+        dateformatter.dateFormat = "YYYY-MM-dd"
         if ((sender.date).compare(NSDate() as Date).rawValue >= 0 ){
             
             showAlert(title: "Error!", message: "Date of Birth Needs to be corrected")
@@ -387,6 +396,7 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
     
     @IBAction func editButtonClicked(_ sender: Any) {
         saveButton.isHidden = false
+        backButton.isEnabled = false
         editButton.isEnabled = false
         
         enableFields()
@@ -464,7 +474,7 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
                             driver.child("BloodGroup").setValue(self.bloodGroupTextField.text) {(error) in print("Error while Writing Blood Group to Database")}
                             driver.child("Active").setValue(self.activeLabel.text) {(error) in print("Error while Writing Active to Database")}
                             
-                            
+                            self.backButton.isEnabled = true
                         }
                     }
                     
@@ -478,7 +488,7 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
                 // Enable Edit Button once changes have been saved
                 editButton.isEnabled = true
                 saveButton.isHidden = true
-                backButton.isEnabled = true
+               // backButton.isEnabled = true
                 stopActivity()
                 //self.performSegue(withIdentifier: "driverListSegue", sender: nil)
                 
@@ -531,10 +541,22 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        if (textField == DLNumberTextField) || (textField == DLValidFromTextField) || (textField == DLValidTillTextField) || (textField == policeVerifiedTextField) || (textField == bloodGroupTextField)
+        var yValue = 0
+        
+        if (textField == cityTextField) || (textField == stateTextField)
         {
-            scrollView.setContentOffset(CGPoint.init(x: 0, y: 70), animated: true)
+            yValue = 75
         }
+        if  (textField == DLNumberTextField) || (textField == DLValidFromTextField) || (textField == DLValidTillTextField)
+        {
+            yValue = 85
+        }
+        if (textField == policeVerifiedTextField) || (textField == bloodGroupTextField)
+        {
+            yValue = 125
+        }
+        
+        scrollView.setContentOffset(CGPoint.init(x: 0, y: yValue), animated: true)
         
     }
     

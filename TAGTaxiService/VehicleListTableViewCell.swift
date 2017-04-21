@@ -12,9 +12,11 @@ class VehicleListTableViewCell: UITableViewCell {
 
     
     @IBOutlet weak var companyNameLabel: UILabel!
-    @IBOutlet weak var modelNameLabel: UILabel!
     @IBOutlet weak var carNumberLabel: UILabel!
-    @IBOutlet weak var modelYearLabel: UILabel!
+    @IBOutlet weak var insuranceExpiryDate: UILabel!
+    @IBOutlet weak var pollutionCertExpiryDate: UILabel!
+    
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -29,9 +31,10 @@ class VehicleListTableViewCell: UITableViewCell {
 
     override func prepareForReuse() {
         companyNameLabel.text = ""
-        modelNameLabel.text = ""
         carNumberLabel.text = ""
-        modelYearLabel.text = ""
+        insuranceExpiryDate.text = ""
+        pollutionCertExpiryDate.text = ""
+       
     }
     
 }

@@ -83,7 +83,6 @@ class EditVehicleViewController: UIViewController, UIPickerViewDelegate,UIPicker
         activityIndicator.hidesWhenStopped = true
         self.view.addSubview(activityIndicator)
       
-        backButton.isEnabled = false
         activityIndicator.isHidden = false
         activityIndicator.startAnimating()
         UIApplication.shared.beginIgnoringInteractionEvents()
@@ -147,6 +146,7 @@ class EditVehicleViewController: UIViewController, UIPickerViewDelegate,UIPicker
         let toolBarWithDoneButton =  addDoneButton()
         vehicleModelNameTextField.inputAccessoryView = toolBarWithDoneButton
         vehicleNumberTextField.inputAccessoryView = toolBarWithDoneButton
+        insuranceNumberTextField.inputAccessoryView = toolBarWithDoneButton
         vehicleRegistrationNumberTextField.inputAccessoryView = toolBarWithDoneButton
         pollutionCertificateNumberTextField.inputAccessoryView = toolBarWithDoneButton
         mileageTextField.inputAccessoryView = toolBarWithDoneButton
@@ -216,7 +216,7 @@ class EditVehicleViewController: UIViewController, UIPickerViewDelegate,UIPicker
     
     func insuranceExpiryDatePickerValueChanged(_ sender: UIDatePicker){
         let dateformatter = DateFormatter()
-        dateformatter.dateFormat = "dd-MM-YYYY"
+        dateformatter.dateFormat = "YYYY-MM-dd"
         
         insuranceExpiryDateTextField.text = dateformatter.string(from: sender.date)
         self.view.endEditing(true)
@@ -225,7 +225,7 @@ class EditVehicleViewController: UIViewController, UIPickerViewDelegate,UIPicker
     
     func pollutionExpiryDatePickerValueChanged(_ sender: UIDatePicker){
         let dateformatter = DateFormatter()
-        dateformatter.dateFormat = "dd-MM-YYYY"
+        dateformatter.dateFormat = "YYYY-MM-dd"
         
         pollutionCertificateExpiryDateTextField.text = dateformatter.string(from: sender.date)
         self.view.endEditing(true)
@@ -234,7 +234,7 @@ class EditVehicleViewController: UIViewController, UIPickerViewDelegate,UIPicker
     
     func lastServiceDatePickerValueChanged(_ sender: UIDatePicker){
         let dateformatter = DateFormatter()
-        dateformatter.dateFormat = "dd-MM-YYYY"
+        dateformatter.dateFormat = "YYYY-MM-dd"
         
         lastServiceDateTextField.text = dateformatter.string(from: sender.date)
         self.view.endEditing(true)
@@ -309,6 +309,7 @@ class EditVehicleViewController: UIViewController, UIPickerViewDelegate,UIPicker
     }
     
     @IBAction func editButtonClicked(_ sender: UIBarButtonItem) {
+        backButton.isEnabled = false
         saveButton.isHidden = false
         editButton.isEnabled = false
         
@@ -392,7 +393,7 @@ class EditVehicleViewController: UIViewController, UIPickerViewDelegate,UIPicker
                 let vehicleID = DataService.ds.REF_VEHICLE.child("\(self.vehicleKey)")
                 
                 let formatter = DateFormatter()
-                formatter.dateFormat = "dd-MMM-YYYY"
+                formatter.dateFormat = "YYYY-MM-dd"
                 
                 if let vehicleImage = vehicleImageView.image {
                     image = vehicleImage
@@ -431,6 +432,8 @@ class EditVehicleViewController: UIViewController, UIPickerViewDelegate,UIPicker
                             vehicleID.child("LastServiceDate").setValue(self.lastServiceDateTextField.text) {(error) in print("Error while Writing Mileage to Database")}
                             vehicleID.child("Active").setValue(self.activeLabel.text) {(error) in print("Error while Writing Active to Database")}
 
+                            self.backButton.isEnabled = true
+
                         }
                     }
                     uploadTask.observe(.success, handler: { (snapshot) in
@@ -441,7 +444,6 @@ class EditVehicleViewController: UIViewController, UIPickerViewDelegate,UIPicker
 
                 }
                 
-                backButton.isEnabled = true
                 saveButton.isHidden = true
                 editButton.isEnabled = true
                 
@@ -487,10 +489,32 @@ class EditVehicleViewController: UIViewController, UIPickerViewDelegate,UIPicker
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        if (textField == insuranceNumberTextField) || (textField == insuranceExpiryDateTextField) || (textField == pollutionCertificateNumberTextField) || (textField == pollutionCertificateExpiryDateTextField) || (textField == mileageTextField) || (textField == lastServiceDateTextField)
+       /* if (textField == insuranceNumberTextField) || (textField == insuranceExpiryDateTextField) || (textField == pollutionCertificateNumberTextField) || (textField == pollutionCertificateExpiryDateTextField) || (textField == mileageTextField) || (textField == lastServiceDateTextField)
         {
             scrollView.setContentOffset(CGPoint.init(x: 0, y: 70), animated: true)
         }
+ */
+        
+        var yValue = 0
+        
+        if (textField == vehicleRegistrationNumberTextField) || (textField == vehicleModelYearTextField)
+        {
+            yValue = 60
+        }
+        if (textField == insuranceNumberTextField) || (textField == insuranceExpiryDateTextField)
+        {
+            yValue = 75
+        }
+        if  (textField == pollutionCertificateNumberTextField) || (textField == pollutionCertificateExpiryDateTextField)
+        {
+            yValue = 100
+        }
+        if (textField == mileageTextField) || (textField == lastServiceDateTextField)
+        {
+            yValue = 140
+        }
+        
+        scrollView.setContentOffset(CGPoint.init(x: 0, y: yValue), animated: true)
         
     }
     
