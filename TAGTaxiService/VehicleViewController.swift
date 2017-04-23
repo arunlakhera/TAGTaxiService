@@ -26,12 +26,15 @@ class VehicleViewController: UIViewController, UITableViewDelegate,UITableViewDa
     var numberOfDaysForPollutionExpiry: Int?
     var insuranceValidTill: String?
     var pollutionValidTill: String?
+    var insuranceCount = 0
+    var pollutionCount = 0
     
      override func viewDidLoad() {
         super.viewDidLoad()
 
         tableView.delegate = self
         tableView.dataSource = self
+        dateformatter.dateFormat = "YYYY-MM-dd"
         
         tableView.reloadData()
         
@@ -46,26 +49,40 @@ class VehicleViewController: UIViewController, UITableViewDelegate,UITableViewDa
                         let vehicle = Vehicle(vehicleID: snap.key, dictionary: vehicleDict as Dictionary<String, AnyObject>)
                         self.vehicleKey = vehicle.vehicleID!
                         self.vehicleList.append(vehicle)
-                   /*
-                        self.insuranceValidTill = (vehicle.insurnaceExpDate != nil ? vehicle.insurnaceExpDate : "2000-01-01" )
-                        self.pollutionValidTill = (vehicle.pollutionCertExpDate != nil ? vehicle.pollutionCertExpDate : "2000-01-01" )
+                   
+                        self.insuranceValidTill = (vehicle.insurnaceExpDate != nil ? vehicle.insurnaceExpDate! : "2000-01-01" )
+                        self.pollutionValidTill = (vehicle.pollutionCertExpDate != nil ? vehicle.pollutionCertExpDate! : "2000-01-01" )
                         self.today = self.dateformatter.string(from: self.todayDate)
-                        
+                      //
                         self.numberOfDaysForInsuranceExpiry  = Int((self.dateformatter.date(from: self.insuranceValidTill!)!.timeIntervalSince(self.dateformatter.date(from: self.today!)!) ) / ( 24 * 60 * 60))
                         
                         self.numberOfDaysForPollutionExpiry  = Int((self.dateformatter.date(from: self.pollutionValidTill!)!.timeIntervalSince(self.dateformatter.date(from: self.today!)!) ) / ( 24 * 60 * 60))
                         
                         if self.numberOfDaysForInsuranceExpiry! <= 30 {
                             self.insuranceExpiryCount += 1
+                            self.insuranceCount += 1
                         }
                        
                         if self.numberOfDaysForPollutionExpiry! <= 30 {
                             self.pollutionExpiryCount += 1
+                            self.pollutionCount += 1
                         }
-                     */
+                     
                         
                     }
                 }
+                
+                if self.insuranceCount > 0 && self.pollutionCount > 0{
+                    let message1 = "Insurance Expiring for \(self.insuranceCount) Vehicles \n"
+                    let message2 = "Pollution Certificate Expiring for \(self.pollutionCount) Vehicles \n"
+                    let message = message1 + message2
+                    self.showAlert(title: "Alert", message: message)
+                }else if self.insuranceCount > 0 && self.pollutionCount == 0{
+                    self.showAlert(title: "Alert", message: "Insurance Expiring for \(self.insuranceCount) Vehicles")
+                }else if self.insuranceCount == 0 && self.pollutionCount > 0{
+                    self.showAlert(title: "Alert", message: "Pollution Certificate Expiring for \(self.pollutionCount) Vehicles")
+                }
+                
                 self.tableView.reloadData()
             }
         })
@@ -92,24 +109,29 @@ class VehicleViewController: UIViewController, UITableViewDelegate,UITableViewDa
         
         cell?.companyNameLabel.text = vehicle.companyName! + " " + vehicle.modelName!
         cell?.carNumberLabel.text = vehicle.vehicleNumber
-        cell?.insuranceExpiryDate.text = vehicle.insurnaceExpDate
-        cell?.pollutionCertExpiryDate.text = vehicle.pollutionCertExpDate
-       /*
+        cell?.insuranceExpiryDateLabel.text = vehicle.insurnaceExpDate
+        cell?.pollutionExpiryDateLabel.text = vehicle.pollutionCertExpDate
+       
         self.today = self.dateformatter.string(from: self.todayDate)
         
-        self.insuranceValidTill = (vehicle.insurnaceExpDate != nil ? vehicle.insurnaceExpDate : "2000-01-01" )
-        self.pollutionValidTill = (vehicle.pollutionCertExpDate != nil ? vehicle.pollutionCertExpDate : "2000-01-01" )
+        self.insuranceValidTill = (vehicle.insurnaceExpDate != nil ? vehicle.insurnaceExpDate! : "2000-01-01" )
+        self.pollutionValidTill = (vehicle.pollutionCertExpDate != nil ? vehicle.pollutionCertExpDate! : "2000-01-01" )
         
         self.numberOfDaysForInsuranceExpiry = Int((self.dateformatter.date(from: self.insuranceValidTill!)!.timeIntervalSince(self.dateformatter.date(from: self.today!)!) ) / ( 24 * 60 * 60))
        
-        self.pollutionExpiryCount = Int((self.dateformatter.date(from: self.pollutionValidTill!)!.timeIntervalSince(self.dateformatter.date(from: self.today!)!) ) / ( 24 * 60 * 60))
+        self.numberOfDaysForPollutionExpiry = Int((self.dateformatter.date(from: self.pollutionValidTill!)!.timeIntervalSince(self.dateformatter.date(from: self.today!)!) ) / ( 24 * 60 * 60))
         
-        if (self.numberOfDaysForInsuranceExpiry! <= 30 && self.numberOfDaysForInsuranceExpiry! >= 15 ) || (self.numberOfDaysForPollutionExpiry! <= 30 && self.numberOfDaysForPollutionExpiry! >= 15 ){
-            cell?.backgroundColor = UIColor.orange
-        }else if (self.numberOfDaysForInsuranceExpiry! < 15) || (self.numberOfDaysForPollutionExpiry! < 15){
-            cell?.backgroundColor = UIColor.red
+        if (self.numberOfDaysForInsuranceExpiry! <= 30 && self.numberOfDaysForInsuranceExpiry! >= 15 ){
+            cell?.insuranceExpiryDateLabel.backgroundColor = UIColor.orange
+        }else if (self.numberOfDaysForInsuranceExpiry! < 15){
+            cell?.insuranceExpiryDateLabel.backgroundColor = UIColor.red
         }
-        */
+        
+        if (self.numberOfDaysForPollutionExpiry! <= 30 && self.numberOfDaysForPollutionExpiry! >= 15 ){
+            cell?.pollutionExpiryDateLabel.backgroundColor = UIColor.orange
+        }else if (self.numberOfDaysForPollutionExpiry! < 15){
+            cell?.pollutionExpiryDateLabel.backgroundColor  = UIColor.red
+        }
         
         return cell!
     }
@@ -118,7 +140,6 @@ class VehicleViewController: UIViewController, UITableViewDelegate,UITableViewDa
         if segue.identifier == "editVehicleSegue"{
             if let destinationVC = segue.destination as? EditVehicleViewController{
                 let ip = (self.tableView.indexPathForSelectedRow?.row)!
-                print("====ip \(ip)")
                 let vehicle = vehicleList[ip]
                 
                 destinationVC.vehicleKey = vehicle.vehicleID!
@@ -141,5 +162,14 @@ class VehicleViewController: UIViewController, UITableViewDelegate,UITableViewDa
         
     }
     
+    func showAlert(title: String, message: String){
+        
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let action = UIAlertAction(title: "Ok", style: .default, handler: nil)
+        alertController.addAction(action)
+        self.present(alertController, animated: true, completion: nil)
+        
+    }
+
 
 }

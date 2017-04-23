@@ -9,6 +9,8 @@
 import UIKit
 import Firebase
 
+
+
 class DriverViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet weak var tableView: UITableView!
@@ -97,6 +99,7 @@ class DriverViewController: UIViewController, UITableViewDelegate, UITableViewDa
             self.numberOfDaysForExpiry = Int((self.dateformatter.date(from: self.validTill!)!.timeIntervalSince(self.dateformatter.date(from: self.today!)!) ) / ( 24 * 60 * 60))
             
             if (self.numberOfDaysForExpiry! <= 30 && self.numberOfDaysForExpiry! >= 15 ) {
+                
                 cell?.backgroundColor = UIColor.orange
             }else if self.numberOfDaysForExpiry! < 15{
                 cell?.backgroundColor = UIColor.red
@@ -129,7 +132,6 @@ class DriverViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 destinationVC.driverBloodGroup = driver.bloodGroup  != nil ? driver.bloodGroup! : "Not Available"
                 destinationVC.policeVerified = driver.policeVerified != nil ? driver.policeVerified! : "Not Available"
                 destinationVC.active = driver.active != nil ? driver.active! : "Not Available"
-                
             }
         }
     

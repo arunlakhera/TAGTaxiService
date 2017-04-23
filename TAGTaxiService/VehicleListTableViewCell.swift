@@ -13,8 +13,8 @@ class VehicleListTableViewCell: UITableViewCell {
     
     @IBOutlet weak var companyNameLabel: UILabel!
     @IBOutlet weak var carNumberLabel: UILabel!
-    @IBOutlet weak var insuranceExpiryDate: UILabel!
-    @IBOutlet weak var pollutionCertExpiryDate: UILabel!
+    @IBOutlet weak var insuranceExpiryDateLabel: UILabel!
+    @IBOutlet weak var pollutionExpiryDateLabel: UILabel!
     
     
     
@@ -32,8 +32,8 @@ class VehicleListTableViewCell: UITableViewCell {
     override func prepareForReuse() {
         companyNameLabel.text = ""
         carNumberLabel.text = ""
-        insuranceExpiryDate.text = ""
-        pollutionCertExpiryDate.text = ""
+        insuranceExpiryDateLabel.text = ""
+        pollutionExpiryDateLabel.text = ""
        
     }
     

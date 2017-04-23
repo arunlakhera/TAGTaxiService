@@ -489,12 +489,7 @@ class EditVehicleViewController: UIViewController, UIPickerViewDelegate,UIPicker
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-       /* if (textField == insuranceNumberTextField) || (textField == insuranceExpiryDateTextField) || (textField == pollutionCertificateNumberTextField) || (textField == pollutionCertificateExpiryDateTextField) || (textField == mileageTextField) || (textField == lastServiceDateTextField)
-        {
-            scrollView.setContentOffset(CGPoint.init(x: 0, y: 70), animated: true)
-        }
- */
-        
+   
         var yValue = 0
         
         if (textField == vehicleRegistrationNumberTextField) || (textField == vehicleModelYearTextField)

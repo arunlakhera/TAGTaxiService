@@ -47,6 +47,7 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
     var policeVerified = "NA"
     var driverBloodGroup = "NA"
     var active = "NA"
+    var numberOfDaysForExpiry: Int?
     
     // MARK: VARIABLES
     var storage: FIRStorage!
@@ -166,7 +167,7 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
         DLNumberTextField.text = DLNumber
         DLValidFromTextField.text = DLValidFrom
         DLValidTillTextField.text = DLValidTill
-       
+        
         for s in statesArray{
             if s == state{
                 stateTextField.text = s
@@ -401,8 +402,6 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
         
         enableFields()
     }
-    
-    
     
     func enableFields(){
         
