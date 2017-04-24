@@ -79,6 +79,8 @@ class MainMenuViewController: UIViewController, CLLocationManagerDelegate {
                     
                         manager.stopUpdatingLocation()
                     
+                }else{
+                    print("Error Occured while getting user Location")
                 }
         }
     }

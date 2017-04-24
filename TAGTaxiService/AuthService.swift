@@ -19,14 +19,32 @@ class AuthService{
     var riderID: String?
     var riderEmail: String?
     var riderPhone: String?
-    
+    var errorMessage: String?
     
     func emailSignIn(email: String, password: String, Completion: @escaping(_ success: Bool, _ message: String) -> Void ){
         
         FIRAuth.auth()?.signIn(withEmail: email, password: password, completion: { (user, error) in
             
             if error != nil{
-                Completion(false, "\((error?.localizedDescription)!)")
+                if let errorCode = FIRAuthErrorCode(rawValue: error!._code ){
+                    
+                    switch errorCode{
+                    case .errorCodeInvalidEmail:
+                        self.errorMessage = "Please provide Valid Email ID!"
+                    case .errorCodeUserNotFound :
+                        self.errorMessage = "Could not find User information. Please create account before Sign In"
+                    case .errorCodeWrongPassword:
+                        self.errorMessage = "Please provide Correct Email ID and Password"
+                    case .errorCodeNetworkError:
+                        self.errorMessage = "Network Error Occured while trying to Sign In"
+                    default:
+                        self.errorMessage = "Error Occured. Please try again later."
+                        print((error?.localizedDescription)!)
+                    }
+                    
+                }
+                
+                Completion(false, self.errorMessage!)
             }else{
                 
                 self.riderID = FIRAuth.auth()?.currentUser?.uid
@@ -43,7 +61,26 @@ class AuthService{
         FIRAuth.auth()?.createUser(withEmail: email, password: password, completion: { (user, error) in
             
             if error != nil{
-                Completion(false, "\((error?.localizedDescription)!)")
+                
+                if let errorCode = FIRAuthErrorCode(rawValue: error!._code ){
+                    
+                    switch errorCode{
+                    case .errorCodeInvalidEmail:
+                        self.errorMessage = "Please provide Valid Email ID!"
+                    case .errorCodeEmailAlreadyInUse :
+                        self.errorMessage = "User account with this Email ID already Exists. Please provide different Email ID"
+                    case .errorCodeWeakPassword:
+                        self.errorMessage = "Password is too weak. Please provide Strong Password."
+                    case .errorCodeNetworkError:
+                        self.errorMessage = "Network Error Occured while trying to Sign In"
+                    default:
+                        self.errorMessage = "Error Occured. Please try again later."
+                        print((error?.localizedDescription)!)
+                    }
+                    
+                }
+                
+                Completion(false, self.errorMessage!)
             }else{
           
                 self.riderID = FIRAuth.auth()?.currentUser?.uid

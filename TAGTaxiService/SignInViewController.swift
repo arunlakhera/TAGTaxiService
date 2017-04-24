@@ -85,8 +85,7 @@ class SignInViewController: UIViewController {
             riderProfile.observe(.value, with: { (snapshot) in
                //Check if snapshot exists and logout if snapshot does not exist
                 if !snapshot.exists(){
-                    print("========SNAPSHOT MISSING======")
-                    
+                   
                     AuthService.instance.isLoggedIn = false
                     AuthService.instance.riderID = ""
                     AuthService.instance.riderEmail = ""
@@ -95,7 +94,7 @@ class SignInViewController: UIViewController {
                     do{
                         try FIRAuth.auth()?.signOut()
                     }catch{
-                        self.showAlert(title: "Error", message: "Error Occured while Signing In! User Login Information not available!")
+                        self.showAlert(title: "Error", message: "Error Occured while Signing Out!")
                     }
                     
                 }else if snapshot.value == nil{
@@ -237,13 +236,12 @@ class SignInViewController: UIViewController {
                     })
                 
                 }else{
-                    self.showAlert(title: "Failure", message: message) //Show Failure Message
+                    self.showAlert(title: "Sign In Failure", message: message) //Show Failure Message
                 }
             } // Auth Service End
         }
         else
         {
-            //self.showAlert(title: "Failure", message: "Internet Connection not Available!") //Show Failure Message
              let alert = UIAlertController(title: "Failure!!", message: "Internet Connection not available! Connect to Internet", preferredStyle: .alert)
              let okButton = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
              let callUs = UIAlertAction(title: "Call Tag Taxi", style: .default, handler: { (callAction) in

@@ -122,7 +122,8 @@ class SignUpViewController: UIViewController {
                     self.performSegue(withIdentifier: "signUpSegue", sender: nil)
                     
                 }else{
-                    self.showAlert(title: "Sign Up Error", message: message)
+                   
+                   self.showAlert(title: "Sign Up Error", message: message)
                 }
                 
             })
