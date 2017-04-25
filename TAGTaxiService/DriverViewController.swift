@@ -40,7 +40,7 @@ class DriverViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 self.driverList = []
             
             if let snapshots = snapshot.children.allObjects as? [FIRDataSnapshot]{
-                print(snapshot)
+             
                 for snap in snapshots{
                     if let driverDict = snap.value as? Dictionary<String, String>{
                         
