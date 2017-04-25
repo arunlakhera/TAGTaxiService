@@ -123,14 +123,44 @@ class VehicleViewController: UIViewController, UITableViewDelegate,UITableViewDa
         
         if (self.numberOfDaysForInsuranceExpiry! <= 30 && self.numberOfDaysForInsuranceExpiry! >= 15 ){
             cell?.insuranceExpiryDateLabel.backgroundColor = UIColor.orange
+            
+            // Blink the Text
+            cell?.insuranceExpiryDateLabel.alpha = 1
+            UIView.animate(withDuration: 0.7, delay: 0.0, options: [.repeat, .autoreverse, []], animations:
+                {
+                    cell?.insuranceExpiryDateLabel.alpha = 0
+            }, completion: nil)
         }else if (self.numberOfDaysForInsuranceExpiry! < 15){
             cell?.insuranceExpiryDateLabel.backgroundColor = UIColor.red
+    
+            // Blink the Text
+            cell?.insuranceExpiryDateLabel.alpha = 1
+            UIView.animate(withDuration: 0.7, delay: 0.0, options: [.repeat, .autoreverse, []], animations:
+            {
+                cell?.insuranceExpiryDateLabel.alpha = 0
+            }, completion: nil)
         }
-        
+
         if (self.numberOfDaysForPollutionExpiry! <= 30 && self.numberOfDaysForPollutionExpiry! >= 15 ){
             cell?.pollutionExpiryDateLabel.backgroundColor = UIColor.orange
+            
+            // Blink the Text
+            cell?.pollutionExpiryDateLabel.alpha = 1
+            UIView.animate(withDuration: 0.7, delay: 0.0, options: [.repeat, .autoreverse, []], animations:
+                {
+                    cell?.pollutionExpiryDateLabel.alpha = 0
+            }, completion: nil)
+            
+            
         }else if (self.numberOfDaysForPollutionExpiry! < 15){
             cell?.pollutionExpiryDateLabel.backgroundColor  = UIColor.red
+            
+            // Blink the Text
+            cell?.pollutionExpiryDateLabel.alpha = 1
+            UIView.animate(withDuration: 0.7, delay: 0.0, options: [.repeat, .autoreverse, []], animations:
+                {
+                    cell?.pollutionExpiryDateLabel.alpha = 0
+            }, completion: nil)
         }
         
         return cell!

@@ -32,6 +32,8 @@ class DriverListTableViewCell: UITableViewCell {
         nameLabel.text = ""
         phoneNumberLabel.text = ""
         DLValidTill.text = ""
+        nameLabel.layer.cornerRadius = 5
+        
     }
 
 }

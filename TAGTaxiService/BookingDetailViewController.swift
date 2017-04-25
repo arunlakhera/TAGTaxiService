@@ -103,7 +103,6 @@ class BookingDetailViewController: UIViewController {
         // Check if internet connection is available
         if Reachability.isConnectedToNetwork() == true
         {
-            
         bookStatus = "Declined"
         DataService.ds.REF_RIDEBOOKING.child(bookKey).child("Status").setValue(bookStatus)
         viewDidLoad()
@@ -114,43 +113,27 @@ class BookingDetailViewController: UIViewController {
 
     }
     
-    
-    // Action when Cancel button is pressed
-    @IBAction func cancelBooking(sender: AnyObject) {
+    @IBAction func cancelBooking(_ sender: UIBarButtonItem) {
         // Check if internet connection is available
         if Reachability.isConnectedToNetwork() == true
         {
+            let alert = UIAlertController(title: "Cancel Booking", message: "Do you want to Cancel this Booking?", preferredStyle: .alert)
+            //let actionYes = UIAlertAction(title: "Yes", style: .default, handler: nil)
+            let actionYes = UIAlertAction(title: "Yes", style: .default, handler: { (action) in
+                self.bookStatus = "Cancelled"
+                DataService.ds.REF_RIDEBOOKING.child(self.bookKey).child("Status").setValue(self.bookStatus)
+                self.viewDidLoad()
+            })
+            //let actionNo = UIAlertAction(title: "No", style: .default, handler: nil)
+            let actionNo = UIAlertAction(title: "No", style: .default, handler: { (action) in
+                print("=======NO PRESSED=====")
+            })
+            alert.addAction(actionYes)
+            alert.addAction(actionNo)
+            present(alert, animated: true, completion: nil)
             
-        let bookingCancel = bookingAction(bookingTitle: "Cancel Booking", bookingMessage: "Do you want to Cancel this Booking?")
-        if bookingCancel == "Yes"{
-            bookStatus = "Cancelled"
-            DataService.ds.REF_RIDEBOOKING.child(bookKey).child("Status").setValue(bookStatus)
-            viewDidLoad()
         }
-        }else{
-            self.showAlert(title: "Failure", message: "Internet Connection not Available!") //Show Failure Message
-            
-        }
-
     }
-    // Action to ask if user really wants to cancel the booking
-    func bookingAction(bookingTitle: String, bookingMessage: String) -> String{
-        var flag = ""
-        let alert = UIAlertController(title: bookingTitle, message: bookingMessage, preferredStyle: .alert)
-        let actionYes = UIAlertAction(title: "Yes", style: .default, handler: nil)
-        let actionNo = UIAlertAction(title: "No", style: .default, handler: nil)
-        alert.addAction(actionYes)
-        alert.addAction(actionNo)
-       // present(alert, animated: true, completion: nil)
-        present(alert, animated: true) { 
-            if alert.title == "Yes"{
-                    flag = "Yes"
-            }else{
-                    flag = "No"
-            }
-        }
-    return flag
-}
     
     func showAlert(title: String, message: String){
         

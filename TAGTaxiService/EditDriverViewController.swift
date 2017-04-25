@@ -432,7 +432,6 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
                 
                 let driver = DataService.ds.REF_DRIVER.child(driverKey)
                 
-                
                 if let driverImage = driverImageView.image {
                     image = driverImage
                 }else{
@@ -474,6 +473,7 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
                             driver.child("Active").setValue(self.activeLabel.text) {(error) in print("Error while Writing Active to Database")}
                             
                             self.backButton.isEnabled = true
+                            self.editButton.isEnabled = true
                         }
                     }
                     
@@ -485,12 +485,8 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
                 }
                 
                 // Enable Edit Button once changes have been saved
-                editButton.isEnabled = true
                 saveButton.isHidden = true
-               // backButton.isEnabled = true
                 stopActivity()
-                //self.performSegue(withIdentifier: "driverListSegue", sender: nil)
-                
             }
             
         }else{

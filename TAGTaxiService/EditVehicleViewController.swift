@@ -433,6 +433,7 @@ class EditVehicleViewController: UIViewController, UIPickerViewDelegate,UIPicker
                             vehicleID.child("Active").setValue(self.activeLabel.text) {(error) in print("Error while Writing Active to Database")}
 
                             self.backButton.isEnabled = true
+                            self.editButton.isEnabled = true
 
                         }
                     }
@@ -445,11 +446,8 @@ class EditVehicleViewController: UIViewController, UIPickerViewDelegate,UIPicker
                 }
                 
                 saveButton.isHidden = true
-                editButton.isEnabled = true
-                
                 stopActivity()
                 
-                //self.performSegue(withIdentifier: "vehicleListSegue", sender: nil)
             }else{
                 showAlert(title: "Failure", message: "Internet Connection not Available!") //Show Failure Message
                 

@@ -131,7 +131,6 @@ class AdminBookDetailViewController: UIViewController, UITextFieldDelegate {
         }
         
             // Sending Message Begin
-            
             // Make sure the device can send text messages
             if (messageComposer.canSendText()) {
                 // Obtain a configured MFMessageComposeViewController
@@ -147,9 +146,7 @@ class AdminBookDetailViewController: UIViewController, UITextFieldDelegate {
                 present(alert, animated: true, completion: nil)
                 
             }
-        
             // Sending Message End
-            
         self.performSegue(withIdentifier: "adminBookListSegue", sender: nil)
         }else{
             self.showAlert(title: "Failure", message: "Internet Connection not Available!") //Show Failure Message
