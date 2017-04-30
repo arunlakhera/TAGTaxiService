@@ -107,15 +107,15 @@ class SignUpViewController: UIViewController {
                     
                     let riderProfile = DataService.ds.REF_RIDER.child(riderID).child("Profile")     // variable to store Rider Profile Path  firebase
                     
-                    riderProfile.child("FirstName").setValue(firstName)
-                    riderProfile.child("LastName").setValue(lastName)
-                    riderProfile.child("PhoneNumber").setValue(phoneNumber)
-                    riderProfile.child("EmailID").setValue(riderEmail)
-                    riderProfile.child("CreatedOnDate").setValue(String(describing: todayDate))
-                    riderProfile.child("LastUpdatedOnDate").setValue(String(describing: todayDate))
-                    riderProfile.child("CreatedBy").setValue(riderEmail)
-                    riderProfile.child("UpdatedBy").setValue(riderEmail)
-                    riderProfile.child("AdminFlag").setValue("false")
+                    riderProfile.child("FirstName").setValue(firstName){(error) in print("Error while Writing First Name to Database")}
+                    riderProfile.child("LastName").setValue(lastName){(error) in print("Error while Writing Last Name to Database")}
+                    riderProfile.child("PhoneNumber").setValue(phoneNumber){(error) in print("Error while Writing Phone Number to Database")}
+                    riderProfile.child("EmailID").setValue(riderEmail){(error) in print("Error while Writing Email to Database")}
+                    riderProfile.child("CreatedOnDate").setValue(String(describing: todayDate)){(error) in print("Error while Writing Created On Date to Database")}
+                    riderProfile.child("LastUpdatedOnDate").setValue(String(describing: todayDate)){(error) in print("Error while Writing Last Updated On Database to Database")}
+                    riderProfile.child("CreatedBy").setValue(riderEmail){(error) in print("Error while Writing Created By to Database")}
+                    riderProfile.child("UpdatedBy").setValue(riderEmail){(error) in print("Error while Writing Updated By to Database")}
+                    riderProfile.child("AdminFlag").setValue("false"){(error) in print("Error while writing Admin Flag  to Database")}
                     
                     AuthService.instance.isLoggedIn = true
                     

@@ -23,6 +23,7 @@ class BookingStatusListViewController: UIViewController, UITableViewDelegate, UI
     var riderName = AuthService.instance.userName!
     var riderEmail = AuthService.instance.riderEmail!
     var riderPhone = ""
+    
     var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
     
     func startActivity(){
@@ -46,86 +47,76 @@ class BookingStatusListViewController: UIViewController, UITableViewDelegate, UI
 
         tableView.delegate = self
         tableView.dataSource = self
-        
-        // Load all the bookings of the User
-        
         self.startActivity()
         
-        self.tableView.reloadData()
+       self.tableView.reloadData()
         
-        TAGRiderBooking.observe(.value, with: { snapshot in
-                self.bookings = []
-                if let snapshots = snapshot.children.allObjects as? [FIRDataSnapshot]{
-                    if snapshots.count > 0 {
-                    for snap in snapshots{
-                        DataService.ds.REF_RIDEBOOKING.observe(.value, with: { bookingSnap in
-                            if let bookSnap = bookingSnap.children.allObjects as? [FIRDataSnapshot]{
-                                for book in bookSnap {
-                                    if book.key == snap.key{
-                                        if let bookDict = book.value as? Dictionary<String, String>{
-                                            let key = book.key
-                                            let book = RideBooking(bookingID: key, dictionary: bookDict as Dictionary<String, AnyObject>)
-                                            self.bookings.append(book)
-                                         }
-                                    }
+       DataService.ds.REF_RIDEBOOKING.observe(.value, with: { (bookingSnapshot) in
+        self.bookings = []
+        if let bookSnap = bookingSnapshot.children.allObjects as? [FIRDataSnapshot]{
+            for book in bookSnap{
+                self.TAGRiderBooking.observe(.value, with: { (snapshots) in
+                    
+                    if let snapshot = snapshots.children.allObjects as? [FIRDataSnapshot]{
+                        for snap in snapshot{
+                            
+                            if book.key == snap.key{
+                                if let bookDict = book.value as? Dictionary<String, String>{
+                                    let key = book.key
+                                    let book = RideBooking(bookingID: key, dictionary: bookDict as Dictionary<String, AnyObject>)
+                                    self.bookings.append(book)
+                                   
+                                    let riderProfile = DataService.ds.REF_RIDER.child(book.riderID!).child("Profile")
+                                    riderProfile.observeSingleEvent(of: .value, with: { (snapshot) in
+                                        let value = snapshot.value as? NSDictionary
+                                        self.riderName = "\(value?["FirstName"] as? String ?? "")  \(value?["LastName"] as? String ?? "")"
+                                        self.riderEmail = value?["EmailID"] as? String ?? ""
+                                        self.riderPhone = value?["PhoneNumber"] as? String ?? ""
+                                        self.tableView.reloadData() // no
+                                    })
                                 }
                             }
-                            self.tableView.reloadData()
-                        }, withCancel: { error in
-                            self.showAlert(title: "ERROR", message: "Error occured whilte fetching Booking Record -- \(error.localizedDescription)")
-                    })
-                }
-                }else{
-                            self.showAlert(title: "Booking Status", message: "Currently there are no bookings to show!")
-                }
-                    
+                        }
+                        
+                    }
+                    self.tableView.reloadData()
+                }, withCancel: { (error) in
+                    print("Error Occured while fetching Rider Bookings...\(error.localizedDescription)")
+                })
             }
-        }) { error in
-            self.showAlert(title: "ERROR", message: "Not to able to fetch the booking list.")
-    }
+        }
+        
+        self.tableView.reloadData()
+       }) { (error) in
+            print("Error Occured while checking Bookings.. \(error.localizedDescription)")
+        }
+        //self.tableView.reloadData()
         self.stopActivity()
     }
-
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
             return bookings.count
-        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-       
         let cell = tableView.dequeueReusableCell(withIdentifier: "bookListCell", for: indexPath) as? BookListTableViewCell
-        
         let book = bookings.reversed()[indexPath.row]
-        
         let rideFrom = String(book.rideFrom!)
         let rideTo = String(book.rideTo!)
-        
         let indexFrom = rideFrom?.index((rideFrom!.startIndex), offsetBy: 3)
         let indexTo = rideTo?.index((rideTo!.startIndex), offsetBy: 3)
        
-        let riderProfile = DataService.ds.REF_RIDER.child(book.riderID!).child("Profile")
-       
-        riderProfile.observeSingleEvent(of: .value, with: { (snapshot) in
-            
-            let value = snapshot.value as? NSDictionary
-            self.riderName = "\(value?["FirstName"] as? String ?? "")  \(value?["LastName"] as? String ?? "")"
-            self.riderEmail = value?["EmailID"] as? String ?? ""
-            self.riderPhone = value?["PhoneNumber"] as? String ?? ""
-            
-            if self.riderName.characters.count > 0{
-                cell?.nameLabel.text = self.riderName
-            }else{
-                cell?.nameLabel.text = self.riderEmail
-            }
-            
-        })
-
-        //cell?.nameLabel.text =  riderEmail
+        if self.riderName.characters.count > 0{
+            cell?.nameLabel.text = self.riderName
+        }else{
+            cell?.nameLabel.text = self.riderEmail
+        }
+      
         cell?.fromToLabel.text = "\(rideFrom!.substring(to: indexFrom!)) - \(rideTo!.substring(to: indexTo!))"
         cell?.TravelDateLabel.text = book.rideBeginDate!
         cell?.statusLabel.text = book.status!
@@ -141,7 +132,7 @@ class BookingStatusListViewController: UIViewController, UITableViewDelegate, UI
         }else if book.status! == "Completed"{
             cell?.statusLabel.textColor = UIColor.white
         }
-        
+       
         return cell!
     }
     

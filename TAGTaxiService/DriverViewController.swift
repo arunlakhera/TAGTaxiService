@@ -9,8 +9,6 @@
 import UIKit
 import Firebase
 
-
-
 class DriverViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet weak var tableView: UITableView!

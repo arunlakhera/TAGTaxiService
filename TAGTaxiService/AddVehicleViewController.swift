@@ -25,6 +25,8 @@ class AddVehicleViewController: UIViewController, UIPickerViewDelegate,UIPickerV
     @IBOutlet weak var insuranceExpiryDateTextField: UITextField!
     @IBOutlet weak var pollutionCertificateNumberTextField: UITextField!
     @IBOutlet weak var pollutionCertificateExpiryDateTextField: UITextField!
+    @IBOutlet weak var permitExpiryDateTextField: UITextField!
+    @IBOutlet weak var vehicleFitnessExpiryDateTextField: UITextField!
     @IBOutlet weak var mileageTextField: UITextField!
     @IBOutlet weak var lastServiceDateTextField: UITextField!
     @IBOutlet weak var scrollView: UIScrollView!
@@ -41,6 +43,8 @@ class AddVehicleViewController: UIViewController, UIPickerViewDelegate,UIPickerV
     let vehicleModelYearPicker = UIDatePicker()
     let insuranceExpiryDatePicker = UIDatePicker()
     let pollutionCertificateExpiryDatePicker = UIDatePicker()
+    let permitExpiryDatePicker = UIDatePicker()
+    let vehicleFitnessExpiryDatePicker = UIDatePicker()
     let lastServiceDatePicker = UIDatePicker()
     
     // Variables for Vehicle Company Name & Type Picker
@@ -88,6 +92,8 @@ class AddVehicleViewController: UIViewController, UIPickerViewDelegate,UIPickerV
         insuranceNumberTextField.delegate = self
         pollutionCertificateNumberTextField.delegate = self
         pollutionCertificateExpiryDateTextField.delegate = self
+        permitExpiryDateTextField.delegate = self
+        vehicleFitnessExpiryDateTextField.delegate = self
         mileageTextField.delegate = self
         lastServiceDateTextField.delegate = self
         
@@ -120,6 +126,14 @@ class AddVehicleViewController: UIViewController, UIPickerViewDelegate,UIPickerV
         pollutionCertificateExpiryDateTextField.inputView = pollutionCertificateExpiryDatePicker
         pollutionCertificateExpiryDatePicker.addTarget(self, action: #selector(self.pollutionExpiryDatePickerValueChanged), for: .valueChanged)
        
+        permitExpiryDatePicker.datePickerMode = UIDatePickerMode.date
+        permitExpiryDateTextField.inputView = permitExpiryDatePicker
+        permitExpiryDatePicker.addTarget(self, action: #selector(self.permitExpiryDatePickerValueChanged), for: .valueChanged)
+        
+        vehicleFitnessExpiryDatePicker.datePickerMode = UIDatePickerMode.date
+        vehicleFitnessExpiryDateTextField.inputView = vehicleFitnessExpiryDatePicker
+        vehicleFitnessExpiryDatePicker.addTarget(self, action: #selector(self.vehicleFitnessExpiryDatePickerValueChanged), for: .valueChanged)
+        
         lastServiceDatePicker.datePickerMode = UIDatePickerMode.date
         lastServiceDateTextField.inputView = lastServiceDatePicker
         lastServiceDatePicker.addTarget(self, action: #selector(self.lastServiceDatePickerValueChanged), for: .valueChanged)
@@ -158,6 +172,24 @@ class AddVehicleViewController: UIViewController, UIPickerViewDelegate,UIPickerV
         dateformatter.dateFormat = "YYYY-MM-dd"
         
         pollutionCertificateExpiryDateTextField.text = dateformatter.string(from: sender.date)
+        self.view.endEditing(true)
+        
+    }
+  
+    func permitExpiryDatePickerValueChanged(_ sender: UIDatePicker){
+        let dateformatter = DateFormatter()
+        dateformatter.dateFormat = "YYYY-MM-dd"
+        
+        permitExpiryDateTextField.text = dateformatter.string(from: sender.date)
+        self.view.endEditing(true)
+        
+    }
+    
+    func vehicleFitnessExpiryDatePickerValueChanged(_ sender: UIDatePicker){
+        let dateformatter = DateFormatter()
+        dateformatter.dateFormat = "YYYY-MM-dd"
+        
+        vehicleFitnessExpiryDateTextField.text = dateformatter.string(from: sender.date)
         self.view.endEditing(true)
         
     }
@@ -300,6 +332,7 @@ class AddVehicleViewController: UIViewController, UIPickerViewDelegate,UIPickerV
     }
     
     @IBAction func saveButton(_ sender: UIButton) {
+        uploadButton.isEnabled = false
         
         if Reachability.isConnectedToNetwork() == true
         {
@@ -323,6 +356,8 @@ class AddVehicleViewController: UIViewController, UIPickerViewDelegate,UIPickerV
                 
                 pollutionCertificateNumberTextField.delegate = self
                 pollutionCertificateExpiryDateTextField.delegate = self
+                permitExpiryDateTextField.delegate = self
+                vehicleFitnessExpiryDateTextField.delegate = self
                 mileageTextField.delegate = self
                 lastServiceDateTextField.delegate = self
                 
@@ -349,6 +384,9 @@ class AddVehicleViewController: UIViewController, UIPickerViewDelegate,UIPickerV
                             vehicleID.child("InsuranceExpiryDate").setValue(self.insuranceExpiryDateTextField.text) {(error) in print("Error while Writing Insurance Expiry Date to Database")}
                             vehicleID.child("PollutionCertificateNumber").setValue(self.pollutionCertificateNumberTextField.text) {(error) in print("Error while Writing Pollution Certificate Number to Database")}
                             vehicleID.child("PollutionCertificateExpiryDate").setValue(self.pollutionCertificateExpiryDateTextField.text) {(error) in print("Error while Writing Pollution Certificate Expiry Date to Database")}
+                            vehicleID.child("PermitExpiryDate").setValue(self.permitExpiryDateTextField.text){(error) in print("Error while Writing Permit Expiry Date to Database")}
+                            vehicleID.child("VehicleFitnessExpiryDate").setValue(self.vehicleFitnessExpiryDateTextField.text){(error) in print("Error while Writing Vehicle Fitness Expiry Date to Database")}
+                            
                             vehicleID.child("Mileage").setValue(self.mileageTextField.text) {(error) in print("Error while Writing First Name to Database")}
                             vehicleID.child("LastServiceDate").setValue(self.lastServiceDateTextField.text) {(error) in print("Error while Writing Mileage to Database")}
                             vehicleID.child("Active").setValue(self.activeLabel.text) {(error) in print("Error while Writing Active to Database")}
@@ -378,14 +416,14 @@ class AddVehicleViewController: UIViewController, UIPickerViewDelegate,UIPickerV
     func checkfield() -> Bool{
             
         var checkFlag = true
-        guard let vehicleName = vehicleCompanyNameTextField.text, let modelName = vehicleModelNameTextField.text, let vehicleNumber = vehicleNumberTextField.text , let vehicleType = vehicleTypeTextField.text, let registrationNumber = vehicleRegistrationNumberTextField.text, let modelYear = vehicleModelYearTextField.text, let insuranceNumber = insuranceNumberTextField.text, let pollutionCertificateNumber = pollutionCertificateNumberTextField.text, let pollutionCertificateExpiryDate = pollutionCertificateExpiryDateTextField.text, let mileage = mileageTextField.text, let lastServiceDate = lastServiceDateTextField.text else {
+        guard let vehicleName = vehicleCompanyNameTextField.text, let modelName = vehicleModelNameTextField.text, let vehicleNumber = vehicleNumberTextField.text , let vehicleType = vehicleTypeTextField.text, let registrationNumber = vehicleRegistrationNumberTextField.text, let modelYear = vehicleModelYearTextField.text, let insuranceNumber = insuranceNumberTextField.text, let pollutionCertificateNumber = pollutionCertificateNumberTextField.text, let pollutionCertificateExpiryDate = pollutionCertificateExpiryDateTextField.text, let permitExpiryDate = permitExpiryDateTextField.text,let vehicleFitnessExpiryDate = vehicleFitnessExpiryDateTextField.text, let mileage = mileageTextField.text, let lastServiceDate = lastServiceDateTextField.text else {
             
             checkFlag = false
             showAlert(title: "Error", message: "Please povide all the fields!!")
            return checkFlag
         }
       
-        guard  vehicleName != "", modelName != "", vehicleNumber != "" , vehicleType != "", registrationNumber != "", modelYear != "", insuranceNumber != "", pollutionCertificateNumber != "", pollutionCertificateExpiryDate != "", mileage != "", lastServiceDate != "" else {
+        guard  vehicleName != "", modelName != "", vehicleNumber != "" , vehicleType != "", registrationNumber != "", modelYear != "", insuranceNumber != "", pollutionCertificateNumber != "", pollutionCertificateExpiryDate != "", permitExpiryDate != "", vehicleFitnessExpiryDate != "", mileage != "", lastServiceDate != "" else {
             
             checkFlag = false
             showAlert(title: "Error", message: "Please povide all the fields!!")
@@ -423,12 +461,18 @@ class AddVehicleViewController: UIViewController, UIPickerViewDelegate,UIPickerV
         }
         if (textField == insuranceNumberTextField) || (textField == insuranceExpiryDateTextField)
         {
-            yValue = 75
+            yValue = 80
         }
         if  (textField == pollutionCertificateNumberTextField) || (textField == pollutionCertificateExpiryDateTextField)
         {
             yValue = 100
         }
+        
+        if  (textField == permitExpiryDateTextField) || (textField == vehicleFitnessExpiryDateTextField)
+        {
+            yValue = 120
+        }
+        
         if (textField == mileageTextField) || (textField == lastServiceDateTextField)
         {
             yValue = 140

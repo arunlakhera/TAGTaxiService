@@ -46,7 +46,7 @@ class AdminBookStatusListViewController: UIViewController, UITableViewDelegate, 
                     }
                 }
             }
-         //self.tableView.reloadData()
+         self.tableView.reloadData()
         }) { (error) in
             self.errorLogin(errTitle: "ERROR!", errMessage: "Error occured whilte fetching Booking Record -- \(error.localizedDescription)")
         }
@@ -163,7 +163,7 @@ class AdminBookStatusListViewController: UIViewController, UITableViewDelegate, 
                 }
                 destinationVC.bookAmount = book.amount!
                 destinationVC.bookVehicle = book.vehicle!
-                
+                //destinationVC.bookVehicleType = book.vehicle
                 destinationVC.bookStatus = book.status!
             }
             

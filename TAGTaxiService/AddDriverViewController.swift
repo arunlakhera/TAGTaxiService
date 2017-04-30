@@ -33,6 +33,7 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     @IBOutlet weak var activeSwitch: UISwitch!
     @IBOutlet weak var saveButton: UIButton!
     @IBOutlet weak var backButton: UIBarButtonItem!
+    @IBOutlet weak var uploadButton: UIButton!
     
     // MARK: VARIABLES
 
@@ -53,35 +54,32 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     
     var bloodGroup = ["---","O+","O-","A+","A-","B+","B-","AB+","AB-"]
     let bloodGroupPicker = UIPickerView()
-    
+   
     var activityIndicator: UIActivityIndicatorView!
     
     func startActivity(){
+        
         activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
         activityIndicator.frame = CGRect(x: 150, y: 330, width: 100, height: 100)
         activityIndicator.center = view.center
-        activityIndicator.backgroundColor = UIColor.red
+        activityIndicator.backgroundColor = UIColor.blue
         activityIndicator.color = UIColor.yellow
         activityIndicator.hidesWhenStopped = true
-        self.scrollView.addSubview(activityIndicator)
+        self.view.addSubview(activityIndicator)
         
-        activityIndicator.isHidden = false
+        //activityIndicator.isHidden = false
         activityIndicator.startAnimating()
-        backButton.isEnabled = false
-        UIApplication.shared.beginIgnoringInteractionEvents()
+
         
     }
     
     func stopActivity(){
         
-       
-        activityIndicator.isHidden = true
-        activityIndicator.stopAnimating()
-        UIApplication.shared.endIgnoringInteractionEvents()
+     activityIndicator.stopAnimating()
     }
+ 
     
-    
-    override func viewDidLoad() {
+        override func viewDidLoad() {
         super.viewDidLoad()
         
         firstNameTextField.delegate = self
@@ -310,10 +308,14 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     
     @IBAction func saveButtonClicked(_ sender: UIButton)
     {
+    
         if Reachability.isConnectedToNetwork() == true
         {
             if checkFields(){
+                
                 self.startActivity()
+                saveButton.isEnabled = false
+                uploadButton.isEnabled = false
                 
                 var completeFlag = false
                 
@@ -372,9 +374,11 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
                 }
                 
                self.stopActivity()
-               backButton.isEnabled = true
-               saveButton.isHidden = true
+                
+                backButton.isEnabled = true
+                saveButton.isHidden = true
                 if completeFlag {
+                    
                     self.performSegue(withIdentifier: "driverListSegue", sender: nil)
                 }
               // self.performSegue(withIdentifier: "driverListSegue", sender: nil)
@@ -383,6 +387,7 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
         }else{
             self.showAlert(title: "Failure", message: "Internet Connection not Available!") //Show Failure Message
         }
+        
         
     }
     

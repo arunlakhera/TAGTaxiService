@@ -225,25 +225,25 @@ class BookARideViewController: UIViewController, UIPickerViewDelegate, UIPickerV
             let formatter = DateFormatter()
             formatter.dateFormat = "YYYY-MM-dd"
             
-            rideBookID.child("RiderID").setValue(AuthService.instance.riderID!)
-            rideBookID.child("VehicleID").setValue("")
-            rideBookID.child("DriverID").setValue("")
-            rideBookID.child("DateOfBooking").setValue(String(describing: travelMinDate))
-            rideBookID.child("RideFrom").setValue(travelFromTextField.text?.capitalized)
-            rideBookID.child("RideTo").setValue(travelToTextField.text?.capitalized)
-            rideBookID.child("RideBeginDate").setValue(travelBeginDateTextField.text)
-            rideBookID.child("RideEndDate").setValue(travelEndDateTextField.text)
-            rideBookID.child("RoundTrip").setValue(roundTripLabel.text?.capitalized)
-            rideBookID.child("NoOfTravellers").setValue(noOfTravellersLabel.text)
-            rideBookID.child("CreatedOnDate").setValue(String(describing: travelMinDate))
-            rideBookID.child("CreatedBy").setValue(AuthService.instance.riderID!)
-            rideBookID.child("LastUpdatedOnDate").setValue(String(describing: travelMinDate))
-            rideBookID.child("UpdatedBy").setValue(AuthService.instance.riderID!)
+            rideBookID.child("RiderID").setValue(AuthService.instance.riderID!){(error) in print("Error while Writing Rider ID to Database")}
+            rideBookID.child("VehicleID").setValue(""){(error) in print("Error while Writing Vehicle ID to Database")}
+            rideBookID.child("DriverID").setValue(""){(error) in print("Error while Writing Driver ID to Database")}
+            rideBookID.child("DateOfBooking").setValue(String(describing: travelMinDate)){(error) in print("Error while Writing Date Of Booking to Database")}
+            rideBookID.child("RideFrom").setValue(travelFromTextField.text?.capitalized){(error) in print("Error while Writing Ride From to Database")}
+            rideBookID.child("RideTo").setValue(travelToTextField.text?.capitalized){(error) in print("Error while Writing Ride To to Database")}
+            rideBookID.child("RideBeginDate").setValue(travelBeginDateTextField.text){(error) in print("Error while Writing Ride Begin Date to Database")}
+            rideBookID.child("RideEndDate").setValue(travelEndDateTextField.text){(error) in print("Error while Writing Ride End Date to Database")}
+            rideBookID.child("RoundTrip").setValue(roundTripLabel.text?.capitalized){(error) in print("Error while Writing Round Trip to Database")}
+            rideBookID.child("NoOfTravellers").setValue(noOfTravellersLabel.text){(error) in print("Error while Writing No of Travellers to Database")}
+            rideBookID.child("CreatedOnDate").setValue(String(describing: travelMinDate)){(error) in print("Error while Writing Created on Date to Database")}
+            rideBookID.child("CreatedBy").setValue(AuthService.instance.riderID!){(error) in print("Error while Writing Created By to Database")}
+            rideBookID.child("LastUpdatedOnDate").setValue(String(describing: travelMinDate)){(error) in print("Error while Writing Last Updated On Date to Database")}
+            rideBookID.child("UpdatedBy").setValue(AuthService.instance.riderID!){(error) in print("Error while Writing Updated By to Database")}
             
             // Set Default Admin Values
-            rideBookID.child("Status").setValue("Pending")
-            rideBookID.child("Amount").setValue("Pending")
-            rideBookID.child("Vehicle").setValue("Pending")
+            rideBookID.child("Status").setValue("Pending"){(error) in print("Error while Writing Status to Database")}
+            rideBookID.child("Amount").setValue("Pending"){(error) in print("Error while Writing Amount to Database")}
+            rideBookID.child("Vehicle").setValue("Pending"){(error) in print("Error while Writing Vehicle to Database")}
             
             // Make Entry in Riders Table to know which Rider did the booking
             

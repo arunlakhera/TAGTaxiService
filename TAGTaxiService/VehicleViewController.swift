@@ -18,16 +18,32 @@ class VehicleViewController: UIViewController, UITableViewDelegate,UITableViewDa
     
     var insuranceExpiryCount = 0
     var pollutionExpiryCount = 0
+    var permitExpiryCount = 0
+    var vehicleFitnessExpiryCount = 0
     
     let dateformatter = DateFormatter()
     let todayDate = Date()
     var today: String?
     var numberOfDaysForInsuranceExpiry: Int?
     var numberOfDaysForPollutionExpiry: Int?
+    var numberOfDaysForPermitExpiry: Int?
+    var numberOfDaysForVehicleFitnessExpiry: Int?
+    
     var insuranceValidTill: String?
     var pollutionValidTill: String?
+    var permitValidTill: String?
+    var vehicleFitnessValidTill: String?
+    
     var insuranceCount = 0
     var pollutionCount = 0
+    var permitCount = 0
+    var vehicleFitnessCount = 0
+    
+    var insuranceMessage = ""
+    var pollutionMessage = ""
+    var permitMessage = ""
+    var vehicleFitnessMessage = ""
+    var expiryMessage = ""
     
      override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,7 +58,7 @@ class VehicleViewController: UIViewController, UITableViewDelegate,UITableViewDa
             self.vehicleList = []
             
             if let snapshots = snapshot.children.allObjects as? [FIRDataSnapshot]{
-                print(snapshot)
+               
                 for snap in snapshots{
                     if let vehicleDict = snap.value as? Dictionary<String, String>{
                         
@@ -52,11 +68,20 @@ class VehicleViewController: UIViewController, UITableViewDelegate,UITableViewDa
                    
                         self.insuranceValidTill = (vehicle.insurnaceExpDate != nil ? vehicle.insurnaceExpDate! : "2000-01-01" )
                         self.pollutionValidTill = (vehicle.pollutionCertExpDate != nil ? vehicle.pollutionCertExpDate! : "2000-01-01" )
+                        
+                        self.permitValidTill = (vehicle.permitExpDate != nil ? vehicle.permitExpDate! : "2000-01-01" )
+                        self.vehicleFitnessValidTill = (vehicle.vehicleFitnessExpDate != nil ? vehicle.vehicleFitnessExpDate! : "2000-01-01" )
+                        
                         self.today = self.dateformatter.string(from: self.todayDate)
-                      //
+                      
                         self.numberOfDaysForInsuranceExpiry  = Int((self.dateformatter.date(from: self.insuranceValidTill!)!.timeIntervalSince(self.dateformatter.date(from: self.today!)!) ) / ( 24 * 60 * 60))
                         
                         self.numberOfDaysForPollutionExpiry  = Int((self.dateformatter.date(from: self.pollutionValidTill!)!.timeIntervalSince(self.dateformatter.date(from: self.today!)!) ) / ( 24 * 60 * 60))
+                        
+                        self.numberOfDaysForPermitExpiry  = Int((self.dateformatter.date(from: self.permitValidTill!)!.timeIntervalSince(self.dateformatter.date(from: self.today!)!) ) / ( 24 * 60 * 60))
+                        
+                        self.numberOfDaysForVehicleFitnessExpiry  = Int((self.dateformatter.date(from: self.vehicleFitnessValidTill!)!.timeIntervalSince(self.dateformatter.date(from: self.today!)!) ) / ( 24 * 60 * 60))
+                        
                         
                         if self.numberOfDaysForInsuranceExpiry! <= 30 {
                             self.insuranceExpiryCount += 1
@@ -68,21 +93,40 @@ class VehicleViewController: UIViewController, UITableViewDelegate,UITableViewDa
                             self.pollutionCount += 1
                         }
                      
+                        if self.numberOfDaysForPermitExpiry! <= 30 {
+                            self.pollutionExpiryCount += 1
+                            self.permitCount += 1
+                        }
+                     
+                        if self.numberOfDaysForVehicleFitnessExpiry! <= 30 {
+                            self.vehicleFitnessExpiryCount += 1
+                            self.vehicleFitnessCount += 1
+                        }
                         
                     }
                 }
                 
-                if self.insuranceCount > 0 && self.pollutionCount > 0{
-                    let message1 = "Insurance Expiring for \(self.insuranceCount) Vehicles \n"
-                    let message2 = "Pollution Certificate Expiring for \(self.pollutionCount) Vehicles \n"
-                    let message = message1 + message2
-                    self.showAlert(title: "Alert", message: message)
-                }else if self.insuranceCount > 0 && self.pollutionCount == 0{
-                    self.showAlert(title: "Alert", message: "Insurance Expiring for \(self.insuranceCount) Vehicles")
-                }else if self.insuranceCount == 0 && self.pollutionCount > 0{
-                    self.showAlert(title: "Alert", message: "Pollution Certificate Expiring for \(self.pollutionCount) Vehicles")
+              
+                
+                if self.insuranceCount > 0{
+                    self.insuranceMessage = "Insurance Expiring for \(self.insuranceCount) Vehicles \n"
+                }
+                if self.pollutionCount > 0 {
+                    self.pollutionMessage = "Pollution Certificate Expiring for \(self.pollutionCount) Vehicles \n"
+                }
+                if self.permitCount > 0{
+                    self.permitMessage = "Permit Expiring for \(self.permitCount) Vehicles \n"
+                }
+                if self.vehicleFitnessCount > 0{
+                    self.vehicleFitnessMessage = "Vehicle Fitness Expiring for \(self.vehicleFitnessCount) Vehicles \n"
                 }
                 
+                self.expiryMessage = self.insuranceMessage + self.pollutionMessage + self.permitMessage + self.vehicleFitnessMessage
+                
+                if self.expiryMessage.characters.count > 0 {
+                    self.showAlert(title: "Alert", message: self.expiryMessage)
+                }
+                // end
                 self.tableView.reloadData()
             }
         })
@@ -111,17 +155,28 @@ class VehicleViewController: UIViewController, UITableViewDelegate,UITableViewDa
         cell?.carNumberLabel.text = vehicle.vehicleNumber
         cell?.insuranceExpiryDateLabel.text = vehicle.insurnaceExpDate
         cell?.pollutionExpiryDateLabel.text = vehicle.pollutionCertExpDate
-       
+        cell?.permitExpiryDateLabel.text = vehicle.permitExpDate
+        cell?.vehicleFitnessExpiryDateLabel.text = vehicle.vehicleFitnessExpDate
+        
         self.today = self.dateformatter.string(from: self.todayDate)
         
         self.insuranceValidTill = (vehicle.insurnaceExpDate != nil ? vehicle.insurnaceExpDate! : "2000-01-01" )
         self.pollutionValidTill = (vehicle.pollutionCertExpDate != nil ? vehicle.pollutionCertExpDate! : "2000-01-01" )
         
+        self.permitValidTill = (vehicle.permitExpDate != nil ? vehicle.permitExpDate! : "2000-01-01" )
+        self.vehicleFitnessValidTill = (vehicle.vehicleFitnessExpDate != nil ? vehicle.vehicleFitnessExpDate! : "2000-01-01" )
+        
+        
         self.numberOfDaysForInsuranceExpiry = Int((self.dateformatter.date(from: self.insuranceValidTill!)!.timeIntervalSince(self.dateformatter.date(from: self.today!)!) ) / ( 24 * 60 * 60))
        
         self.numberOfDaysForPollutionExpiry = Int((self.dateformatter.date(from: self.pollutionValidTill!)!.timeIntervalSince(self.dateformatter.date(from: self.today!)!) ) / ( 24 * 60 * 60))
         
+        self.numberOfDaysForPermitExpiry = Int((self.dateformatter.date(from: self.permitValidTill!)!.timeIntervalSince(self.dateformatter.date(from: self.today!)!) ) / ( 24 * 60 * 60))
+        
+        self.numberOfDaysForVehicleFitnessExpiry = Int((self.dateformatter.date(from: self.vehicleFitnessValidTill!)!.timeIntervalSince(self.dateformatter.date(from: self.today!)!) ) / ( 24 * 60 * 60))
+        
         if (self.numberOfDaysForInsuranceExpiry! <= 30 && self.numberOfDaysForInsuranceExpiry! >= 15 ){
+            cell?.backgroundColor = UIColor.darkGray
             cell?.insuranceExpiryDateLabel.backgroundColor = UIColor.orange
             
             // Blink the Text
@@ -131,6 +186,7 @@ class VehicleViewController: UIViewController, UITableViewDelegate,UITableViewDa
                     cell?.insuranceExpiryDateLabel.alpha = 0
             }, completion: nil)
         }else if (self.numberOfDaysForInsuranceExpiry! < 15){
+            cell?.backgroundColor = UIColor.darkGray
             cell?.insuranceExpiryDateLabel.backgroundColor = UIColor.red
     
             // Blink the Text
@@ -142,6 +198,7 @@ class VehicleViewController: UIViewController, UITableViewDelegate,UITableViewDa
         }
 
         if (self.numberOfDaysForPollutionExpiry! <= 30 && self.numberOfDaysForPollutionExpiry! >= 15 ){
+            cell?.backgroundColor = UIColor.darkGray
             cell?.pollutionExpiryDateLabel.backgroundColor = UIColor.orange
             
             // Blink the Text
@@ -153,6 +210,7 @@ class VehicleViewController: UIViewController, UITableViewDelegate,UITableViewDa
             
             
         }else if (self.numberOfDaysForPollutionExpiry! < 15){
+            cell?.backgroundColor = UIColor.darkGray
             cell?.pollutionExpiryDateLabel.backgroundColor  = UIColor.red
             
             // Blink the Text
@@ -162,6 +220,55 @@ class VehicleViewController: UIViewController, UITableViewDelegate,UITableViewDa
                     cell?.pollutionExpiryDateLabel.alpha = 0
             }, completion: nil)
         }
+
+        if (self.numberOfDaysForPermitExpiry! <= 30 && self.numberOfDaysForPermitExpiry! >= 15 ){
+            cell?.backgroundColor = UIColor.darkGray
+            cell?.permitExpiryDateLabel.backgroundColor = UIColor.orange
+            
+            // Blink the Text
+            cell?.permitExpiryDateLabel.alpha = 1
+            UIView.animate(withDuration: 0.7, delay: 0.0, options: [.repeat, .autoreverse, []], animations:
+                {
+                    cell?.permitExpiryDateLabel.alpha = 0
+            }, completion: nil)
+            
+            
+        }else if (self.numberOfDaysForPermitExpiry! < 15){
+            cell?.backgroundColor = UIColor.darkGray
+            cell?.permitExpiryDateLabel.backgroundColor  = UIColor.red
+            
+            // Blink the Text
+            cell?.permitExpiryDateLabel.alpha = 1
+            UIView.animate(withDuration: 0.7, delay: 0.0, options: [.repeat, .autoreverse, []], animations:
+                {
+                    cell?.permitExpiryDateLabel.alpha = 0
+            }, completion: nil)
+        }
+        
+        if (self.numberOfDaysForVehicleFitnessExpiry! <= 30 && self.numberOfDaysForVehicleFitnessExpiry! >= 15 ){
+            cell?.backgroundColor = UIColor.darkGray
+            cell?.vehicleFitnessExpiryDateLabel.backgroundColor = UIColor.orange
+            
+            // Blink the Text
+            cell?.vehicleFitnessExpiryDateLabel.alpha = 1
+            UIView.animate(withDuration: 0.7, delay: 0.0, options: [.repeat, .autoreverse, []], animations:
+                {
+                    cell?.vehicleFitnessExpiryDateLabel.alpha = 0
+            }, completion: nil)
+            
+            
+        }else if (self.numberOfDaysForVehicleFitnessExpiry! < 15){
+            cell?.backgroundColor = UIColor.darkGray
+            cell?.vehicleFitnessExpiryDateLabel.backgroundColor  = UIColor.red
+            
+            // Blink the Text
+            cell?.vehicleFitnessExpiryDateLabel.alpha = 1
+            UIView.animate(withDuration: 0.7, delay: 0.0, options: [.repeat, .autoreverse, []], animations:
+                {
+                    cell?.vehicleFitnessExpiryDateLabel.alpha = 0
+            }, completion: nil)
+        }
+
         
         return cell!
     }
@@ -183,6 +290,10 @@ class VehicleViewController: UIViewController, UITableViewDelegate,UITableViewDa
                 destinationVC.insuranceExpiryDate = vehicle.insurnaceExpDate != nil ? vehicle.insurnaceExpDate! : "Not Available"
                 destinationVC.pollutionCertificateNumber = vehicle.pollutionCertNumber != nil ? vehicle.pollutionCertNumber! : "Not Available"
                 destinationVC.pollutionCertificateExpiryDate = vehicle.pollutionCertExpDate != nil ? vehicle.pollutionCertExpDate! : "Not Available"
+                
+                destinationVC.permitExpiryDate = vehicle.permitExpDate != nil ? vehicle.permitExpDate! : "Not Available"
+                destinationVC.vehicleFitnessExpiryDate = vehicle.vehicleFitnessExpDate != nil ? vehicle.vehicleFitnessExpDate! :  "Not Available"
+                
                 destinationVC.mileage = vehicle.mileage != nil ? vehicle.mileage! : "Not Available"
                 destinationVC.lastServiceDate = vehicle.lastServiceDate != nil ? vehicle.lastServiceDate! : "Not Available"
                 destinationVC.active = vehicle.isActiveFlag != nil ? vehicle.isActiveFlag! : "Not Available"

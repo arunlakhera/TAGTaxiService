@@ -25,6 +25,7 @@ class RiderProfileViewController: UIViewController, /*UINavigationControllerDele
     @IBOutlet weak var genderTextField: UITextField!
     @IBOutlet weak var emailIDTextField: UITextField!
     @IBOutlet weak var saveButton: UIButton!
+    @IBOutlet weak var backButton: UIBarButtonItem!
     
     @IBOutlet weak var scrollView: UIScrollView!
     
@@ -59,11 +60,8 @@ class RiderProfileViewController: UIViewController, /*UINavigationControllerDele
     }
     
     func stopActivity(){
-        
         activityIndicator.stopAnimating()
-        
     }
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -235,25 +233,32 @@ class RiderProfileViewController: UIViewController, /*UINavigationControllerDele
         {
             if checkFields()
             {
+                
+                backButton.isEnabled = false
+                saveButton.isEnabled = false
+                saveButton.isHidden = true
+                
                 let todayDate = NSDate()
-                riderProfile.child("FirstName").setValue(firstNameTextField.text)
-                riderProfile.child("LastName").setValue(lastNameTextField.text)
-                riderProfile.child("PhoneNumber").setValue(phoneTextField.text)
-                riderProfile.child("DateOfBirth").setValue(dateOfBirthTextField.text)
-                riderProfile.child("Gender").setValue(genderTextField.text)
-                riderProfile.child("AddressLine1").setValue(address1TextField.text)
-                riderProfile.child("AddressLine2").setValue(address2TextField.text)
-                riderProfile.child("City").setValue(cityTextField.text)
-                riderProfile.child("State").setValue(stateTextField.text)
+                riderProfile.child("FirstName").setValue(firstNameTextField.text){(error) in print("Error while Writing First Name to Database")}
+                riderProfile.child("LastName").setValue(lastNameTextField.text){(error) in print("Error while Writing Last Name to Database")}
+                riderProfile.child("PhoneNumber").setValue(phoneTextField.text){(error) in print("Error while Writing Phone Number to Database")}
+                riderProfile.child("DateOfBirth").setValue(dateOfBirthTextField.text){(error) in print("Error while Writing Date Of Birth to Database")}
+                riderProfile.child("Gender").setValue(genderTextField.text){(error) in print("Error while Writing Gender to Database")}
+                riderProfile.child("AddressLine1").setValue(address1TextField.text){(error) in print("Error while Writing Address Line 1 to Database")}
+                riderProfile.child("AddressLine2").setValue(address2TextField.text){(error) in print("Error while Writing Address Line 2 to Database")}
+                riderProfile.child("City").setValue(cityTextField.text){(error) in print("Error while Writing City to Database")}
+                riderProfile.child("State").setValue(stateTextField.text){(error) in print("Error while Writing State to Database")}
             
-                riderProfile.child("CreatedOnDate").setValue(String(describing: todayDate))
-                riderProfile.child("LastUpdatedOnDate").setValue(String(describing: todayDate))
-                riderProfile.child("CreatedBy").setValue(AuthService.instance.riderEmail!)
-                riderProfile.child("UpdatedBy").setValue(AuthService.instance.riderEmail!)
+                riderProfile.child("CreatedOnDate").setValue(String(describing: todayDate)){(error) in print("Error while Writing Created On Date to Database")}
+                riderProfile.child("LastUpdatedOnDate").setValue(String(describing: todayDate)){(error) in print("Error while Writing Last Updated On Date to Database")}
+                riderProfile.child("CreatedBy").setValue(AuthService.instance.riderEmail!){(error) in print("Error while Writing Created By to Database")}
+                riderProfile.child("UpdatedBy").setValue(AuthService.instance.riderEmail!){(error) in print("Error while Writing Updated By to Database")}
             
+                self.showAlert(title: "Saved", message: "Record Saved Successfully")
+                
+                //self.performSegue(withIdentifier: "riderToMainSegue", sender: nil)
+                backButton.isEnabled = true
             }
-        
-        self.performSegue(withIdentifier: "riderToMainSegue", sender: nil)
         
         }else{
     
@@ -304,9 +309,6 @@ class RiderProfileViewController: UIViewController, /*UINavigationControllerDele
     func textFieldDidEndEditing(_ textField: UITextField) {
             scrollView.setContentOffset(CGPoint.init(x: 0, y: 0), animated: true)
     }
-
-    
-    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }

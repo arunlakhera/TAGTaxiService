@@ -9,7 +9,7 @@
 import Foundation
 import MessageUI
 
-let textMessageRecipients = ["9886136629"] // for pre-populating the recipients list
+let textMessageRecipients = ["9886136629","8979743264"] // for pre-populating the recipients list
 
 class MessageComposer: NSObject, MFMessageComposeViewControllerDelegate{
     // A wrapper function to indicate whether or not a text message can be sent from the user's device
@@ -18,11 +18,11 @@ class MessageComposer: NSObject, MFMessageComposeViewControllerDelegate{
     }
     
     // Configures and returns a MFMessageComposeViewController instance
-    func configuredMessageComposeViewController() -> MFMessageComposeViewController {
+    func configuredMessageComposeViewController(textMessage: String) -> MFMessageComposeViewController {
         let messageComposeVC = MFMessageComposeViewController()
         messageComposeVC.messageComposeDelegate = self  //  Make sure to set this property to self, so that the controller can be dismissed!
         messageComposeVC.recipients = textMessageRecipients
-        messageComposeVC.body =  "Sending Text Message through SMS for TAG Taxi"
+        messageComposeVC.body =  textMessage
         return messageComposeVC
     }
     

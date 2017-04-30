@@ -61,7 +61,7 @@ class AdminBookDetailViewController: UIViewController, UITextFieldDelegate {
         noOfTravellersLabel.text = bookNoOfTravellers
         statusText.text = bookStatus
         amountText.text = bookAmount
-        vehicleText.text = "\(bookVehicleType) \(bookVehicle)"
+        vehicleText.text = "\(bookVehicle.trimmingCharacters(in: .whitespacesAndNewlines)) \(bookVehicleType.trimmingCharacters(in: .whitespacesAndNewlines)) "
         
         statusText.isEnabled = false
         
@@ -78,7 +78,15 @@ class AdminBookDetailViewController: UIViewController, UITextFieldDelegate {
 
         amountText.inputAccessoryView = toolBarWithDoneButton
         vehicleText.inputAccessoryView = toolBarWithDoneButton
-    
+        
+        // If status is ACCEPTED only then show the Completed button so Admin can mark the journey as completed
+        
+        if bookingStatusList == "Accepted"{
+            send.isHidden = false
+            send.isEnabled = true
+            send.setTitle("Completed", for: .normal)
+        }
+        
     }
     
     
@@ -118,39 +126,66 @@ class AdminBookDetailViewController: UIViewController, UITextFieldDelegate {
             alert.addAction(action)
             self.present(alert, animated: true, completion: nil)
         }else if let _ = Double(amountText.text!){
-            bookStatus = "Quoted"
-            DataService.ds.REF_RIDEBOOKING.child(bookKey).child("Amount").setValue(amountText.text!)
-            DataService.ds.REF_RIDEBOOKING.child(bookKey).child("Status").setValue(bookStatus)
-            DataService.ds.REF_RIDEBOOKING.child(bookKey).child("Vehicle").setValue(vehicleText.text!)
+            //
+            if send.title(for: .normal) == "Completed"{
+                bookStatus = "Completed"
+                DataService.ds.REF_RIDEBOOKING.child(bookKey).child("Status").setValue(bookStatus){(error) in print("Error while Writing Status to Database")}
+                showAlert(title: "Completed", message: "You have Marked the Booking as Completed")
+               
+                statusText.text = "Completed"
+                send.isHidden = true
+                send.isEnabled = false
+            } else{//
             
+            bookStatus = "Quoted"
+            DataService.ds.REF_RIDEBOOKING.child(bookKey).child("Amount").setValue(amountText.text!.trimmingCharacters(in: .whitespacesAndNewlines)){(error) in print("Error while Writing Amount to Database")}
+            DataService.ds.REF_RIDEBOOKING.child(bookKey).child("Status").setValue(bookStatus){(error) in print("Error while Writing Status to Database")}
+            DataService.ds.REF_RIDEBOOKING.child(bookKey).child("Vehicle").setValue(vehicleText.text!.trimmingCharacters(in: .whitespacesAndNewlines)){(error) in print("Error while Writing Vehicle to Database")}
+            
+            statusText.text = bookStatus
+            send.isHidden = true
+            }
         } else{
             let alert = UIAlertController(title: "Error!", message: "Please Enter Valid Amount.", preferredStyle: .alert)
             let action = UIAlertAction(title: "OK", style: .default, handler: nil)
             alert.addAction(action)
             present(alert, animated: true, completion: nil)
         }
-        
-            // Sending Message Begin
-            // Make sure the device can send text messages
-            if (messageComposer.canSendText()) {
-                // Obtain a configured MFMessageComposeViewController
-                let messageComposeVC = messageComposer.configuredMessageComposeViewController()
-                
-                // Present the configured MFMessageComposeViewController instance
-                present(messageComposeVC, animated: true, completion: nil)
-            } else {
-                // Let the user know if his/her device isn't able to send text messages
-                let alert = UIAlertController(title: "Cannot Send Text Message", message: "Your device is not able to send text messages.", preferredStyle: .alert)
-                let action = UIAlertAction(title: "Ok", style: .default, handler: nil)
-                alert.addAction(action)
-                present(alert, animated: true, completion: nil)
-                
+            
+           // self.showAlert(title: "BOOK STATUS", message: "Book Status-->\(bookStatus)")
+            
+            if bookStatus == "Quoted"{
+                sendMessage()
             }
-            // Sending Message End
-        self.performSegue(withIdentifier: "adminBookListSegue", sender: nil)
         }else{
             self.showAlert(title: "Failure", message: "Internet Connection not Available!") //Show Failure Message
         }
+    
+    }
+    
+    func sendMessage(){
+        
+        // Sending Message Begin
+        // Make sure the device can send text messages
+        if (messageComposer.canSendText()) {
+            // Obtain a configured MFMessageComposeViewController
+            
+            let textMessage = "TAG Taxi Service \n Booking Name: \(bookName) \n  \(bookFrom) - \(bookTo) \n Date: \(bookTravelDate) \n Amount: Rs.\(bookAmount) \n Booking Status: \(bookStatus) \n"
+            
+            let messageComposeVC = messageComposer.configuredMessageComposeViewController(textMessage: textMessage)
+       
+            // Present the configured MFMessageComposeViewController instance
+            present(messageComposeVC, animated: true, completion: nil)
+            
+        } else {
+            // Let the user know if his/her device isn't able to send text messages
+            let alert = UIAlertController(title: "Cannot Send Text Message", message: "Your device is not able to send text messages.", preferredStyle: .alert)
+            let action = UIAlertAction(title: "Ok", style: .default, handler: nil)
+            alert.addAction(action)
+            present(alert, animated: true, completion: nil)
+            
+        }
+        // Sending Message End
     
     }
     

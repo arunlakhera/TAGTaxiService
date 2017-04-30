@@ -31,6 +31,7 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
     @IBOutlet weak var editButton: UIBarButtonItem!
     @IBOutlet weak var saveButton: UIButton!
     @IBOutlet weak var backButton: UIBarButtonItem!
+    @IBOutlet weak var uploadButton: UIButton!
     
     var driverKey = ""
     var firstName = "NA"
@@ -226,6 +227,7 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
         bloodGroupTextField.isEnabled = false
         activeLabel.isEnabled = false
         activeSwitch.isEnabled = false
+        uploadButton.isEnabled = false
         
     }
 
@@ -420,6 +422,7 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
         bloodGroupTextField.isEnabled = true
         activeLabel.isEnabled = true
         activeSwitch.isEnabled = true
+        uploadButton.isEnabled = true
     }
     
     
@@ -429,6 +432,9 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
         {
             if checkFields(){
                 startActivity()
+                
+                uploadButton.isEnabled = false
+                activeSwitch.isEnabled = false
                 
                 let driver = DataService.ds.REF_DRIVER.child(driverKey)
                 
@@ -472,15 +478,15 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
                             driver.child("BloodGroup").setValue(self.bloodGroupTextField.text) {(error) in print("Error while Writing Blood Group to Database")}
                             driver.child("Active").setValue(self.activeLabel.text) {(error) in print("Error while Writing Active to Database")}
                             
-                            self.backButton.isEnabled = true
-                            self.editButton.isEnabled = true
+                            
                         }
                     }
                     
                     uploadTask.observe(.success, handler: { (snapshot) in
                         
                         self.showAlert(title: "Saved", message: "Record Saved Successfully!")
-                        
+                        self.backButton.isEnabled = true
+                        self.editButton.isEnabled = true
                     })
                 }
                 

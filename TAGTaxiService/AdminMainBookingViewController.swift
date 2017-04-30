@@ -60,6 +60,13 @@ class AdminMainBookingViewController: UIViewController {
         menuView.layer.shadowRadius = 4
         
         DataService.ds.REF_RIDEBOOKING.observe(.value, with: { (snapshot) in
+            self.pendingCount = 0
+            self.quotedCount = 0
+            self.acceptedCount = 0
+            self.declinedCount = 0
+            self.cancelledCount  = 0
+            self.completedCount = 0
+            
             if let snapshots = snapshot.children.allObjects as? [FIRDataSnapshot]{
                 
                 for snap in snapshots{

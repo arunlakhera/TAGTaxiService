@@ -21,6 +21,8 @@ class Vehicle{
     private var _insuranceExpDate: String!
     private var _pollutionCertNumber: String!
     private var _pollutionCertExpDate: String!
+    private var _permitExpDate: String!
+    private var _vehicleFitnessExpDate: String!
     private var _mileage: String!
     private var _lastServiceDate: String!
     private var _isActiveFlag: String!
@@ -37,13 +39,15 @@ class Vehicle{
     var insurnaceExpDate : String?{ return _insuranceExpDate}
     var pollutionCertNumber: String?{ return _pollutionCertNumber}
     var pollutionCertExpDate: String?{ return _pollutionCertExpDate}
+    var permitExpDate: String?{ return _permitExpDate}
+    var vehicleFitnessExpDate: String?{ return _vehicleFitnessExpDate}
     var mileage: String?{ return _mileage}
     var lastServiceDate: String?{ return _lastServiceDate}
     var isActiveFlag: String?{ return _isActiveFlag}
     var imageURL: String?{ return _imageURL }
    
     
-    init(vehicleID: String, companyName: String, modelName: String, vehicleNumber: String, vehicleType: String, registrationNumber: String, modelYear: String, insuranceNumber: String, insurnaceExpDate: String, pollutionCertNumber: String, pollutionCertExpDate: String, mileage: String, lastServiceDate: String, isActiveFlag: String, imageURL: String) {
+    init(vehicleID: String, companyName: String, modelName: String, vehicleNumber: String, vehicleType: String, registrationNumber: String, modelYear: String, insuranceNumber: String, insurnaceExpDate: String, pollutionCertNumber: String, pollutionCertExpDate: String, permitExpDate: String, vehicleFitnessExpDate: String,mileage: String, lastServiceDate: String, isActiveFlag: String, imageURL: String) {
         
         self._vehicleID = vehicleID
         self._companyName = companyName
@@ -56,6 +60,8 @@ class Vehicle{
         self._insuranceExpDate = insurnaceExpDate
         self._pollutionCertNumber = pollutionCertNumber
         self._pollutionCertExpDate = pollutionCertExpDate
+        self._permitExpDate = permitExpDate
+        self._vehicleFitnessExpDate = vehicleFitnessExpDate
         self._mileage = mileage
         self._lastServiceDate = lastServiceDate
         self._isActiveFlag = isActiveFlag
@@ -76,12 +82,13 @@ class Vehicle{
         if let insurnaceExpDate = dictionary["InsuranceExpiryDate"] as? String{ self._insuranceExpDate = insurnaceExpDate }
         if let pollutionCertNumber = dictionary["PollutionCertificateNumber"] as? String{ self._pollutionCertNumber = pollutionCertNumber }
         if let pollutionCertExpDate = dictionary["PollutionCertificateExpiryDate"] as? String{ self._pollutionCertExpDate = pollutionCertExpDate}
+         if let permitExpDate = dictionary["PermitExpiryDate"] as? String{ self._permitExpDate = permitExpDate}
+         if let vehicleFitnessExpDate = dictionary["VehicleFitnessExpiryDate"] as? String{ self._vehicleFitnessExpDate = vehicleFitnessExpDate}
         if let mileage = dictionary["Mileage"] as? String{ self._mileage = mileage }
         if let lastServiceDate = dictionary["LastServiceDate"] as? String{ self._lastServiceDate = lastServiceDate }
         if let isActiveFlag = dictionary["Active"] as? String{ self._isActiveFlag = isActiveFlag }
         if let imageURL = dictionary["ImageURL"] as? String{ self._imageURL = imageURL }
         
     }
-    
     
 }

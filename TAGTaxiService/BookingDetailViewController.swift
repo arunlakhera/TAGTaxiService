@@ -79,6 +79,7 @@ class BookingDetailViewController: UIViewController {
             acceptButton.isHidden = false
             cancelButton.isEnabled = true
         }
+        
     }
 
     // Action when Accept button is pressed

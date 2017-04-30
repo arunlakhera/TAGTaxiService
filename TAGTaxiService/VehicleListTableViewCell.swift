@@ -16,6 +16,8 @@ class VehicleListTableViewCell: UITableViewCell {
     @IBOutlet weak var insuranceExpiryDateLabel: UILabel!
     @IBOutlet weak var pollutionExpiryDateLabel: UILabel!
     
+    @IBOutlet weak var permitExpiryDateLabel: UILabel!
+    @IBOutlet weak var vehicleFitnessExpiryDateLabel: UILabel!
     
     
     override func awakeFromNib() {
@@ -34,6 +36,8 @@ class VehicleListTableViewCell: UITableViewCell {
         carNumberLabel.text = ""
         insuranceExpiryDateLabel.text = ""
         pollutionExpiryDateLabel.text = ""
+        permitExpiryDateLabel.text = ""
+        vehicleFitnessExpiryDateLabel.text = ""
        
     }
     
