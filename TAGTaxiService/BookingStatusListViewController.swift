@@ -122,14 +122,29 @@ class BookingStatusListViewController: UIViewController, UITableViewDelegate, UI
         cell?.statusLabel.text = book.status!
 
         if book.status! == "Pending"{
+            cell?.nameLabel.textColor = UIColor.yellow
+            cell?.fromToLabel.textColor = UIColor.yellow
+            cell?.TravelDateLabel.textColor = UIColor.yellow
             cell?.statusLabel.textColor = UIColor.yellow
         }else if book.status! == "Accepted"{
+            cell?.nameLabel.textColor = UIColor.green
+            cell?.fromToLabel.textColor = UIColor.green
+            cell?.TravelDateLabel.textColor = UIColor.green
             cell?.statusLabel.textColor = UIColor.green
         } else if book.status! == "Declined" || book.status! == "Cancelled"{
+            cell?.nameLabel.textColor = UIColor.red
+            cell?.fromToLabel.textColor = UIColor.red
+            cell?.TravelDateLabel.textColor = UIColor.red
             cell?.statusLabel.textColor = UIColor.red
         }else if book.status! == "Quoted"{
+            cell?.nameLabel.textColor = UIColor.orange
+            cell?.fromToLabel.textColor = UIColor.orange
+            cell?.TravelDateLabel.textColor = UIColor.orange
             cell?.statusLabel.textColor = UIColor.orange
         }else if book.status! == "Completed"{
+            cell?.nameLabel.textColor = UIColor.white
+            cell?.fromToLabel.textColor = UIColor.white
+            cell?.TravelDateLabel.textColor = UIColor.white
             cell?.statusLabel.textColor = UIColor.white
         }
        

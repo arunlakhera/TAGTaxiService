@@ -15,6 +15,8 @@
 		D81B07B31E8A880400BBBEEC /* DriverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81B07B21E8A880400BBBEEC /* DriverViewController.swift */; };
 		D81B07B51E8AA7E700BBBEEC /* DriverListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81B07B41E8AA7E700BBBEEC /* DriverListTableViewCell.swift */; };
 		D81B07B71E8AC4FE00BBBEEC /* AddDriverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81B07B61E8AC4FE00BBBEEC /* AddDriverViewController.swift */; };
+		D827E7671EB5E40F0078D493 /* RiderBG.png in Resources */ = {isa = PBXBuildFile; fileRef = D827E7661EB5E40E0078D493 /* RiderBG.png */; };
+		D827E7691EB5F27B0078D493 /* LabelBG.png in Resources */ = {isa = PBXBuildFile; fileRef = D827E7681EB5F27B0078D493 /* LabelBG.png */; };
 		D82EC2371E8C2DB3009DA30A /* EditDriverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82EC2361E8C2DB3009DA30A /* EditDriverViewController.swift */; };
 		D83D363D1E7A6EF0003166AA /* AdminBookListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83D363C1E7A6EF0003166AA /* AdminBookListTableViewCell.swift */; };
 		D83D363F1E7AAB7B003166AA /* AdminBookDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83D363E1E7AAB7B003166AA /* AdminBookDetailViewController.swift */; };
@@ -87,6 +89,8 @@
 		D81B07B21E8A880400BBBEEC /* DriverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DriverViewController.swift; sourceTree = "<group>"; };
 		D81B07B41E8AA7E700BBBEEC /* DriverListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DriverListTableViewCell.swift; sourceTree = "<group>"; };
 		D81B07B61E8AC4FE00BBBEEC /* AddDriverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddDriverViewController.swift; sourceTree = "<group>"; };
+		D827E7661EB5E40E0078D493 /* RiderBG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RiderBG.png; sourceTree = "<group>"; };
+		D827E7681EB5F27B0078D493 /* LabelBG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LabelBG.png; sourceTree = "<group>"; };
 		D82EC2361E8C2DB3009DA30A /* EditDriverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditDriverViewController.swift; sourceTree = "<group>"; };
 		D83D363C1E7A6EF0003166AA /* AdminBookListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdminBookListTableViewCell.swift; sourceTree = "<group>"; };
 		D83D363E1E7AAB7B003166AA /* AdminBookDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdminBookDetailViewController.swift; sourceTree = "<group>"; };
@@ -178,7 +182,9 @@
 			children = (
 				D86B9E6B1E85766600C31FDD /* CallUs.png */,
 				D861EE661E6A9B9700CCF371 /* PikchillyLogo@2x.png */,
+				D827E7681EB5F27B0078D493 /* LabelBG.png */,
 				D861EE6E1E6AA5DD00CCF371 /* Setting Button.png */,
+				D827E7661EB5E40E0078D493 /* RiderBG.png */,
 				D861EE671E6A9B9700CCF371 /* PikchillyLogo@3x.png */,
 				D8D12C471E83828700F1C364 /* Dropdown.png */,
 				D8D12C511E84E3AA00F1C364 /* Email Address.png */,
@@ -411,11 +417,13 @@
 				D861EE5D1E6A977700CCF371 /* Minus_White.png in Resources */,
 				D8428F851EAF162800B6D0A8 /* AdminLabelBg.png in Resources */,
 				D861EE581E6A977700CCF371 /* AdminTableViewCell.png in Resources */,
+				D827E7691EB5F27B0078D493 /* LabelBG.png in Resources */,
 				D861EE5A1E6A977700CCF371 /* AskQuoteButton_ORG.png in Resources */,
 				D861EE4E1E6A977700CCF371 /* AcceptButton_ORG.png in Resources */,
 				D8FF563F1E69C8F600A99B75 /* GoogleService-Info.plist in Resources */,
 				D861EE5C1E6A977700CCF371 /* Line.png in Resources */,
 				D861EE591E6A977700CCF371 /* AlreadyRegistered.png in Resources */,
+				D827E7671EB5E40F0078D493 /* RiderBG.png in Resources */,
 				D861EE511E6A977700CCF371 /* ADMINCANCELLED_ORG.png in Resources */,
 				D861EE601E6A977700CCF371 /* SendButton_ORG.png in Resources */,
 				D8FF56341E69AD9D00A99B75 /* Assets.xcassets in Resources */,
