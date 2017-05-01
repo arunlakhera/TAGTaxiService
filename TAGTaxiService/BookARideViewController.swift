@@ -22,6 +22,7 @@ class BookARideViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     @IBOutlet weak var noOfTravellersLabel: UILabel!
     @IBOutlet weak var typeOfVehicleTextField: UITextField!
     @IBOutlet weak var returnDateLabel: UILabel!
+    @IBOutlet weak var TravelEndDateImageView: UIImageView!
     
     // MARK: Variables
     var travelFrom = ""
@@ -201,11 +202,13 @@ class BookARideViewController: UIViewController, UIPickerViewDelegate, UIPickerV
             travelEndDateTextField.isEnabled = true
             travelEndDateTextField.isHidden = false
             returnDateLabel.isHidden = false
+            TravelEndDateImageView.isHidden = false
         }else{
             roundTripLabel.text = "No"
             travelEndDateTextField.isEnabled = false
             travelEndDateTextField.isHidden = true
             returnDateLabel.isHidden = true
+            TravelEndDateImageView.isHidden = true
         }
         
     }

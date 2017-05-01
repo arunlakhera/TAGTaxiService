@@ -152,7 +152,7 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
         dateformatter.dateFormat = "YYYY-MM-dd"
         
         let DLValidFrom = DLValidFromTextField.text
-        let validFrom = dateformatter.date(from: DLValidFrom!)
+        let validFrom = (dateformatter.date(from: DLValidFrom!) != nil ? dateformatter.date(from: DLValidFrom!) : dateformatter.date(from: "2001-01-01"))
         if ((sender.date).compare(validFrom!).rawValue > 0){
             DLValidTillTextField.text = dateformatter.string(from: sender.date)
             self.view.endEditing(true)

@@ -34,6 +34,7 @@ class AddVehicleViewController: UIViewController, UIPickerViewDelegate,UIPickerV
     @IBOutlet weak var activeSwitch: UISwitch!
     @IBOutlet weak var backButton: UIBarButtonItem!
     
+    @IBOutlet weak var saveButton: UIButton!
     
     // MARK: Variables
     let imagePicker = UIImagePickerController()
@@ -338,6 +339,8 @@ class AddVehicleViewController: UIViewController, UIPickerViewDelegate,UIPickerV
         {
             if checkfield(){
                 
+                saveButton.isEnabled = false
+                backButton.isEnabled = false
                 let vehicleID = DataService.ds.REF_VEHICLE.childByAutoId()
                 let formatter = DateFormatter()
                 formatter.dateFormat = "YYYY-MM-dd"
@@ -397,7 +400,7 @@ class AddVehicleViewController: UIViewController, UIPickerViewDelegate,UIPickerV
                     uploadTask.observe(.success, handler: { (snapshot) in
                         
                         self.showAlert(title: "Saved", message: "Record Saved Successfully!")
-                        
+                        self.saveButton.isHidden = true
                     })
 
                 }

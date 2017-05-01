@@ -14,19 +14,28 @@ class AdminBookStatusListViewController: UIViewController, UITableViewDelegate, 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var toolBar: UINavigationBar!
     @IBOutlet weak var toolBarTitle: UILabel!
- 
+    
     var bookings = [RideBooking]()
     var riderName = ""
     var riderEmail = ""
     var riderPhone = ""
     
+    var travelBeginDate: String?
+    var upcomingTravelCount = 0
+    var numberOfDaysForTravel = 0
+    let dateformatter = DateFormatter()
+    let todayDate = Date()
+    var today: String?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         
         tableView.delegate = self
         tableView.dataSource = self
         
-        
+        dateformatter.dateFormat = "YYYY-MM-dd"
+
         toolBarTitle.text = "\(bookingStatusList) List"
    
         DataService.ds.REF_RIDEBOOKING.observe(.value, with: { (snapshot) in
@@ -88,17 +97,11 @@ class AdminBookStatusListViewController: UIViewController, UITableViewDelegate, 
                 self.riderName = self.riderName + " " + ""
             }
             
-            if (self.riderName.characters.count) > 0 {
-                
-            }else{
+            if (self.riderName.characters.count) <= 0 {
                 self.riderName = String(describing: riderProfile.emailID)
             }
             
-            
-           // self.riderName = (riderProfile.firstName)! + " " + (riderProfile.lastName)!
-            //self.riderEmail = (riderProfile.emailID)!
             self.riderPhone = riderProfile.phoneNumber!
-   
             cell?.nameLabel.text = self.riderName
             
         })
@@ -117,6 +120,24 @@ class AdminBookStatusListViewController: UIViewController, UITableViewDelegate, 
             cell?.statusLabel.textColor = UIColor.orange
         }else if book.status! == "Completed"{
             cell?.statusLabel.textColor = UIColor.white
+        }
+        
+        self.travelBeginDate = (book.rideBeginDate != nil ? book.rideBeginDate : "2000-01-01" )
+        self.today = self.dateformatter.string(from: self.todayDate)
+        
+        self.numberOfDaysForTravel = Int((self.dateformatter.date(from: self.travelBeginDate!)!.timeIntervalSince(self.dateformatter.date(from: self.today!)!) ) / ( 24 * 60 * 60))
+        
+        if (self.numberOfDaysForTravel == 1 && book.status! == "Accepted") {
+            cell?.travelDateLabel.textColor = UIColor.red
+            cell?.sendCabAlert.isHidden = false
+            
+            cell?.travelDateLabel.alpha = 1
+            UIView.animate(withDuration: 1.0, delay: 0.0, options: [.repeat, .autoreverse, []], animations:
+                {
+                    //cell?.travelDateLabel.alpha = 0
+                    cell?.sendCabAlert.alpha = 0
+                    
+            }, completion: nil)
         }
         return cell!
     }

@@ -14,6 +14,7 @@ class AdminBookListTableViewCell: UITableViewCell {
     @IBOutlet weak var fromToLabel: UILabel!
     @IBOutlet weak var travelDateLabel: UILabel!
     @IBOutlet weak var statusLabel: UILabel!
+    @IBOutlet weak var sendCabAlert: UIButton!
     
     override func awakeFromNib() {
         super.awakeFromNib()

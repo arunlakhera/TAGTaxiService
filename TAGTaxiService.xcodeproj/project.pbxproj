@@ -17,6 +17,9 @@
 		D81B07B71E8AC4FE00BBBEEC /* AddDriverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81B07B61E8AC4FE00BBBEEC /* AddDriverViewController.swift */; };
 		D827E7671EB5E40F0078D493 /* RiderBG.png in Resources */ = {isa = PBXBuildFile; fileRef = D827E7661EB5E40E0078D493 /* RiderBG.png */; };
 		D827E7691EB5F27B0078D493 /* LabelBG.png in Resources */ = {isa = PBXBuildFile; fileRef = D827E7681EB5F27B0078D493 /* LabelBG.png */; };
+		D827E76B1EB6D9A20078D493 /* DropdownBG.png in Resources */ = {isa = PBXBuildFile; fileRef = D827E76A1EB6D9A20078D493 /* DropdownBG.png */; };
+		D827E76F1EB755FE0078D493 /* TextFieldBG.png in Resources */ = {isa = PBXBuildFile; fileRef = D827E76E1EB755FE0078D493 /* TextFieldBG.png */; };
+		D827E7711EB790EF0078D493 /* SendCabAlert.png in Resources */ = {isa = PBXBuildFile; fileRef = D827E7701EB790EF0078D493 /* SendCabAlert.png */; };
 		D82EC2371E8C2DB3009DA30A /* EditDriverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82EC2361E8C2DB3009DA30A /* EditDriverViewController.swift */; };
 		D83D363D1E7A6EF0003166AA /* AdminBookListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83D363C1E7A6EF0003166AA /* AdminBookListTableViewCell.swift */; };
 		D83D363F1E7AAB7B003166AA /* AdminBookDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83D363E1E7AAB7B003166AA /* AdminBookDetailViewController.swift */; };
@@ -60,7 +63,6 @@
 		D8C422A41E7934E1007EA962 /* AdminMainBookingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C422A31E7934E1007EA962 /* AdminMainBookingViewController.swift */; };
 		D8C422A61E79A8AD007EA962 /* AdminBookStatusListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C422A51E79A8AD007EA962 /* AdminBookStatusListViewController.swift */; };
 		D8C4A9541EA2180E002F9D57 /* PhotoAvatarJPG.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D8C4A9531EA2180E002F9D57 /* PhotoAvatarJPG.jpg */; };
-		D8D12C481E83828700F1C364 /* Dropdown.png in Resources */ = {isa = PBXBuildFile; fileRef = D8D12C471E83828700F1C364 /* Dropdown.png */; };
 		D8D12C521E84E3AA00F1C364 /* Email Address.png in Resources */ = {isa = PBXBuildFile; fileRef = D8D12C511E84E3AA00F1C364 /* Email Address.png */; };
 		D8D6F6E01E924A9A00D41693 /* VehicleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D6F6DF1E924A9A00D41693 /* VehicleViewController.swift */; };
 		D8D6F6E21E924AB000D41693 /* AddVehicleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D6F6E11E924AB000D41693 /* AddVehicleViewController.swift */; };
@@ -91,6 +93,9 @@
 		D81B07B61E8AC4FE00BBBEEC /* AddDriverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddDriverViewController.swift; sourceTree = "<group>"; };
 		D827E7661EB5E40E0078D493 /* RiderBG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RiderBG.png; sourceTree = "<group>"; };
 		D827E7681EB5F27B0078D493 /* LabelBG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LabelBG.png; sourceTree = "<group>"; };
+		D827E76A1EB6D9A20078D493 /* DropdownBG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DropdownBG.png; sourceTree = "<group>"; };
+		D827E76E1EB755FE0078D493 /* TextFieldBG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TextFieldBG.png; sourceTree = "<group>"; };
+		D827E7701EB790EF0078D493 /* SendCabAlert.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SendCabAlert.png; sourceTree = "<group>"; };
 		D82EC2361E8C2DB3009DA30A /* EditDriverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditDriverViewController.swift; sourceTree = "<group>"; };
 		D83D363C1E7A6EF0003166AA /* AdminBookListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdminBookListTableViewCell.swift; sourceTree = "<group>"; };
 		D83D363E1E7AAB7B003166AA /* AdminBookDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdminBookDetailViewController.swift; sourceTree = "<group>"; };
@@ -135,7 +140,6 @@
 		D8C422A31E7934E1007EA962 /* AdminMainBookingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdminMainBookingViewController.swift; sourceTree = "<group>"; };
 		D8C422A51E79A8AD007EA962 /* AdminBookStatusListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdminBookStatusListViewController.swift; sourceTree = "<group>"; };
 		D8C4A9531EA2180E002F9D57 /* PhotoAvatarJPG.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = PhotoAvatarJPG.jpg; sourceTree = "<group>"; };
-		D8D12C471E83828700F1C364 /* Dropdown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Dropdown.png; sourceTree = "<group>"; };
 		D8D12C511E84E3AA00F1C364 /* Email Address.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Email Address.png"; sourceTree = "<group>"; };
 		D8D6F6DF1E924A9A00D41693 /* VehicleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VehicleViewController.swift; sourceTree = "<group>"; };
 		D8D6F6E11E924AB000D41693 /* AddVehicleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddVehicleViewController.swift; sourceTree = "<group>"; };
@@ -181,16 +185,18 @@
 			isa = PBXGroup;
 			children = (
 				D86B9E6B1E85766600C31FDD /* CallUs.png */,
+				D827E76E1EB755FE0078D493 /* TextFieldBG.png */,
 				D861EE661E6A9B9700CCF371 /* PikchillyLogo@2x.png */,
 				D827E7681EB5F27B0078D493 /* LabelBG.png */,
 				D861EE6E1E6AA5DD00CCF371 /* Setting Button.png */,
 				D827E7661EB5E40E0078D493 /* RiderBG.png */,
 				D861EE671E6A9B9700CCF371 /* PikchillyLogo@3x.png */,
-				D8D12C471E83828700F1C364 /* Dropdown.png */,
 				D8D12C511E84E3AA00F1C364 /* Email Address.png */,
+				D827E76A1EB6D9A20078D493 /* DropdownBG.png */,
 				D861EE381E6A977700CCF371 /* AcceptButton_ORG.png */,
 				D8428F841EAF162800B6D0A8 /* AdminLabelBg.png */,
 				D8C4A9531EA2180E002F9D57 /* PhotoAvatarJPG.jpg */,
+				D827E7701EB790EF0078D493 /* SendCabAlert.png */,
 				D861EE391E6A977700CCF371 /* ADMINACCEPTED_ORG.png */,
 				D861EE3A1E6A977700CCF371 /* AdminBokkingDetailBG.png */,
 				D861EE3B1E6A977700CCF371 /* ADMINCANCELLED_ORG.png */,
@@ -413,6 +419,7 @@
 				D8C4A9541EA2180E002F9D57 /* PhotoAvatarJPG.jpg in Resources */,
 				D861EE6F1E6AA5DD00CCF371 /* Setting Button.png in Resources */,
 				D861EE5F1E6A977700CCF371 /* Plus_White.png in Resources */,
+				D827E76F1EB755FE0078D493 /* TextFieldBG.png in Resources */,
 				D861EE4F1E6A977700CCF371 /* ADMINACCEPTED_ORG.png in Resources */,
 				D861EE5D1E6A977700CCF371 /* Minus_White.png in Resources */,
 				D8428F851EAF162800B6D0A8 /* AdminLabelBg.png in Resources */,
@@ -422,6 +429,7 @@
 				D861EE4E1E6A977700CCF371 /* AcceptButton_ORG.png in Resources */,
 				D8FF563F1E69C8F600A99B75 /* GoogleService-Info.plist in Resources */,
 				D861EE5C1E6A977700CCF371 /* Line.png in Resources */,
+				D827E76B1EB6D9A20078D493 /* DropdownBG.png in Resources */,
 				D861EE591E6A977700CCF371 /* AlreadyRegistered.png in Resources */,
 				D827E7671EB5E40F0078D493 /* RiderBG.png in Resources */,
 				D861EE511E6A977700CCF371 /* ADMINCANCELLED_ORG.png in Resources */,
@@ -429,6 +437,7 @@
 				D8FF56341E69AD9D00A99B75 /* Assets.xcassets in Resources */,
 				D8D12C521E84E3AA00F1C364 /* Email Address.png in Resources */,
 				D861EE531E6A977700CCF371 /* AdminCount.png in Resources */,
+				D827E7711EB790EF0078D493 /* SendCabAlert.png in Resources */,
 				D861EE631E6A977700CCF371 /* TAG.png in Resources */,
 				D861EE621E6A977700CCF371 /* SignUpButton_ORG.png in Resources */,
 				D861EE611E6A977700CCF371 /* SignInButton_ORG.png in Resources */,
@@ -439,7 +448,6 @@
 				D861EE5E1E6A977700CCF371 /* NewSignUpButton.png in Resources */,
 				D861EE501E6A977700CCF371 /* AdminBokkingDetailBG.png in Resources */,
 				D861EE561E6A977700CCF371 /* ADMINQUOTED_ORG.png in Resources */,
-				D8D12C481E83828700F1C364 /* Dropdown.png in Resources */,
 				D81235EA1E746F2100519F6A /* PhotoAvatar.png in Resources */,
 				D86B9E6C1E85766600C31FDD /* CallUs.png in Resources */,
 			);
