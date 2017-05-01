@@ -42,13 +42,8 @@ class AdminMainBookingViewController: UIViewController {
     var driverButtonCenter: CGPoint!
     var vehicleButtonCenter: CGPoint!
     var menuShow = false
-    
-    var travelBeginDate: String?
-    var upcomingTravelCount = 0
-    var numberOfDaysForTravel = 0
     let dateformatter = DateFormatter()
-    let todayDate = Date()
-    var today: String?
+   
     
     override func viewWillAppear(_ animated: Bool) {
         driverButtonCenter = driverButton.center
@@ -60,7 +55,7 @@ class AdminMainBookingViewController: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-       
+        
          dateformatter.dateFormat = "YYYY-MM-dd"
         
         // Menu Propertiee
@@ -69,7 +64,7 @@ class AdminMainBookingViewController: UIViewController {
         menuView.layer.shadowOpacity = 1
         menuView.layer.shadowRadius = 4
         
-        loadData()
+        //loadData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -77,6 +72,14 @@ class AdminMainBookingViewController: UIViewController {
     }
     
     func loadData(){
+        
+        var travelBeginDate: String?
+        var upcomingTravelCount = 0
+        var numberOfDaysForTravel = 0
+       
+        let todayDate = Date()
+        var today: String?
+        
         DataService.ds.REF_RIDEBOOKING.observe(.value, with: { (snapshot) in
             self.pendingCount = 0
             self.quotedCount = 0
@@ -84,7 +87,8 @@ class AdminMainBookingViewController: UIViewController {
             self.declinedCount = 0
             self.cancelledCount  = 0
             self.completedCount = 0
-            
+            upcomingTravelCount = 0
+
             if let snapshots = snapshot.children.allObjects as? [FIRDataSnapshot]{
                 
                 for snap in snapshots{
@@ -99,14 +103,14 @@ class AdminMainBookingViewController: UIViewController {
                             self.quotedCount = self.quotedCount + 1
                         }else if bookings.status == "Accepted"{
                             self.acceptedCount = self.acceptedCount + 1
-                            self.travelBeginDate = (bookings.rideBeginDate != nil ? bookings.rideBeginDate : "2000-01-01" )
-                            self.today = self.dateformatter.string(from: self.todayDate)
+                            travelBeginDate = (bookings.rideBeginDate != nil ? bookings.rideBeginDate : "2000-01-01" )
+                            today = self.dateformatter.string(from: todayDate)
                             
-                            self.numberOfDaysForTravel = Int((self.dateformatter.date(from: self.travelBeginDate!)!.timeIntervalSince(self.dateformatter.date(from: self.today!)!) ) / ( 24 * 60 * 60))
+                            numberOfDaysForTravel = Int((self.dateformatter.date(from: travelBeginDate!)!.timeIntervalSince(self.dateformatter.date(from: today!)!) ) / ( 24 * 60 * 60))
                             
-                            if self.numberOfDaysForTravel == 1 {
-                                self.upcomingTravelCount += 1
-                                print("Number of of Days===>\(self.numberOfDaysForTravel)")
+                            if numberOfDaysForTravel == 1 {
+                                upcomingTravelCount += 1
+                                print("Number of of Days===>\(numberOfDaysForTravel)")
                                 print("Ride Accepted for Date--->>>> \(bookings.rideFrom!)-\(bookings.rideTo!)--\(bookings.rideBeginDate!)")
                                 
                             }
@@ -133,10 +137,10 @@ class AdminMainBookingViewController: UIViewController {
             self.cancelledCountButton.setTitle(String(self.cancelledCount), for: .normal)
             self.completedCountButton.setTitle(String(self.completedCount), for: .normal)
             
-            if self.upcomingTravelCount >= 1{
-                print("You have \(self.upcomingTravelCount) Bookings for tomorrow")
+            if upcomingTravelCount >= 1{
+                print("You have \(upcomingTravelCount) Bookings for tomorrow")
                 
-                self.upcomingLabel.text = "Cabs for Tomorrow: \(self.upcomingTravelCount)"
+                self.upcomingLabel.text = "Cabs for Tomorrow: \(upcomingTravelCount)"
                 self.upcomingLabel.alpha = 1
                 UIView.animate(withDuration: 1.0, delay: 0.0, options: [.repeat, .autoreverse, []], animations:
                     {
