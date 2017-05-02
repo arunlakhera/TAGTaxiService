@@ -64,7 +64,7 @@ class BookingDetailViewController: UIViewController {
         statusLabel.textColor = UIColor.orange   // Change color of status label text
         
         // If booking status is Pending/ Declined/Cancelled/Accepted hide the Accept/Decline buttons
-        if bookStatus == "Pending"  || bookStatus == "Declined" || bookStatus == "Cancelled" || bookStatus == "Accepted"{
+        if bookStatus == "Pending"  || bookStatus == "Declined" || bookStatus == "Cancelled" || bookStatus == "Accepted" || bookStatus == "Completed"{
             declineButton.isHidden = true
             acceptButton.isHidden = true
             // Allow user to Cancel the booking when it is in Pending State
