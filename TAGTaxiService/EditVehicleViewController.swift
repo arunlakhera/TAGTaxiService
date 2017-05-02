@@ -483,6 +483,9 @@ class EditVehicleViewController: UIViewController, UIPickerViewDelegate,UIPicker
                             vehicleID.child("LastServiceDate").setValue(self.lastServiceDateTextField.text) {(error) in print("Error while Writing Mileage to Database")}
                             vehicleID.child("Active").setValue(self.activeLabel.text) {(error) in print("Error while Writing Active to Database")}
 
+                            vehicleID.child("LastUpdatedOnDate").setValue(String(describing: NSDate())){(error) in print("Error while Writing Last Updated On Date to Database")}
+                            vehicleID.child("UpdatedBy").setValue(AuthService.instance.riderID!){(error) in print("Error while Writing Updated By to Database")}
+                            
                             self.backButton.isEnabled = true
                             self.editButton.isEnabled = true
 

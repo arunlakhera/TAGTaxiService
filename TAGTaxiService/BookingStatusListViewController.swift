@@ -108,42 +108,68 @@ class BookingStatusListViewController: UIViewController, UITableViewDelegate, UI
         let book = bookings.reversed()[indexPath.row]
         let rideFrom = String(book.rideFrom!)
         let rideTo = String(book.rideTo!)
-        let indexFrom = rideFrom?.index((rideFrom!.startIndex), offsetBy: 3)
-        let indexTo = rideTo?.index((rideTo!.startIndex), offsetBy: 3)
+        
+        if (rideFrom?.characters.count)! > 10{
+            let indexFrom = rideFrom?.index((rideFrom!.startIndex), offsetBy: 10)
+            cell?.fromLabel.text = rideFrom!.substring(to: indexFrom!)
+        }else{
+            cell?.fromLabel.text = rideFrom
+        }
        
+        if (rideTo?.characters.count)! > 10{
+            let indexTo = rideTo?.index((rideTo!.startIndex), offsetBy: 10)
+            cell?.toLabel.text = rideTo!.substring(to: indexTo!)
+        }else{
+            cell?.toLabel.text = rideTo
+        }
+        
+        
+      /*
         if self.riderName.characters.count > 0{
             cell?.nameLabel.text = self.riderName
         }else{
             cell?.nameLabel.text = self.riderEmail
         }
-      
-        cell?.fromToLabel.text = "\(rideFrom!.substring(to: indexFrom!)) - \(rideTo!.substring(to: indexTo!))"
+      */
+        //cell?.fromToLabel.text = "\(rideFrom!.substring(to: indexFrom!)) - \(rideTo!.substring(to: indexTo!))"
+        
+        
         cell?.TravelDateLabel.text = book.rideBeginDate!
         cell?.statusLabel.text = book.status!
 
         if book.status! == "Pending"{
-            cell?.nameLabel.textColor = UIColor.yellow
-            cell?.fromToLabel.textColor = UIColor.yellow
+            //cell?.nameLabel.textColor = UIColor.yellow
+            cell?.fromLabel.textColor = UIColor.yellow
+            cell?.toLabel.textColor = UIColor.yellow
+            //cell?.fromToLabel.textColor = UIColor.yellow
             cell?.TravelDateLabel.textColor = UIColor.yellow
             cell?.statusLabel.textColor = UIColor.yellow
         }else if book.status! == "Accepted"{
-            cell?.nameLabel.textColor = UIColor.green
-            cell?.fromToLabel.textColor = UIColor.green
+            //cell?.nameLabel.textColor = UIColor.green
+            //cell?.fromToLabel.textColor = UIColor.green
+            cell?.fromLabel.textColor = UIColor.green
+            cell?.toLabel.textColor = UIColor.green
             cell?.TravelDateLabel.textColor = UIColor.green
             cell?.statusLabel.textColor = UIColor.green
         } else if book.status! == "Declined" || book.status! == "Cancelled"{
-            cell?.nameLabel.textColor = UIColor.red
-            cell?.fromToLabel.textColor = UIColor.red
+            //cell?.nameLabel.textColor = UIColor.red
+            //cell?.fromToLabel.textColor = UIColor.red
+            cell?.fromLabel.textColor = UIColor.red
+            cell?.toLabel.textColor = UIColor.red
             cell?.TravelDateLabel.textColor = UIColor.red
             cell?.statusLabel.textColor = UIColor.red
         }else if book.status! == "Quoted"{
-            cell?.nameLabel.textColor = UIColor.orange
-            cell?.fromToLabel.textColor = UIColor.orange
-            cell?.TravelDateLabel.textColor = UIColor.orange
-            cell?.statusLabel.textColor = UIColor.orange
+            //cell?.nameLabel.textColor = UIColor.orange
+            //cell?.fromToLabel.textColor = UIColor.orange
+            cell?.fromLabel.textColor = UIColor.cyan
+            cell?.toLabel.textColor = UIColor.cyan
+            cell?.TravelDateLabel.textColor = UIColor.cyan
+            cell?.statusLabel.textColor = UIColor.cyan
         }else if book.status! == "Completed"{
-            cell?.nameLabel.textColor = UIColor.white
-            cell?.fromToLabel.textColor = UIColor.white
+            //cell?.nameLabel.textColor = UIColor.white
+            //cell?.fromToLabel.textColor = UIColor.white
+            cell?.fromLabel.textColor = UIColor.white
+            cell?.toLabel.textColor = UIColor.white
             cell?.TravelDateLabel.textColor = UIColor.white
             cell?.statusLabel.textColor = UIColor.white
         }

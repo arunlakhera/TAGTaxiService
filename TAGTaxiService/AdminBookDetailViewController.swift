@@ -129,9 +129,13 @@ class AdminBookDetailViewController: UIViewController, UITextFieldDelegate {
             //
             if send.title(for: .normal) == "Completed"{
                 bookStatus = "Completed"
-                DataService.ds.REF_RIDEBOOKING.child(bookKey).child("Status").setValue(bookStatus){(error) in print("Error while Writing Status to Database")}
+                DataService.ds.REF_RIDEBOOKING.child(bookKey).child(bookKey).child("Status").setValue(bookStatus){(error) in print("Error while Writing Status to Database")}
                 showAlert(title: "Completed", message: "You have Marked the Booking as Completed")
                
+                DataService.ds.REF_RIDEBOOKING.child(bookKey).child("LastUpdatedOnDate").setValue(String(describing: NSDate())){(error) in print("Error while Writing Last Updated On Date to Database")}
+                DataService.ds.REF_RIDEBOOKING.child(bookKey).child("UpdatedBy").setValue(AuthService.instance.riderID!){(error) in print("Error while Writing Updated By to Database")}
+                
+                
                 statusText.text = "Completed"
                 send.isHidden = true
                 send.isEnabled = false
@@ -142,6 +146,10 @@ class AdminBookDetailViewController: UIViewController, UITextFieldDelegate {
             DataService.ds.REF_RIDEBOOKING.child(bookKey).child("Status").setValue(bookStatus){(error) in print("Error while Writing Status to Database")}
             DataService.ds.REF_RIDEBOOKING.child(bookKey).child("Vehicle").setValue(vehicleText.text!.trimmingCharacters(in: .whitespacesAndNewlines)){(error) in print("Error while Writing Vehicle to Database")}
             
+                DataService.ds.REF_RIDEBOOKING.child(bookKey).child("LastUpdatedOnDate").setValue(String(describing: NSDate())){(error) in print("Error while Writing Last Updated On Date to Database")}
+                DataService.ds.REF_RIDEBOOKING.child(bookKey).child("UpdatedBy").setValue(AuthService.instance.riderID!){(error) in print("Error while Writing Updated By to Database")}
+                
+                
             statusText.text = bookStatus
             send.isHidden = true
             }

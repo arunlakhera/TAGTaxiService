@@ -27,6 +27,7 @@
 		D83D366A1E7D3881003166AA /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83D36691E7D3881003166AA /* AuthService.swift */; };
 		D8428F851EAF162800B6D0A8 /* AdminLabelBg.png in Resources */ = {isa = PBXBuildFile; fileRef = D8428F841EAF162800B6D0A8 /* AdminLabelBg.png */; };
 		D85888E01E769F5800AB1DB9 /* RiderProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85888DF1E769F5800AB1DB9 /* RiderProfileViewController.swift */; };
+		D85E08881EB895AC006F96D4 /* BookingStatusBG.png in Resources */ = {isa = PBXBuildFile; fileRef = D85E08871EB895AC006F96D4 /* BookingStatusBG.png */; };
 		D85F1D731E6F84CB0076C3CA /* BookingStatusListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85F1D721E6F84CB0076C3CA /* BookingStatusListViewController.swift */; };
 		D85F1D751E6FEFF20076C3CA /* BookListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85F1D741E6FEFF20076C3CA /* BookListTableViewCell.swift */; };
 		D861EE361E6A94EA00CCF371 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D861EE351E6A94EA00CCF371 /* SignInViewController.swift */; };
@@ -104,6 +105,7 @@
 		D83D36691E7D3881003166AA /* AuthService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		D8428F841EAF162800B6D0A8 /* AdminLabelBg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AdminLabelBg.png; sourceTree = "<group>"; };
 		D85888DF1E769F5800AB1DB9 /* RiderProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RiderProfileViewController.swift; sourceTree = "<group>"; };
+		D85E08871EB895AC006F96D4 /* BookingStatusBG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BookingStatusBG.png; sourceTree = "<group>"; };
 		D85F1D721E6F84CB0076C3CA /* BookingStatusListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookingStatusListViewController.swift; sourceTree = "<group>"; };
 		D85F1D741E6FEFF20076C3CA /* BookListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookListTableViewCell.swift; sourceTree = "<group>"; };
 		D861EE351E6A94EA00CCF371 /* SignInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
@@ -189,6 +191,7 @@
 				D827E7741EB84A1F0078D493 /* PendingImage.png */,
 				D86B9E6B1E85766600C31FDD /* CallUs.png */,
 				D827E76E1EB755FE0078D493 /* TextFieldBG.png */,
+				D85E08871EB895AC006F96D4 /* BookingStatusBG.png */,
 				D861EE661E6A9B9700CCF371 /* PikchillyLogo@2x.png */,
 				D827E7681EB5F27B0078D493 /* LabelBG.png */,
 				D861EE6E1E6AA5DD00CCF371 /* Setting Button.png */,
@@ -446,6 +449,7 @@
 				D861EE621E6A977700CCF371 /* SignUpButton_ORG.png in Resources */,
 				D861EE611E6A977700CCF371 /* SignInButton_ORG.png in Resources */,
 				D8FF56321E69AD9D00A99B75 /* Main.storyboard in Resources */,
+				D85E08881EB895AC006F96D4 /* BookingStatusBG.png in Resources */,
 				D861EE541E6A977700CCF371 /* ADMINDECLINED_ORG.png in Resources */,
 				D861EE681E6A9B9700CCF371 /* PikchillyLogo@2x.png in Resources */,
 				D861EE691E6A9B9700CCF371 /* PikchillyLogo@3x.png in Resources */,

@@ -361,6 +361,11 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
                             driverID.child("BloodGroup").setValue(self.bloodGroupTextField.text) {(error) in print("Error while Writing Blood Group to Database")}
                             driverID.child("Active").setValue(self.activeLabel.text) {(error) in print("Error while Writing Active to Database")}
                         
+                            driverID.child("CreatedOnDate").setValue(String(describing: NSDate())){(error) in print("Error while Writing Created on Date to Database")}
+                            driverID.child("CreatedBy").setValue(AuthService.instance.riderID!){(error) in print("Error while Writing Created By to Database")}
+                            driverID.child("LastUpdatedOnDate").setValue(String(describing: NSDate())){(error) in print("Error while Writing Last Updated On Date to Database")}
+                            driverID.child("UpdatedBy").setValue(AuthService.instance.riderID!){(error) in print("Error while Writing Updated By to Database")}
+                            
                         }
                     }
                     uploadTask.observe(.success, handler: { (snapshot) in

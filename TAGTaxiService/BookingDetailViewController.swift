@@ -36,11 +36,11 @@ class BookingDetailViewController: UIViewController {
     @IBOutlet weak var amountLabel: UILabel!
     @IBOutlet weak var vehicleLabel: UILabel!
     @IBOutlet weak var statusLabel: UILabel!
+    @IBOutlet weak var rupeeLabel: UILabel!
     
     @IBOutlet weak var declineButton: UIButton!
     @IBOutlet weak var acceptButton: UIButton!
     @IBOutlet weak var cancelButton: UIBarButtonItem!
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -80,6 +80,78 @@ class BookingDetailViewController: UIViewController {
             cancelButton.isEnabled = true
         }
         
+        if bookStatus == "Pending"{
+            
+            nameLabel.textColor = UIColor.yellow
+            phoneLabel.textColor = UIColor.yellow
+            travelDateLabel.textColor = UIColor.yellow
+            travelFromLabel.textColor = UIColor.yellow
+            travelToLabel.textColor = UIColor.yellow
+            roundTripLabel.textColor = UIColor.yellow
+            noOfTravellersLabel.textColor = UIColor.yellow
+            amountLabel.textColor = UIColor.yellow
+            vehicleLabel.textColor = UIColor.yellow
+            statusLabel.textColor = UIColor.yellow
+            rupeeLabel.textColor = UIColor.yellow
+            
+        }else if bookStatus == "Accepted"{
+           
+            nameLabel.textColor = UIColor.green
+            phoneLabel.textColor = UIColor.green
+            travelDateLabel.textColor = UIColor.green
+            travelFromLabel.textColor = UIColor.green
+            travelToLabel.textColor = UIColor.green
+            roundTripLabel.textColor = UIColor.green
+            noOfTravellersLabel.textColor = UIColor.green
+            amountLabel.textColor = UIColor.green
+            vehicleLabel.textColor = UIColor.green
+            statusLabel.textColor = UIColor.green
+            rupeeLabel.textColor = UIColor.green
+            
+        } else if bookStatus == "Declined" || bookStatus == "Cancelled"{
+           
+            nameLabel.textColor = UIColor.red
+            phoneLabel.textColor = UIColor.red
+            travelDateLabel.textColor = UIColor.red
+            travelFromLabel.textColor = UIColor.red
+            travelToLabel.textColor = UIColor.red
+            roundTripLabel.textColor = UIColor.red
+            noOfTravellersLabel.textColor = UIColor.red
+            amountLabel.textColor = UIColor.red
+            vehicleLabel.textColor = UIColor.red
+            statusLabel.textColor = UIColor.red
+            rupeeLabel.textColor = UIColor.red
+            
+        }else if bookStatus == "Quote Received"{
+           
+            nameLabel.textColor = UIColor.cyan
+            phoneLabel.textColor = UIColor.cyan
+            travelDateLabel.textColor = UIColor.cyan
+            travelFromLabel.textColor = UIColor.cyan
+            travelToLabel.textColor = UIColor.cyan
+            roundTripLabel.textColor = UIColor.cyan
+            noOfTravellersLabel.textColor = UIColor.cyan
+            amountLabel.textColor = UIColor.cyan
+            vehicleLabel.textColor = UIColor.cyan
+            statusLabel.textColor = UIColor.cyan
+            rupeeLabel.textColor = UIColor.cyan
+            
+        }else if bookStatus == "Completed"{
+            
+            nameLabel.textColor = UIColor.white
+            phoneLabel.textColor = UIColor.white
+            travelDateLabel.textColor = UIColor.white
+            travelFromLabel.textColor = UIColor.white
+            travelToLabel.textColor = UIColor.white
+            roundTripLabel.textColor = UIColor.white
+            noOfTravellersLabel.textColor = UIColor.white
+            amountLabel.textColor = UIColor.white
+            vehicleLabel.textColor = UIColor.white
+            statusLabel.textColor = UIColor.white
+            rupeeLabel.textColor = UIColor.white
+            
+        }
+        
     }
 
     // Action when Accept button is pressed
@@ -90,7 +162,12 @@ class BookingDetailViewController: UIViewController {
             
         bookStatus = "Accepted"
         DataService.ds.REF_RIDEBOOKING.child(bookKey).child("Status").setValue(bookStatus)
+        
+        DataService.ds.REF_RIDEBOOKING.child(bookKey).child("LastUpdatedOnDate").setValue(String(describing: NSDate())){(error) in print("Error while Writing Last Updated On Date to Database")}
+        DataService.ds.REF_RIDEBOOKING.child("UpdatedBy").setValue(AuthService.instance.riderID!){(error) in print("Error while Writing Updated By to Database")}
+        
         viewDidLoad()
+        
         }else{
             self.showAlert(title: "Failure", message: "Internet Connection not Available!") //Show Failure Message
             
@@ -106,6 +183,10 @@ class BookingDetailViewController: UIViewController {
         {
         bookStatus = "Declined"
         DataService.ds.REF_RIDEBOOKING.child(bookKey).child("Status").setValue(bookStatus)
+            
+        DataService.ds.REF_RIDEBOOKING.child(bookKey).child("LastUpdatedOnDate").setValue(String(describing: NSDate())){(error) in print("Error while Writing Last Updated On Date to Database")}
+        DataService.ds.REF_RIDEBOOKING.child(bookKey).child("UpdatedBy").setValue(AuthService.instance.riderID!){(error) in print("Error while Writing Updated By to Database")}
+            
         viewDidLoad()
         }else{
             self.showAlert(title: "Failure", message: "Internet Connection not Available!") //Show Failure Message
@@ -123,6 +204,10 @@ class BookingDetailViewController: UIViewController {
             let actionYes = UIAlertAction(title: "Yes", style: .default, handler: { (action) in
                 self.bookStatus = "Cancelled"
                 DataService.ds.REF_RIDEBOOKING.child(self.bookKey).child("Status").setValue(self.bookStatus)
+                
+                DataService.ds.REF_RIDEBOOKING.child(self.bookKey).child("LastUpdatedOnDate").setValue(String(describing: NSDate())){(error) in print("Error while Writing Last Updated On Date to Database")}
+                DataService.ds.REF_RIDEBOOKING.child(self.bookKey).child("UpdatedBy").setValue(AuthService.instance.riderID!){(error) in print("Error while Writing Updated By to Database")}
+                
                 self.viewDidLoad()
             })
             //let actionNo = UIAlertAction(title: "No", style: .default, handler: nil)

@@ -10,10 +10,12 @@ import UIKit
 
 class BookListTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var nameLabel: UILabel!
+  //  @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var TravelDateLabel: UILabel!
-    @IBOutlet weak var fromToLabel: UILabel!
+//    @IBOutlet weak var fromToLabel: UILabel!
     @IBOutlet weak var statusLabel: UILabel!
+    @IBOutlet weak var fromLabel: UILabel!
+    @IBOutlet weak var toLabel: UILabel!
     
     
     override func awakeFromNib() {
@@ -22,10 +24,12 @@ class BookListTableViewCell: UITableViewCell {
     }
 
     override func prepareForReuse() {
-        nameLabel.text = ""
+      //  nameLabel.text = ""
         TravelDateLabel.text = ""
-        fromToLabel.text = ""
+    //    fromToLabel.text = ""
         statusLabel.text = ""
+        fromLabel.text = ""
+        toLabel.text = ""
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
