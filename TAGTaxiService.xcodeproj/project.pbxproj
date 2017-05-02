@@ -20,6 +20,7 @@
 		D827E76B1EB6D9A20078D493 /* DropdownBG.png in Resources */ = {isa = PBXBuildFile; fileRef = D827E76A1EB6D9A20078D493 /* DropdownBG.png */; };
 		D827E76F1EB755FE0078D493 /* TextFieldBG.png in Resources */ = {isa = PBXBuildFile; fileRef = D827E76E1EB755FE0078D493 /* TextFieldBG.png */; };
 		D827E7711EB790EF0078D493 /* SendCabAlert.png in Resources */ = {isa = PBXBuildFile; fileRef = D827E7701EB790EF0078D493 /* SendCabAlert.png */; };
+		D827E7751EB84A1F0078D493 /* PendingImage.png in Resources */ = {isa = PBXBuildFile; fileRef = D827E7741EB84A1F0078D493 /* PendingImage.png */; };
 		D82EC2371E8C2DB3009DA30A /* EditDriverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D82EC2361E8C2DB3009DA30A /* EditDriverViewController.swift */; };
 		D83D363D1E7A6EF0003166AA /* AdminBookListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83D363C1E7A6EF0003166AA /* AdminBookListTableViewCell.swift */; };
 		D83D363F1E7AAB7B003166AA /* AdminBookDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83D363E1E7AAB7B003166AA /* AdminBookDetailViewController.swift */; };
@@ -96,6 +97,7 @@
 		D827E76A1EB6D9A20078D493 /* DropdownBG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DropdownBG.png; sourceTree = "<group>"; };
 		D827E76E1EB755FE0078D493 /* TextFieldBG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TextFieldBG.png; sourceTree = "<group>"; };
 		D827E7701EB790EF0078D493 /* SendCabAlert.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SendCabAlert.png; sourceTree = "<group>"; };
+		D827E7741EB84A1F0078D493 /* PendingImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PendingImage.png; sourceTree = "<group>"; };
 		D82EC2361E8C2DB3009DA30A /* EditDriverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditDriverViewController.swift; sourceTree = "<group>"; };
 		D83D363C1E7A6EF0003166AA /* AdminBookListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdminBookListTableViewCell.swift; sourceTree = "<group>"; };
 		D83D363E1E7AAB7B003166AA /* AdminBookDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdminBookDetailViewController.swift; sourceTree = "<group>"; };
@@ -184,6 +186,7 @@
 		D861EE371E6A972D00CCF371 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				D827E7741EB84A1F0078D493 /* PendingImage.png */,
 				D86B9E6B1E85766600C31FDD /* CallUs.png */,
 				D827E76E1EB755FE0078D493 /* TextFieldBG.png */,
 				D861EE661E6A9B9700CCF371 /* PikchillyLogo@2x.png */,
@@ -414,6 +417,7 @@
 				D861EE551E6A977700CCF371 /* ADMINPENDING_ORG.png in Resources */,
 				D861EE521E6A977700CCF371 /* ADMINCOMPLETED_ORG.png in Resources */,
 				D861EE571E6A977700CCF371 /* ADMINSEND_ORG.png in Resources */,
+				D827E7751EB84A1F0078D493 /* PendingImage.png in Resources */,
 				D861EE5B1E6A977700CCF371 /* DeclineButton_ORG.png in Resources */,
 				D8FF56371E69AD9D00A99B75 /* LaunchScreen.storyboard in Resources */,
 				D8C4A9541EA2180E002F9D57 /* PhotoAvatarJPG.jpg in Resources */,
