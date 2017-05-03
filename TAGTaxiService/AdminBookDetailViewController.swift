@@ -37,7 +37,7 @@ class AdminBookDetailViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var amountText: UITextField!
     @IBOutlet weak var vehicleText: UITextField!
     @IBOutlet weak var send: UIButton!
-    @IBOutlet weak var statusText: UITextField!
+    @IBOutlet weak var statusText: UILabel!
     
     
     // Create a MessageComposer
@@ -50,7 +50,6 @@ class AdminBookDetailViewController: UIViewController, UITextFieldDelegate {
         
         amountText.delegate = self
         vehicleText.delegate = self
-        statusText.delegate = self
         
         nameLabel.text = bookName
         phoneLabel.text = bookPhone
@@ -85,6 +84,77 @@ class AdminBookDetailViewController: UIViewController, UITextFieldDelegate {
             send.isHidden = false
             send.isEnabled = true
             send.setTitle("Completed", for: .normal)
+        }
+        
+        if bookingStatusList == "Pending"{
+            
+            nameLabel.textColor = UIColor.yellow
+            phoneLabel.textColor = UIColor.yellow
+            travelDateLabel.textColor = UIColor.yellow
+            travelFromLabel.textColor = UIColor.yellow
+            travelToLabel.textColor = UIColor.yellow
+            roundTripLabel.textColor = UIColor.yellow
+            noOfTravellersLabel.textColor = UIColor.yellow
+            amountText.textColor = UIColor.yellow
+            vehicleText.textColor = UIColor.yellow
+            statusText.textColor = UIColor.yellow
+            
+        }else if bookingStatusList == "Accepted"{
+            
+            nameLabel.textColor = UIColor.green
+            phoneLabel.textColor = UIColor.green
+            travelDateLabel.textColor = UIColor.green
+            travelFromLabel.textColor = UIColor.green
+            travelToLabel.textColor = UIColor.green
+            roundTripLabel.textColor = UIColor.green
+            noOfTravellersLabel.textColor = UIColor.green
+            amountText.textColor = UIColor.green
+            amountText.textColor = UIColor.green
+            vehicleText.textColor = UIColor.green
+            statusText.textColor = UIColor.green
+            
+            
+        } else if bookingStatusList == "Declined" || bookStatus == "Cancelled"{
+            
+            nameLabel.textColor = UIColor.red
+            phoneLabel.textColor = UIColor.red
+            travelDateLabel.textColor = UIColor.red
+            travelFromLabel.textColor = UIColor.red
+            travelToLabel.textColor = UIColor.red
+            roundTripLabel.textColor = UIColor.red
+            noOfTravellersLabel.textColor = UIColor.red
+            amountText.textColor = UIColor.red
+            vehicleText.textColor = UIColor.red
+            statusText.textColor = UIColor.red
+            
+            
+        }else if bookingStatusList == "Quote Received"{
+            
+            nameLabel.textColor = UIColor.cyan
+            phoneLabel.textColor = UIColor.cyan
+            travelDateLabel.textColor = UIColor.cyan
+            travelFromLabel.textColor = UIColor.cyan
+            travelToLabel.textColor = UIColor.cyan
+            roundTripLabel.textColor = UIColor.cyan
+            noOfTravellersLabel.textColor = UIColor.cyan
+            amountText.textColor = UIColor.cyan
+            vehicleText.textColor = UIColor.cyan
+            statusText.textColor = UIColor.cyan
+            
+            
+        }else if bookingStatusList == "Completed"{
+            
+            nameLabel.textColor = UIColor.white
+            phoneLabel.textColor = UIColor.white
+            travelDateLabel.textColor = UIColor.white
+            travelFromLabel.textColor = UIColor.white
+            travelToLabel.textColor = UIColor.white
+            roundTripLabel.textColor = UIColor.white
+            noOfTravellersLabel.textColor = UIColor.white
+            amountText.textColor = UIColor.white
+            vehicleText.textColor = UIColor.white
+            statusText.textColor = UIColor.white
+            
         }
         
     }
@@ -208,7 +278,7 @@ class AdminBookDetailViewController: UIViewController, UITextFieldDelegate {
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if (textField == amountText) || (textField == vehicleText){
-            scrollView.setContentOffset(CGPoint.init(x: 0, y: 90), animated: true)
+            scrollView.setContentOffset(CGPoint.init(x: 0, y: 130), animated: true)
         }
     }
     
