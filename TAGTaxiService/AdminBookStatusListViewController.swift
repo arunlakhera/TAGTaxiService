@@ -29,7 +29,9 @@ class AdminBookStatusListViewController: UIViewController, UITableViewDelegate, 
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+         riderName = ""
+         riderEmail = ""
+         riderPhone = ""
         
         tableView.delegate = self
         tableView.dataSource = self
@@ -81,7 +83,7 @@ class AdminBookStatusListViewController: UIViewController, UITableViewDelegate, 
         
         let riderProfile = DataService.ds.REF_RIDER.child(book.riderID!).child("Profile")
         
-        riderProfile.observeSingleEvent(of: .value, with: { (snapshot) in
+        riderProfile.observe(.value, with: { (snapshot) in
            
             let riderProfile = Rider(riderID: book.riderID!, dictionary: snapshot.value as! Dictionary<String, AnyObject>)
            
@@ -94,7 +96,7 @@ class AdminBookStatusListViewController: UIViewController, UITableViewDelegate, 
             if (riderProfile.lastName?.characters.count)! > 0 {
                 self.riderName = self.riderName + " " + (riderProfile.lastName)!
             }else{
-                self.riderName = self.riderName + " " + ""
+                self.riderName = self.riderName + "" + ""
             }
             
             if (self.riderName.characters.count) <= 0 {
@@ -104,8 +106,10 @@ class AdminBookStatusListViewController: UIViewController, UITableViewDelegate, 
             self.riderPhone = riderProfile.phoneNumber!
             cell?.nameLabel.text = self.riderName
             
+             print("==INCELL==>>>>>>> \(self.riderName.capitalized)")
+            
         })
- 
+        
         cell?.fromToLabel.text = "\(rideFrom!.substring(to: indexFrom!)) - \(rideTo!.substring(to: indexTo!))".capitalized
         cell?.travelDateLabel.text = book.rideBeginDate!.capitalized
         cell?.statusLabel.text = book.status!.capitalized
@@ -162,13 +166,15 @@ class AdminBookStatusListViewController: UIViewController, UITableViewDelegate, 
                 
                 destinationVC.bookKey = book.bookingID!
                 
-                if self.riderName.characters.count > 0{
-                    destinationVC.bookName = self.riderName.capitalized
+                destinationVC.riderID = book.riderID!
+                /*
+                if riderName.characters.count > 0{
+                    destinationVC.bookName = riderName.capitalized
+                    print("====rider prep segue outside observe>>>>>>> \(riderName.capitalized)")
                 }else{
-                    destinationVC.bookName = self.riderEmail.capitalized
+                    destinationVC.bookName = riderEmail.capitalized
                 }
-
-                
+                */
                 //destinationVC.bookName = riderEmail
                 destinationVC.bookPhone = riderPhone
                 destinationVC.bookTravelDate = book.rideBeginDate!

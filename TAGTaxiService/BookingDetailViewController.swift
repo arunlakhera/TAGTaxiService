@@ -164,7 +164,7 @@ class BookingDetailViewController: UIViewController {
         DataService.ds.REF_RIDEBOOKING.child(bookKey).child("Status").setValue(bookStatus)
         
         DataService.ds.REF_RIDEBOOKING.child(bookKey).child("LastUpdatedOnDate").setValue(String(describing: NSDate())){(error) in print("Error while Writing Last Updated On Date to Database")}
-        DataService.ds.REF_RIDEBOOKING.child("UpdatedBy").setValue(AuthService.instance.riderID!){(error) in print("Error while Writing Updated By to Database")}
+        DataService.ds.REF_RIDEBOOKING.child(bookKey).child("UpdatedBy").setValue(AuthService.instance.riderID!){(error) in print("Error while Writing Updated By to Database")}
         
         viewDidLoad()
         

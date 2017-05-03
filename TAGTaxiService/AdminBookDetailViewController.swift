@@ -23,6 +23,7 @@ class AdminBookDetailViewController: UIViewController, UITextFieldDelegate {
     var bookVehicleType = ""
     
     var bookKey = ""
+    var riderID = ""
     var bStatus = ""
     
     @IBOutlet weak var scrollView: UIScrollView!
@@ -77,6 +78,32 @@ class AdminBookDetailViewController: UIViewController, UITextFieldDelegate {
 
         amountText.inputAccessoryView = toolBarWithDoneButton
         vehicleText.inputAccessoryView = toolBarWithDoneButton
+        
+        let riderProfile = DataService.ds.REF_RIDER.child("\(riderID)").child("Profile")
+        
+        riderProfile.observe(.value, with: { (snapshot) in
+            
+            let riderProfile = Rider(riderID: self.riderID, dictionary: snapshot.value as! Dictionary<String, AnyObject>)
+            
+            if (riderProfile.firstName?.characters.count)! > 0 {
+                self.bookName = (riderProfile.firstName)!
+            }else{
+                self.bookName = ""
+            }
+            
+            if (riderProfile.lastName?.characters.count)! > 0 {
+                self.bookName = self.bookName + " " + (riderProfile.lastName)!
+            }else{
+                self.bookName = self.bookName + "" + ""
+            }
+            
+            if (self.bookName.characters.count) <= 0 {
+                self.bookName = String(describing: riderProfile.emailID)
+            }
+            
+            self.nameLabel.text = self.bookName
+            
+        })
         
         // If status is ACCEPTED only then show the Completed button so Admin can mark the journey as completed
         
@@ -204,7 +231,6 @@ class AdminBookDetailViewController: UIViewController, UITextFieldDelegate {
                
                 DataService.ds.REF_RIDEBOOKING.child(bookKey).child("LastUpdatedOnDate").setValue(String(describing: NSDate())){(error) in print("Error while Writing Last Updated On Date to Database")}
                 DataService.ds.REF_RIDEBOOKING.child(bookKey).child("UpdatedBy").setValue(AuthService.instance.riderID!){(error) in print("Error while Writing Updated By to Database")}
-                
                 
                 statusText.text = "Completed"
                 send.isHidden = true
