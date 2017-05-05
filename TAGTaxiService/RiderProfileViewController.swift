@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 import Photos
 
-class RiderProfileViewController: UIViewController, /*UINavigationControllerDelegate, UIImagePickerControllerDelegate,*/UIPickerViewDataSource, UIPickerViewDelegate {
+class RiderProfileViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate,UITextFieldDelegate {
 
     // MARK: Outlets
     //@IBOutlet weak var riderPhotoImageView: UIImageView!
@@ -71,6 +71,12 @@ class RiderProfileViewController: UIViewController, /*UINavigationControllerDele
         
         statesPicker.delegate = self
         statesPicker.dataSource = self
+        
+        cityTextField.delegate = self
+        stateTextField.delegate = self
+        phoneTextField.delegate = self
+        dateOfBirthTextField.delegate = self
+        genderTextField.delegate = self
         
         genderTextField.inputView = genderPicker
         stateTextField.inputView = statesPicker
@@ -299,16 +305,39 @@ class RiderProfileViewController: UIViewController, /*UINavigationControllerDele
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        if (textField == dateOfBirthTextField) || (textField == genderTextField)
+        
+        var yValue = 0
+        
+        if (textField == cityTextField)
         {
-            self.scrollView.setContentOffset(CGPoint.init(x: 0, y: 70), animated: true)
+            yValue = 80
         }
+        if (textField == stateTextField)
+        {
+            yValue = 90
+        }
+        if (textField == phoneTextField)
+        {
+            yValue = 100
+        }
+        
+        if (textField == dateOfBirthTextField)
+        {
+            yValue = 110
+        }
+        
+        if (textField == genderTextField)
+        {
+            yValue = 120
+        }
+        scrollView.setContentOffset(CGPoint.init(x: 0, y: yValue), animated: true)
         
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
             scrollView.setContentOffset(CGPoint.init(x: 0, y: 0), animated: true)
     }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }

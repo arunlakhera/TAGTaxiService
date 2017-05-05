@@ -26,6 +26,7 @@
 		D83D363F1E7AAB7B003166AA /* AdminBookDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83D363E1E7AAB7B003166AA /* AdminBookDetailViewController.swift */; };
 		D83D366A1E7D3881003166AA /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D83D36691E7D3881003166AA /* AuthService.swift */; };
 		D8428F851EAF162800B6D0A8 /* AdminLabelBg.png in Resources */ = {isa = PBXBuildFile; fileRef = D8428F841EAF162800B6D0A8 /* AdminLabelBg.png */; };
+		D84FE5AF1EBC976E0012026D /* RenewLicense.png in Resources */ = {isa = PBXBuildFile; fileRef = D84FE5AE1EBC976E0012026D /* RenewLicense.png */; };
 		D85888E01E769F5800AB1DB9 /* RiderProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D85888DF1E769F5800AB1DB9 /* RiderProfileViewController.swift */; };
 		D85E08881EB895AC006F96D4 /* BookingStatusBG.png in Resources */ = {isa = PBXBuildFile; fileRef = D85E08871EB895AC006F96D4 /* BookingStatusBG.png */; };
 		D85E088A1EB8F09C006F96D4 /* BookingDetailTopBG.png in Resources */ = {isa = PBXBuildFile; fileRef = D85E08891EB8F09C006F96D4 /* BookingDetailTopBG.png */; };
@@ -105,6 +106,7 @@
 		D83D363E1E7AAB7B003166AA /* AdminBookDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdminBookDetailViewController.swift; sourceTree = "<group>"; };
 		D83D36691E7D3881003166AA /* AuthService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		D8428F841EAF162800B6D0A8 /* AdminLabelBg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AdminLabelBg.png; sourceTree = "<group>"; };
+		D84FE5AE1EBC976E0012026D /* RenewLicense.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RenewLicense.png; sourceTree = "<group>"; };
 		D85888DF1E769F5800AB1DB9 /* RiderProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RiderProfileViewController.swift; sourceTree = "<group>"; };
 		D85E08871EB895AC006F96D4 /* BookingStatusBG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BookingStatusBG.png; sourceTree = "<group>"; };
 		D85E08891EB8F09C006F96D4 /* BookingDetailTopBG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BookingDetailTopBG.png; sourceTree = "<group>"; };
@@ -191,6 +193,7 @@
 			isa = PBXGroup;
 			children = (
 				D827E7741EB84A1F0078D493 /* PendingImage.png */,
+				D84FE5AE1EBC976E0012026D /* RenewLicense.png */,
 				D86B9E6B1E85766600C31FDD /* CallUs.png */,
 				D827E76E1EB755FE0078D493 /* TextFieldBG.png */,
 				D85E08871EB895AC006F96D4 /* BookingStatusBG.png */,
@@ -426,6 +429,7 @@
 				D827E7751EB84A1F0078D493 /* PendingImage.png in Resources */,
 				D861EE5B1E6A977700CCF371 /* DeclineButton_ORG.png in Resources */,
 				D8FF56371E69AD9D00A99B75 /* LaunchScreen.storyboard in Resources */,
+				D84FE5AF1EBC976E0012026D /* RenewLicense.png in Resources */,
 				D8C4A9541EA2180E002F9D57 /* PhotoAvatarJPG.jpg in Resources */,
 				D861EE6F1E6AA5DD00CCF371 /* Setting Button.png in Resources */,
 				D861EE5F1E6A977700CCF371 /* Plus_White.png in Resources */,

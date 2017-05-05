@@ -151,8 +151,8 @@ class VehicleViewController: UIViewController, UITableViewDelegate,UITableViewDa
         let cell = self.tableView.dequeueReusableCell(withIdentifier: "vehicleCell", for: indexPath) as? VehicleListTableViewCell
         let vehicle = vehicleList[indexPath.row]
         
-        cell?.companyNameLabel.text = vehicle.companyName! + " " + vehicle.modelName!
-        cell?.carNumberLabel.text = vehicle.vehicleNumber
+        cell?.companyNameLabel.text = vehicle.companyName!.capitalized + " " + vehicle.modelName!.capitalized
+        cell?.carNumberLabel.text = vehicle.vehicleNumber?.capitalized
         cell?.insuranceExpiryDateLabel.text = vehicle.insurnaceExpDate
         cell?.pollutionExpiryDateLabel.text = vehicle.pollutionCertExpDate
         cell?.permitExpiryDateLabel.text = vehicle.permitExpDate
@@ -166,7 +166,6 @@ class VehicleViewController: UIViewController, UITableViewDelegate,UITableViewDa
         self.permitValidTill = (vehicle.permitExpDate != nil ? vehicle.permitExpDate! : "2000-01-01" )
         self.vehicleFitnessValidTill = (vehicle.vehicleFitnessExpDate != nil ? vehicle.vehicleFitnessExpDate! : "2000-01-01" )
         
-        
         self.numberOfDaysForInsuranceExpiry = Int((self.dateformatter.date(from: self.insuranceValidTill!)!.timeIntervalSince(self.dateformatter.date(from: self.today!)!) ) / ( 24 * 60 * 60))
        
         self.numberOfDaysForPollutionExpiry = Int((self.dateformatter.date(from: self.pollutionValidTill!)!.timeIntervalSince(self.dateformatter.date(from: self.today!)!) ) / ( 24 * 60 * 60))
@@ -177,18 +176,18 @@ class VehicleViewController: UIViewController, UITableViewDelegate,UITableViewDa
         
         if (self.numberOfDaysForInsuranceExpiry! <= 30 && self.numberOfDaysForInsuranceExpiry! >= 15 ){
             cell?.backgroundColor = UIColor.darkGray
-            cell?.insuranceExpiryDateLabel.backgroundColor = UIColor.orange
-            
+            //cell?.insuranceExpiryDateLabel.backgroundColor = UIColor.orange
+            cell?.insuranceExpiryDateLabel.textColor = UIColor.yellow
             // Blink the Text
             cell?.insuranceExpiryDateLabel.alpha = 1
             UIView.animate(withDuration: 0.7, delay: 0.0, options: [.repeat, .autoreverse, []], animations:
-                {
+            {
                     cell?.insuranceExpiryDateLabel.alpha = 0
             }, completion: nil)
         }else if (self.numberOfDaysForInsuranceExpiry! < 15){
             cell?.backgroundColor = UIColor.darkGray
-            cell?.insuranceExpiryDateLabel.backgroundColor = UIColor.red
-    
+            //cell?.insuranceExpiryDateLabel.backgroundColor = UIColor.red
+             cell?.insuranceExpiryDateLabel.textColor = UIColor.red
             // Blink the Text
             cell?.insuranceExpiryDateLabel.alpha = 1
             UIView.animate(withDuration: 0.7, delay: 0.0, options: [.repeat, .autoreverse, []], animations:
@@ -199,7 +198,8 @@ class VehicleViewController: UIViewController, UITableViewDelegate,UITableViewDa
 
         if (self.numberOfDaysForPollutionExpiry! <= 30 && self.numberOfDaysForPollutionExpiry! >= 15 ){
             cell?.backgroundColor = UIColor.darkGray
-            cell?.pollutionExpiryDateLabel.backgroundColor = UIColor.orange
+            //cell?.pollutionExpiryDateLabel.backgroundColor = UIColor.orange
+            cell?.pollutionExpiryDateLabel.textColor = UIColor.yellow
             
             // Blink the Text
             cell?.pollutionExpiryDateLabel.alpha = 1
@@ -211,8 +211,8 @@ class VehicleViewController: UIViewController, UITableViewDelegate,UITableViewDa
             
         }else if (self.numberOfDaysForPollutionExpiry! < 15){
             cell?.backgroundColor = UIColor.darkGray
-            cell?.pollutionExpiryDateLabel.backgroundColor  = UIColor.red
-            
+            //cell?.pollutionExpiryDateLabel.backgroundColor  = UIColor.red
+            cell?.pollutionExpiryDateLabel.textColor = UIColor.red
             // Blink the Text
             cell?.pollutionExpiryDateLabel.alpha = 1
             UIView.animate(withDuration: 0.7, delay: 0.0, options: [.repeat, .autoreverse, []], animations:
@@ -223,7 +223,8 @@ class VehicleViewController: UIViewController, UITableViewDelegate,UITableViewDa
 
         if (self.numberOfDaysForPermitExpiry! <= 30 && self.numberOfDaysForPermitExpiry! >= 15 ){
             cell?.backgroundColor = UIColor.darkGray
-            cell?.permitExpiryDateLabel.backgroundColor = UIColor.orange
+           // cell?.permitExpiryDateLabel.backgroundColor = UIColor.orange
+            cell?.permitExpiryDateLabel.textColor = UIColor.yellow
             
             // Blink the Text
             cell?.permitExpiryDateLabel.alpha = 1
@@ -235,8 +236,8 @@ class VehicleViewController: UIViewController, UITableViewDelegate,UITableViewDa
             
         }else if (self.numberOfDaysForPermitExpiry! < 15){
             cell?.backgroundColor = UIColor.darkGray
-            cell?.permitExpiryDateLabel.backgroundColor  = UIColor.red
-            
+            //cell?.permitExpiryDateLabel.backgroundColor  = UIColor.red
+            cell?.permitExpiryDateLabel.textColor = UIColor.red
             // Blink the Text
             cell?.permitExpiryDateLabel.alpha = 1
             UIView.animate(withDuration: 0.7, delay: 0.0, options: [.repeat, .autoreverse, []], animations:
@@ -247,7 +248,8 @@ class VehicleViewController: UIViewController, UITableViewDelegate,UITableViewDa
         
         if (self.numberOfDaysForVehicleFitnessExpiry! <= 30 && self.numberOfDaysForVehicleFitnessExpiry! >= 15 ){
             cell?.backgroundColor = UIColor.darkGray
-            cell?.vehicleFitnessExpiryDateLabel.backgroundColor = UIColor.orange
+            //cell?.vehicleFitnessExpiryDateLabel.backgroundColor = UIColor.orange
+            cell?.vehicleFitnessExpiryDateLabel.textColor = UIColor.yellow
             
             // Blink the Text
             cell?.vehicleFitnessExpiryDateLabel.alpha = 1
@@ -259,8 +261,8 @@ class VehicleViewController: UIViewController, UITableViewDelegate,UITableViewDa
             
         }else if (self.numberOfDaysForVehicleFitnessExpiry! < 15){
             cell?.backgroundColor = UIColor.darkGray
-            cell?.vehicleFitnessExpiryDateLabel.backgroundColor  = UIColor.red
-            
+            //cell?.vehicleFitnessExpiryDateLabel.backgroundColor  = UIColor.red
+            cell?.vehicleFitnessExpiryDateLabel.textColor = UIColor.red
             // Blink the Text
             cell?.vehicleFitnessExpiryDateLabel.alpha = 1
             UIView.animate(withDuration: 0.7, delay: 0.0, options: [.repeat, .autoreverse, []], animations:

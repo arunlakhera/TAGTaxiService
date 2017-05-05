@@ -63,7 +63,7 @@ class AdminBookDetailViewController: UIViewController, UITextFieldDelegate {
         amountText.text = bookAmount
         vehicleText.text = "\(bookVehicle.trimmingCharacters(in: .whitespacesAndNewlines)) \(bookVehicleType.trimmingCharacters(in: .whitespacesAndNewlines)) "
         
-        statusText.isEnabled = false
+        //statusText.isEnabled = false
         
         if statusText.text == "Pending" {
             amountText.isEnabled = true
@@ -155,7 +155,7 @@ class AdminBookDetailViewController: UIViewController, UITextFieldDelegate {
             statusText.textColor = UIColor.red
             
             
-        }else if bookingStatusList == "Quote Received"{
+        }else if bookingStatusList == "Quoted"{
             
             nameLabel.textColor = UIColor.cyan
             phoneLabel.textColor = UIColor.cyan
@@ -226,7 +226,7 @@ class AdminBookDetailViewController: UIViewController, UITextFieldDelegate {
             //
             if send.title(for: .normal) == "Completed"{
                 bookStatus = "Completed"
-                DataService.ds.REF_RIDEBOOKING.child(bookKey).child(bookKey).child("Status").setValue(bookStatus){(error) in print("Error while Writing Status to Database")}
+                DataService.ds.REF_RIDEBOOKING.child(bookKey).child("Status").setValue(bookStatus){(error) in print("Error while Writing Status to Database")}
                 showAlert(title: "Completed", message: "You have Marked the Booking as Completed")
                
                 DataService.ds.REF_RIDEBOOKING.child(bookKey).child("LastUpdatedOnDate").setValue(String(describing: NSDate())){(error) in print("Error while Writing Last Updated On Date to Database")}

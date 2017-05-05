@@ -88,7 +88,7 @@ class DriverViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 cell?.driverImage.image = UIImage(named: "PhotoAvatarJPG.jpg")
             }
             cell?.nameLabel.layer.cornerRadius = 5
-            cell?.nameLabel.text = (driver.firstName != nil ? driver.firstName! : "First Name"  ) + " " + (driver.lastName != nil ? driver.lastName! : "Last Name"  )
+            cell?.nameLabel.text = (driver.firstName != nil ? driver.firstName!.capitalized : "First Name"  ) + " " + (driver.lastName != nil ? driver.lastName!.capitalized : "Last Name"  )
             cell?.phoneNumberLabel.text = driver.phoneNumber
             cell?.DLValidTill.text = driver.drivingLicenseValidTill
             
@@ -98,6 +98,7 @@ class DriverViewController: UIViewController, UITableViewDelegate, UITableViewDa
             self.numberOfDaysForExpiry = Int((self.dateformatter.date(from: self.validTill!)!.timeIntervalSince(self.dateformatter.date(from: self.today!)!) ) / ( 24 * 60 * 60))
             
             if (self.numberOfDaysForExpiry! <= 30 && self.numberOfDaysForExpiry! >= 15 ) {
+                cell?.renewLicenseImage.isHidden = false
                 cell?.nameLabel.textColor = UIColor.yellow
                 cell?.phoneNumberLabel.textColor = UIColor.yellow
                 cell?.DLValidTill.textColor = UIColor.yellow
@@ -106,12 +107,15 @@ class DriverViewController: UIViewController, UITableViewDelegate, UITableViewDa
               
                 // Blink the Text
                 cell?.DLValidTill.alpha = 1
+                
                 UIView.animate(withDuration: 0.7, delay: 0.0, options: [.repeat, .autoreverse, []], animations:
                     {
                         cell?.DLValidTill.alpha = 0
+                        
                 }, completion: nil)
                 
             }else if self.numberOfDaysForExpiry! < 15{
+                 cell?.renewLicenseImage.isHidden = false
                 cell?.nameLabel.textColor = UIColor.red
                 cell?.phoneNumberLabel.textColor = UIColor.red
                 cell?.DLValidTill.textColor = UIColor.red
@@ -119,9 +123,11 @@ class DriverViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 cell?.backgroundColor = UIColor.darkGray
                 // Blink the Text
                 cell?.DLValidTill.alpha = 1
+                cell?.renewLicenseImage.alpha = 1
                 UIView.animate(withDuration: 0.7, delay: 0.0, options: [.repeat, .autoreverse, []], animations:
                     {
                         cell?.DLValidTill.alpha = 0
+                        cell?.renewLicenseImage.alpha = 0
                 }, completion: nil)
             }
             

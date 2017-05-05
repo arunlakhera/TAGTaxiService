@@ -104,7 +104,7 @@ class AdminBookStatusListViewController: UIViewController, UITableViewDelegate, 
             }
             
             self.riderPhone = riderProfile.phoneNumber!
-            cell?.nameLabel.text = self.riderName
+            cell?.nameLabel.text = self.riderName.capitalized
             
              print("==INCELL==>>>>>>> \(self.riderName.capitalized)")
             
@@ -116,14 +116,29 @@ class AdminBookStatusListViewController: UIViewController, UITableViewDelegate, 
         
         if book.status! == "Pending"{
             cell?.statusLabel.textColor = UIColor.yellow
+            cell?.fromToLabel.textColor = UIColor.yellow
+            cell?.travelDateLabel.textColor = UIColor.yellow
+            cell?.nameLabel.textColor = UIColor.yellow
         }else if book.status! == "Accepted"{
             cell?.statusLabel.textColor = UIColor.green
+            cell?.fromToLabel.textColor = UIColor.green
+            cell?.travelDateLabel.textColor = UIColor.green
+            cell?.nameLabel.textColor = UIColor.green            
         } else if book.status! == "Declined" || book.status! == "Cancelled"{
             cell?.statusLabel.textColor = UIColor.red
+            cell?.fromToLabel.textColor = UIColor.red
+            cell?.travelDateLabel.textColor = UIColor.red
+            cell?.nameLabel.textColor = UIColor.red
         }else if book.status! == "Quoted"{
-            cell?.statusLabel.textColor = UIColor.orange
+            cell?.statusLabel.textColor = UIColor.cyan
+            cell?.fromToLabel.textColor = UIColor.cyan
+            cell?.travelDateLabel.textColor = UIColor.cyan
+            cell?.nameLabel.textColor = UIColor.cyan
         }else if book.status! == "Completed"{
             cell?.statusLabel.textColor = UIColor.white
+            cell?.fromToLabel.textColor = UIColor.white
+            cell?.travelDateLabel.textColor = UIColor.white
+            cell?.nameLabel.textColor = UIColor.white
         }
         
         self.travelBeginDate = (book.rideBeginDate != nil ? book.rideBeginDate : "2000-01-01" )
@@ -167,15 +182,6 @@ class AdminBookStatusListViewController: UIViewController, UITableViewDelegate, 
                 destinationVC.bookKey = book.bookingID!
                 
                 destinationVC.riderID = book.riderID!
-                /*
-                if riderName.characters.count > 0{
-                    destinationVC.bookName = riderName.capitalized
-                    print("====rider prep segue outside observe>>>>>>> \(riderName.capitalized)")
-                }else{
-                    destinationVC.bookName = riderEmail.capitalized
-                }
-                */
-                //destinationVC.bookName = riderEmail
                 destinationVC.bookPhone = riderPhone
                 destinationVC.bookTravelDate = book.rideBeginDate!
                 destinationVC.bookFrom = book.rideFrom!.capitalized

@@ -15,6 +15,7 @@ class DriverListTableViewCell: UITableViewCell {
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var phoneNumberLabel: UILabel!
     @IBOutlet weak var DLValidTill: UILabel!
+    @IBOutlet weak var renewLicenseImage: UIImageView!
     
     
     override func awakeFromNib() {
