@@ -25,6 +25,8 @@ class DriverViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var validTill: String?
     var numberOfDaysForExpiry: Int?
     
+    var expiryDays: Dictionary<String, Int> = [:]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -32,13 +34,10 @@ class DriverViewController: UIViewController, UITableViewDelegate, UITableViewDa
         tableView.dataSource = self
         dateformatter.dateFormat = "YYYY-MM-dd"
         
-        tableView.reloadData()
-        
         DataService.ds.REF_DRIVER.observe(.value, with: { snapshot in
-                self.driverList = []
-            
-            if let snapshots = snapshot.children.allObjects as? [FIRDataSnapshot]{
-             
+          if let snapshots = snapshot.children.allObjects as? [FIRDataSnapshot]{
+             self.driverList = []
+            self.expiryDays = [:]
                 for snap in snapshots{
                     if let driverDict = snap.value as? Dictionary<String, String>{
                         
@@ -46,24 +45,27 @@ class DriverViewController: UIViewController, UITableViewDelegate, UITableViewDa
                         self.driverKey = driver.driverID!
                         
                         self.driverList.append(driver)
-               
                         self.validTill = (driver.drivingLicenseValidTill != nil ? driver.drivingLicenseValidTill : "2000-01-01" )
                         self.today = self.dateformatter.string(from: self.todayDate)
                         
                         self.numberOfDaysForExpiry = Int((self.dateformatter.date(from: self.validTill!)!.timeIntervalSince(self.dateformatter.date(from: self.today!)!) ) / ( 24 * 60 * 60))
                    
+                        self.expiryDays["\(self.driverKey)"] =  self.numberOfDaysForExpiry!
+                        
                         if self.numberOfDaysForExpiry! <= 30 {
                             self.count += 1
                             self.dname = self.dname + "\n" + "\(driver.firstName != nil ? driver.firstName! : "First Name" ) \(driver.lastName != nil ? driver.lastName! : "Last Name" )"
                         }
-                        
+                       
                     }
+                    
                 }
-                self.showAlert(title: "Alert!!", message: "Driving License Expiring for \(self.count) Drivers: \(self.dname)")
-                self.tableView.reloadData()
+                
             }
+            self.showAlert(title: "Alert!!", message: "Driving License Expiring for \(self.count) Drivers: \(self.dname)")
+            self.tableView.reloadData()
+            
         })
-        
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -75,10 +77,11 @@ class DriverViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+     
         let cell = tableView.dequeueReusableCell(withIdentifier: "driverCell", for: indexPath) as? DriverListTableViewCell
         let driver = driverList[indexPath.row]
-     
         let driverImageRef = DataService.ds.REF_DRIVER_IMAGE.child("\(String(describing: driver.driverID!))")
+        
         driverImageRef.data(withMaxSize: 1 * 1024 * 1024, completion: { (data, error) in
             if data != nil{
                 if let pic = UIImage(data: data!){
@@ -87,57 +90,42 @@ class DriverViewController: UIViewController, UITableViewDelegate, UITableViewDa
             }else{
                 cell?.driverImage.image = UIImage(named: "PhotoAvatarJPG.jpg")
             }
-            cell?.nameLabel.layer.cornerRadius = 5
-            cell?.nameLabel.text = (driver.firstName != nil ? driver.firstName!.capitalized : "First Name"  ) + " " + (driver.lastName != nil ? driver.lastName!.capitalized : "Last Name"  )
-            cell?.phoneNumberLabel.text = driver.phoneNumber
-            cell?.DLValidTill.text = driver.drivingLicenseValidTill
             
-            self.validTill = (driver.drivingLicenseValidTill != nil ? driver.drivingLicenseValidTill : "2000-01-01" )
-            self.today = self.dateformatter.string(from: self.todayDate)
-
-            self.numberOfDaysForExpiry = Int((self.dateformatter.date(from: self.validTill!)!.timeIntervalSince(self.dateformatter.date(from: self.today!)!) ) / ( 24 * 60 * 60))
-            
-            if (self.numberOfDaysForExpiry! <= 30 && self.numberOfDaysForExpiry! >= 15 ) {
-                cell?.renewLicenseImage.isHidden = false
-                cell?.nameLabel.textColor = UIColor.yellow
-                cell?.phoneNumberLabel.textColor = UIColor.yellow
-                cell?.DLValidTill.textColor = UIColor.yellow
+      })
+ 
+        cell?.nameLabel.text = (driver.firstName != nil ? driver.firstName!.capitalized : "First Name"  ) + " " + (driver.lastName != nil ? driver.lastName!.capitalized : "Last Name"  )
+        cell?.phoneNumberLabel.text = driver.phoneNumber
+        cell?.DLValidTill.text = driver.drivingLicenseValidTill
+       
+        for ed in self.expiryDays{
+            if (ed.key == driver.driverID && ed.value < 30){
                 
-                cell?.backgroundColor = UIColor.darkGray
-              
+                cell?.nameLabel.text = (driver.firstName != nil ? driver.firstName!.capitalized : "First Name"  ) + " " + (driver.lastName != nil ? driver.lastName!.capitalized : "Last Name"  )
+                cell?.phoneNumberLabel.text = driver.phoneNumber
+                cell?.DLValidTill.text = driver.drivingLicenseValidTill
+                
+                    cell?.renewLicenseImage.isHidden = false
+                    cell?.nameLabel.textColor = UIColor.red
+                    cell?.phoneNumberLabel.textColor = UIColor.red
+                    cell?.DLValidTill.textColor = UIColor.red
+    
                 // Blink the Text
-                cell?.DLValidTill.alpha = 1
-                
-                UIView.animate(withDuration: 0.7, delay: 0.0, options: [.repeat, .autoreverse, []], animations:
-                    {
-                        cell?.DLValidTill.alpha = 0
-                        
-                }, completion: nil)
-                
-            }else if self.numberOfDaysForExpiry! < 15{
-                 cell?.renewLicenseImage.isHidden = false
-                cell?.nameLabel.textColor = UIColor.red
-                cell?.phoneNumberLabel.textColor = UIColor.red
-                cell?.DLValidTill.textColor = UIColor.red
-                
-                cell?.backgroundColor = UIColor.darkGray
-                // Blink the Text
-                cell?.DLValidTill.alpha = 1
-                cell?.renewLicenseImage.alpha = 1
-                UIView.animate(withDuration: 0.7, delay: 0.0, options: [.repeat, .autoreverse, []], animations:
-                    {
-                        cell?.DLValidTill.alpha = 0
-                        cell?.renewLicenseImage.alpha = 0
-                }, completion: nil)
+                    cell?.DLValidTill.alpha = 1
+                    cell?.renewLicenseImage.alpha = 1
+                    UIView.animate(withDuration: 0.7, delay: 0.0, options: [.repeat, .autoreverse, []], animations:
+                        {
+                            cell?.DLValidTill.alpha = 0
+                            cell?.renewLicenseImage.alpha = 0
+                    }, completion: nil)
+            }else{
+                cell?.nameLabel.text = (driver.firstName != nil ? driver.firstName!.capitalized : "First Name"  ) + " " + (driver.lastName != nil ? driver.lastName!.capitalized : "Last Name"  )
+                cell?.phoneNumberLabel.text = driver.phoneNumber
+                cell?.DLValidTill.text = driver.drivingLicenseValidTill
             }
-            
-        })
+         }
         return cell!
-        
     }
 
-   
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "driverEditSegue"{
             if let destinationVC = segue.destination as? EditDriverViewController{

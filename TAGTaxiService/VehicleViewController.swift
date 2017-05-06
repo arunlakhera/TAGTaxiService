@@ -68,20 +68,15 @@ class VehicleViewController: UIViewController, UITableViewDelegate,UITableViewDa
                    
                         self.insuranceValidTill = (vehicle.insurnaceExpDate != nil ? vehicle.insurnaceExpDate! : "2000-01-01" )
                         self.pollutionValidTill = (vehicle.pollutionCertExpDate != nil ? vehicle.pollutionCertExpDate! : "2000-01-01" )
-                        
                         self.permitValidTill = (vehicle.permitExpDate != nil ? vehicle.permitExpDate! : "2000-01-01" )
                         self.vehicleFitnessValidTill = (vehicle.vehicleFitnessExpDate != nil ? vehicle.vehicleFitnessExpDate! : "2000-01-01" )
                         
                         self.today = self.dateformatter.string(from: self.todayDate)
                       
                         self.numberOfDaysForInsuranceExpiry  = Int((self.dateformatter.date(from: self.insuranceValidTill!)!.timeIntervalSince(self.dateformatter.date(from: self.today!)!) ) / ( 24 * 60 * 60))
-                        
                         self.numberOfDaysForPollutionExpiry  = Int((self.dateformatter.date(from: self.pollutionValidTill!)!.timeIntervalSince(self.dateformatter.date(from: self.today!)!) ) / ( 24 * 60 * 60))
-                        
                         self.numberOfDaysForPermitExpiry  = Int((self.dateformatter.date(from: self.permitValidTill!)!.timeIntervalSince(self.dateformatter.date(from: self.today!)!) ) / ( 24 * 60 * 60))
-                        
                         self.numberOfDaysForVehicleFitnessExpiry  = Int((self.dateformatter.date(from: self.vehicleFitnessValidTill!)!.timeIntervalSince(self.dateformatter.date(from: self.today!)!) ) / ( 24 * 60 * 60))
-                        
                         
                         if self.numberOfDaysForInsuranceExpiry! <= 30 {
                             self.insuranceExpiryCount += 1
@@ -94,7 +89,7 @@ class VehicleViewController: UIViewController, UITableViewDelegate,UITableViewDa
                         }
                      
                         if self.numberOfDaysForPermitExpiry! <= 30 {
-                            self.pollutionExpiryCount += 1
+                            self.permitExpiryCount += 1
                             self.permitCount += 1
                         }
                      
@@ -105,9 +100,6 @@ class VehicleViewController: UIViewController, UITableViewDelegate,UITableViewDa
                         
                     }
                 }
-                
-              
-                
                 if self.insuranceCount > 0{
                     self.insuranceMessage = "Insurance Expiring for \(self.insuranceCount) Vehicles \n"
                 }
@@ -175,8 +167,6 @@ class VehicleViewController: UIViewController, UITableViewDelegate,UITableViewDa
         self.numberOfDaysForVehicleFitnessExpiry = Int((self.dateformatter.date(from: self.vehicleFitnessValidTill!)!.timeIntervalSince(self.dateformatter.date(from: self.today!)!) ) / ( 24 * 60 * 60))
         
         if (self.numberOfDaysForInsuranceExpiry! <= 30 && self.numberOfDaysForInsuranceExpiry! >= 15 ){
-            cell?.backgroundColor = UIColor.darkGray
-            //cell?.insuranceExpiryDateLabel.backgroundColor = UIColor.orange
             cell?.insuranceExpiryDateLabel.textColor = UIColor.yellow
             // Blink the Text
             cell?.insuranceExpiryDateLabel.alpha = 1
@@ -185,8 +175,6 @@ class VehicleViewController: UIViewController, UITableViewDelegate,UITableViewDa
                     cell?.insuranceExpiryDateLabel.alpha = 0
             }, completion: nil)
         }else if (self.numberOfDaysForInsuranceExpiry! < 15){
-            cell?.backgroundColor = UIColor.darkGray
-            //cell?.insuranceExpiryDateLabel.backgroundColor = UIColor.red
              cell?.insuranceExpiryDateLabel.textColor = UIColor.red
             // Blink the Text
             cell?.insuranceExpiryDateLabel.alpha = 1
@@ -197,8 +185,6 @@ class VehicleViewController: UIViewController, UITableViewDelegate,UITableViewDa
         }
 
         if (self.numberOfDaysForPollutionExpiry! <= 30 && self.numberOfDaysForPollutionExpiry! >= 15 ){
-            cell?.backgroundColor = UIColor.darkGray
-            //cell?.pollutionExpiryDateLabel.backgroundColor = UIColor.orange
             cell?.pollutionExpiryDateLabel.textColor = UIColor.yellow
             
             // Blink the Text
@@ -210,8 +196,6 @@ class VehicleViewController: UIViewController, UITableViewDelegate,UITableViewDa
             
             
         }else if (self.numberOfDaysForPollutionExpiry! < 15){
-            cell?.backgroundColor = UIColor.darkGray
-            //cell?.pollutionExpiryDateLabel.backgroundColor  = UIColor.red
             cell?.pollutionExpiryDateLabel.textColor = UIColor.red
             // Blink the Text
             cell?.pollutionExpiryDateLabel.alpha = 1
@@ -222,8 +206,6 @@ class VehicleViewController: UIViewController, UITableViewDelegate,UITableViewDa
         }
 
         if (self.numberOfDaysForPermitExpiry! <= 30 && self.numberOfDaysForPermitExpiry! >= 15 ){
-            cell?.backgroundColor = UIColor.darkGray
-           // cell?.permitExpiryDateLabel.backgroundColor = UIColor.orange
             cell?.permitExpiryDateLabel.textColor = UIColor.yellow
             
             // Blink the Text
@@ -235,8 +217,6 @@ class VehicleViewController: UIViewController, UITableViewDelegate,UITableViewDa
             
             
         }else if (self.numberOfDaysForPermitExpiry! < 15){
-            cell?.backgroundColor = UIColor.darkGray
-            //cell?.permitExpiryDateLabel.backgroundColor  = UIColor.red
             cell?.permitExpiryDateLabel.textColor = UIColor.red
             // Blink the Text
             cell?.permitExpiryDateLabel.alpha = 1
@@ -247,8 +227,6 @@ class VehicleViewController: UIViewController, UITableViewDelegate,UITableViewDa
         }
         
         if (self.numberOfDaysForVehicleFitnessExpiry! <= 30 && self.numberOfDaysForVehicleFitnessExpiry! >= 15 ){
-            cell?.backgroundColor = UIColor.darkGray
-            //cell?.vehicleFitnessExpiryDateLabel.backgroundColor = UIColor.orange
             cell?.vehicleFitnessExpiryDateLabel.textColor = UIColor.yellow
             
             // Blink the Text
@@ -260,8 +238,6 @@ class VehicleViewController: UIViewController, UITableViewDelegate,UITableViewDa
             
             
         }else if (self.numberOfDaysForVehicleFitnessExpiry! < 15){
-            cell?.backgroundColor = UIColor.darkGray
-            //cell?.vehicleFitnessExpiryDateLabel.backgroundColor  = UIColor.red
             cell?.vehicleFitnessExpiryDateLabel.textColor = UIColor.red
             // Blink the Text
             cell?.vehicleFitnessExpiryDateLabel.alpha = 1
@@ -270,8 +246,6 @@ class VehicleViewController: UIViewController, UITableViewDelegate,UITableViewDa
                     cell?.vehicleFitnessExpiryDateLabel.alpha = 0
             }, completion: nil)
         }
-
-        
         return cell!
     }
   

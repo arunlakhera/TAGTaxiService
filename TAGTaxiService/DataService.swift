@@ -18,10 +18,8 @@ class DataService{
   
     private var _REF_RIDER = TAGBase.child("RIDER")
     private var _REF_RIDEBOOKING = TAGBase.child("RIDEBOOKING")
-    
     private var _REF_VEHICLE = TAGBase.child("VEHICLE")
     private var _REF_DRIVER_IMAGE = TAGStorageBase.child("driverPics")
-    
     private var _REF_DRIVER = TAGBase.child("DRIVER")
     private var _REF_VEHICLE_IMAGE = TAGStorageBase.child("vehiclePics")
     

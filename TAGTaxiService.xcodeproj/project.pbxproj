@@ -706,7 +706,7 @@
 					"\"${PODS_ROOT}/Headers/Public/FirebaseStorage\"",
 				);
 				INFOPLIST_FILE = TAGTaxiService/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.MyCompany.TAGTaxiService;
@@ -738,7 +738,7 @@
 					"\"${PODS_ROOT}/Headers/Public/FirebaseStorage\"",
 				);
 				INFOPLIST_FILE = TAGTaxiService/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.MyCompany.TAGTaxiService;
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -38,7 +38,16 @@ class VehicleListTableViewCell: UITableViewCell {
         pollutionExpiryDateLabel.text = ""
         permitExpiryDateLabel.text = ""
         vehicleFitnessExpiryDateLabel.text = ""
-       
+        
+        insuranceExpiryDateLabel.textColor = UIColor.white
+        insuranceExpiryDateLabel.alpha = 1
+        pollutionExpiryDateLabel.textColor = UIColor.white
+        pollutionExpiryDateLabel.alpha = 1
+        permitExpiryDateLabel.textColor = UIColor.white
+        permitExpiryDateLabel.alpha = 1
+        vehicleFitnessExpiryDateLabel.textColor = UIColor.white
+        vehicleFitnessExpiryDateLabel.alpha = 1
+
     }
     
 }

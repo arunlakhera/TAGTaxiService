@@ -14,14 +14,12 @@ var bookingStatusList = ""
 class AdminMainBookingViewController: UIViewController {
 
     //MARK: Outlets
-    
     @IBOutlet weak var pendingCountButton: UIButton!
     @IBOutlet weak var quotedCountButton: UIButton!
     @IBOutlet weak var acceptedCountButton: UIButton!
     @IBOutlet weak var declinedCountButton: UIButton!
     @IBOutlet weak var cancelledCountButton: UIButton!
     @IBOutlet weak var completedCountButton: UIButton!
-    
     @IBOutlet weak var driverButton: UIButton!
     @IBOutlet weak var vehicleButton: UIButton!
     @IBOutlet weak var moreButton: UIButton!
@@ -29,7 +27,6 @@ class AdminMainBookingViewController: UIViewController {
     @IBOutlet weak var leadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var menuView: UIView!
     @IBOutlet weak var upcomingLabel: UILabel!
-    
     
     // MARK: Variables
     var pendingCount = 0
@@ -43,12 +40,10 @@ class AdminMainBookingViewController: UIViewController {
     var vehicleButtonCenter: CGPoint!
     var menuShow = false
     let dateformatter = DateFormatter()
-   
     
     override func viewWillAppear(_ animated: Bool) {
         driverButtonCenter = driverButton.center
         vehicleButtonCenter = vehicleButton.center
-        
         driverButton.center = moreButton.center
         vehicleButton.center = moreButton.center
 
@@ -59,12 +54,10 @@ class AdminMainBookingViewController: UIViewController {
          dateformatter.dateFormat = "YYYY-MM-dd"
         
         // Menu Propertiee
-        
         leadingConstraint.constant = -170
         menuView.layer.shadowOpacity = 1
         menuView.layer.shadowRadius = 4
         
-        //loadData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -110,12 +103,7 @@ class AdminMainBookingViewController: UIViewController {
                             
                             if numberOfDaysForTravel == 1 {
                                 upcomingTravelCount += 1
-                                print("Number of of Days===>\(numberOfDaysForTravel)")
-                                print("Ride Accepted for Date--->>>> \(bookings.rideFrom!)-\(bookings.rideTo!)--\(bookings.rideBeginDate!)")
-                                
-                            }
-                            
-                            
+                             }
                         }else if bookings.status == "Declined"{
                             self.declinedCount = self.declinedCount + 1
                         }else if bookings.status == "Cancelled"{
@@ -138,8 +126,6 @@ class AdminMainBookingViewController: UIViewController {
             self.completedCountButton.setTitle(String(self.completedCount), for: .normal)
             
             if upcomingTravelCount >= 1{
-                print("You have \(upcomingTravelCount) Bookings for tomorrow")
-                
                 self.upcomingLabel.text = "Cabs for Tomorrow: \(upcomingTravelCount)"
                 self.upcomingLabel.alpha = 1
                 UIView.animate(withDuration: 1.0, delay: 0.0, options: [.repeat, .autoreverse, []], animations:
@@ -227,22 +213,16 @@ class AdminMainBookingViewController: UIViewController {
                 // animations here
                 
                 self.driverButton.alpha = 1
-               // self.bookingButton.alpha = 1
                 self.vehicleButton.alpha = 1
-                
                 self.driverButton.center = self.driverButtonCenter
-                //self.bookingButton.center = self.bookingButtonCenter
                 self.vehicleButton.center = self.vehicleButtonCenter
             })
         }else{
             UIView.animate(withDuration: 0.3, animations: {
                 
                 self.driverButton.alpha = 0
-                //self.bookingButton.alpha = 0
                 self.vehicleButton.alpha = 0
-                
                 self.driverButton.center = self.moreButton.center
-                //self.bookingButton.center = self.moreButton.center
                 self.vehicleButton.center = self.moreButton.center
             })
         }
@@ -255,7 +235,6 @@ class AdminMainBookingViewController: UIViewController {
         if vehicleButton.currentImage == #imageLiteral(resourceName: "VehicleButtonOn"){
             toggleButtonImage(button: vehicleButton, onImage: #imageLiteral(resourceName: "VehicleButtonOn"), offImage: #imageLiteral(resourceName: "VehicleButtonOff"))
         }
-        
         
     }
  

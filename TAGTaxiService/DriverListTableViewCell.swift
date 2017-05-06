@@ -33,8 +33,15 @@ class DriverListTableViewCell: UITableViewCell {
         nameLabel.text = ""
         phoneNumberLabel.text = ""
         DLValidTill.text = ""
-        nameLabel.layer.cornerRadius = 5
+        renewLicenseImage.isHidden = true
+        driverImage.image = UIImage(named: "PhotoAvatar.png")
         
+        nameLabel.textColor = UIColor.white
+        phoneNumberLabel.textColor = UIColor.white
+        DLValidTill.textColor = UIColor.white
+        renewLicenseImage.alpha = 1
+        DLValidTill.alpha = 1
+      
     }
 
 }

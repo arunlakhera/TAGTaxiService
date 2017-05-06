@@ -113,7 +113,8 @@ class SignInViewController: UIViewController {
                 }
             }
             }, withCancel: { (error) in
-                self.showAlert(title: "Error", message: "Sign In Cancelled")
+                
+              self.showAlert(title: "Error", message: "Cancelled Loading Information")
             })
             
         }
@@ -246,7 +247,7 @@ class SignInViewController: UIViewController {
              let okButton = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
              let callUs = UIAlertAction(title: "Call Tag Taxi", style: .default, handler: { (callAction) in
                
-                let callNumber = "8979743264"
+             let callNumber = "8979743264"
              
                 if let phoneCallURL:URL = URL(string: "tel:\(callNumber)") {
                     let application:UIApplication = UIApplication.shared
@@ -274,16 +275,17 @@ class SignInViewController: UIViewController {
     
     func checkFields(){
         guard  let email = emailTextField.text,  let password = passwordTextField.text else{
-            showAlert(title: "Error!", message: "Please provide Email ID and Password")
+            self.showAlert(title: "Error!", message: "Please provide Email ID and Password")
             return
         }
         
         guard email != "", password != "" else {
-            showAlert(title: "Error", message: "Please provde Email ID and Password")
+            self.showAlert(title: "Error", message: "Please provde Email ID and Password")
             return
         }
     }
-    
+   
+
     // Alert function to show messages
     func showAlert(title: String, message: String){
         
@@ -293,6 +295,7 @@ class SignInViewController: UIViewController {
         self.present(alertController, animated: true, completion: nil)
         
     }
+    
     
     // Function to make next available field as responder once data has been entered in the current field
     func textFieldShouldReturn(textField: UITextField) -> Bool {
