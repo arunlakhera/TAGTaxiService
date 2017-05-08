@@ -78,28 +78,29 @@ class EditVehicleViewController: UIViewController, UIPickerViewDelegate,UIPicker
     var vehicleType = ["---","Small","Sedan","SUV"]
     let vehicleTypePicker = UIPickerView()
     
-    var activityIndicator: UIActivityIndicatorView!
+    var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
     
     func startActivity(){
         
-        activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
-        activityIndicator.frame = CGRect(x: 150, y: 330, width: 100, height: 100)
         activityIndicator.center = view.center
-        activityIndicator.backgroundColor = UIColor.white
         activityIndicator.color = UIColor.yellow
-        activityIndicator.hidesWhenStopped = true
         self.view.addSubview(activityIndicator)
-      
-        activityIndicator.isHidden = false
+        //UIApplication.shared.beginIgnoringInteractionEvents()
         activityIndicator.startAnimating()
-        UIApplication.shared.beginIgnoringInteractionEvents()
         
     }
     
     func stopActivity(){
-        activityIndicator.isHidden = true
         activityIndicator.stopAnimating()
-        UIApplication.shared.endIgnoringInteractionEvents()
+        //UIApplication.shared.endIgnoringInteractionEvents()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.startActivity()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        self.stopActivity()
     }
     
     override func viewDidLoad() {
@@ -405,8 +406,6 @@ class EditVehicleViewController: UIViewController, UIPickerViewDelegate,UIPicker
         self.dismiss(animated: true, completion: nil)
     }
     
-
-    
     func enableFields(){
         
         vehicleCompanyNameTextField.isEnabled = true
@@ -436,71 +435,14 @@ class EditVehicleViewController: UIViewController, UIPickerViewDelegate,UIPicker
         
                 uploadButton.isEnabled = false
                 activeSwitch.isEnabled = false
+                backButton.isEnabled = false
                 
-                let vehicleID = DataService.ds.REF_VEHICLE.child("\(self.vehicleKey)")
+                self.startActivity()
                 
-                let formatter = DateFormatter()
-                formatter.dateFormat = "YYYY-MM-dd"
-                
-                if let vehicleImage = vehicleImageView.image {
-                    image = vehicleImage
-                }else{
-                    image = UIImage(named: "PhotoAvatarJPG.jpg")
-                }
-                
-                let vehicleIDWithPath = String(describing: vehicleKey)
-                let vehiclePath = String(describing: DataService.ds.REF_VEHICLE)
-                let vehicleImageID = vehicleIDWithPath.replacingOccurrences(of: vehiclePath, with: "")
-                
-                if let imgData = UIImageJPEGRepresentation(image!, 0.2){
-                    let metadata = FIRStorageMetadata()
-                    metadata.contentType = "image/jpeg"
-                    
-                    let uploadTask = DataService.ds.REF_VEHICLE_IMAGE.child("\(vehicleImageID)").put(imgData, metadata: metadata) { (metadata, error) in
-                        
-                        if error != nil{
-                            print("Unable to upload image")
-                        }else{
-                            print("Successfully Uploaded image")
-                            let downloadURL = metadata?.downloadURL()?.absoluteString
-                            
-                            vehicleID.child("ImageURL").setValue(downloadURL) {(error) in print("Error while Writing Image URL to Database")}
-                            vehicleID.child("CompanyName").setValue(self.vehicleCompanyNameTextField.text) {(error) in print("Error while Writing Company Name to Database")}
-                            vehicleID.child("ModelName").setValue(self.vehicleModelNameTextField.text) {(error) in print("Error while Writing Model Name to Database")}
-                            vehicleID.child("VehicleNumber").setValue(self.vehicleNumberTextField.text) {(error) in print("Error while Writing Vehicle Number to Database")}
-                            vehicleID.child("VehicleType").setValue(self.vehicleTypeTextField.text) {(error) in print("Error while Writing First Name to Database")}
-                            vehicleID.child("RegistrationNumber").setValue(self.vehicleRegistrationNumberTextField.text) {(error) in print("Error while Writing Registration Number to Database")}
-                            vehicleID.child("ModelYear").setValue(self.vehicleModelYearTextField.text) {(error) in print("Error while Writing Model Year to Database")}
-                            vehicleID.child("InsuranceNumber").setValue(self.insuranceNumberTextField.text) {(error) in print("Error while Writing Insurance Number to Database")}
-                            vehicleID.child("InsuranceExpiryDate").setValue(self.insuranceExpiryDateTextField.text) {(error) in print("Error while Writing Insurance Expiry Date to Database")}
-                            vehicleID.child("PollutionCertificateNumber").setValue(self.pollutionCertificateNumberTextField.text) {(error) in print("Error while Writing Pollution Certificate Number to Database")}
-                            vehicleID.child("PollutionCertificateExpiryDate").setValue(self.pollutionCertificateExpiryDateTextField.text) {(error) in print("Error while Writing Pollution Certificate Expiry Date to Database")}
-                          
-                            vehicleID.child("PermitExpiryDate").setValue(self.permitExpiryDateTextField.text){(error) in print("Error while Writing Permit Expiry Date to Database")}
-                            vehicleID.child("VehicleFitnessExpiryDate").setValue(self.vehicleFitnessExpiryDateTextField.text){(error) in print("Error while Writing Vehicle Fitness Expiry Date to Database")}
-                            
-                            vehicleID.child("Mileage").setValue(self.mileageTextField.text) {(error) in print("Error while Writing First Name to Database")}
-                            vehicleID.child("LastServiceDate").setValue(self.lastServiceDateTextField.text) {(error) in print("Error while Writing Mileage to Database")}
-                            vehicleID.child("Active").setValue(self.activeLabel.text) {(error) in print("Error while Writing Active to Database")}
-
-                            vehicleID.child("LastUpdatedOnDate").setValue(String(describing: NSDate())){(error) in print("Error while Writing Last Updated On Date to Database")}
-                            vehicleID.child("UpdatedBy").setValue(AuthService.instance.riderID!){(error) in print("Error while Writing Updated By to Database")}
-                            
-                            self.backButton.isEnabled = true
-                            self.editButton.isEnabled = true
-
-                        }
-                    }
-                    uploadTask.observe(.success, handler: { (snapshot) in
-                        
-                        self.showAlert(title: "Saved", message: "Record Saved Successfully!")
-                        
-                    })
-
-                }
+                editVehicleDetails()
                 
                 saveButton.isHidden = true
-                stopActivity()
+               //backButton.isEnabled = true
                 
             }else{
                 showAlert(title: "Failure", message: "Internet Connection not Available!") //Show Failure Message
@@ -508,6 +450,72 @@ class EditVehicleViewController: UIViewController, UIPickerViewDelegate,UIPicker
             }
         }
     
+    }
+    
+    func editVehicleDetails(){
+        
+        let vehicleID = DataService.ds.REF_VEHICLE.child("\(self.vehicleKey)")
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "YYYY-MM-dd"
+        
+        if let vehicleImage = vehicleImageView.image {
+            image = vehicleImage
+        }else{
+            image = UIImage(named: "PhotoAvatarJPG.jpg")
+        }
+        
+        let vehicleIDWithPath = String(describing: vehicleKey)
+        let vehiclePath = String(describing: DataService.ds.REF_VEHICLE)
+        let vehicleImageID = vehicleIDWithPath.replacingOccurrences(of: vehiclePath, with: "")
+        
+        if let imgData = UIImageJPEGRepresentation(image!, 0.2){
+            let metadata = FIRStorageMetadata()
+            metadata.contentType = "image/jpeg"
+            
+            let uploadTask = DataService.ds.REF_VEHICLE_IMAGE.child("\(vehicleImageID)").put(imgData, metadata: metadata) { (metadata, error) in
+                
+                if error != nil{
+                    print("Unable to upload image")
+                }else{
+                    print("Successfully Uploaded image")
+                    let downloadURL = metadata?.downloadURL()?.absoluteString
+                    
+                    vehicleID.child("ImageURL").setValue(downloadURL) {(error) in print("Error while Writing Image URL to Database")}
+                    vehicleID.child("CompanyName").setValue(self.vehicleCompanyNameTextField.text) {(error) in print("Error while Writing Company Name to Database")}
+                    vehicleID.child("ModelName").setValue(self.vehicleModelNameTextField.text) {(error) in print("Error while Writing Model Name to Database")}
+                    vehicleID.child("VehicleNumber").setValue(self.vehicleNumberTextField.text) {(error) in print("Error while Writing Vehicle Number to Database")}
+                    vehicleID.child("VehicleType").setValue(self.vehicleTypeTextField.text) {(error) in print("Error while Writing First Name to Database")}
+                    vehicleID.child("RegistrationNumber").setValue(self.vehicleRegistrationNumberTextField.text) {(error) in print("Error while Writing Registration Number to Database")}
+                    vehicleID.child("ModelYear").setValue(self.vehicleModelYearTextField.text) {(error) in print("Error while Writing Model Year to Database")}
+                    vehicleID.child("InsuranceNumber").setValue(self.insuranceNumberTextField.text) {(error) in print("Error while Writing Insurance Number to Database")}
+                    vehicleID.child("InsuranceExpiryDate").setValue(self.insuranceExpiryDateTextField.text) {(error) in print("Error while Writing Insurance Expiry Date to Database")}
+                    vehicleID.child("PollutionCertificateNumber").setValue(self.pollutionCertificateNumberTextField.text) {(error) in print("Error while Writing Pollution Certificate Number to Database")}
+                    vehicleID.child("PollutionCertificateExpiryDate").setValue(self.pollutionCertificateExpiryDateTextField.text) {(error) in print("Error while Writing Pollution Certificate Expiry Date to Database")}
+                    
+                    vehicleID.child("PermitExpiryDate").setValue(self.permitExpiryDateTextField.text){(error) in print("Error while Writing Permit Expiry Date to Database")}
+                    vehicleID.child("VehicleFitnessExpiryDate").setValue(self.vehicleFitnessExpiryDateTextField.text){(error) in print("Error while Writing Vehicle Fitness Expiry Date to Database")}
+                    
+                    vehicleID.child("Mileage").setValue(self.mileageTextField.text) {(error) in print("Error while Writing First Name to Database")}
+                    vehicleID.child("LastServiceDate").setValue(self.lastServiceDateTextField.text) {(error) in print("Error while Writing Mileage to Database")}
+                    vehicleID.child("Active").setValue(self.activeLabel.text) {(error) in print("Error while Writing Active to Database")}
+                    
+                    vehicleID.child("LastUpdatedOnDate").setValue(String(describing: NSDate())){(error) in print("Error while Writing Last Updated On Date to Database")}
+                    vehicleID.child("UpdatedBy").setValue(AuthService.instance.riderID!){(error) in print("Error while Writing Updated By to Database")}
+                    
+                    self.backButton.isEnabled = true
+                    self.editButton.isEnabled = true
+                    
+                }
+            }
+            uploadTask.observe(.success, handler: { (snapshot) in
+                
+                self.showAlert(title: "Saved", message: "Record Saved Successfully!")
+                
+            })
+            
+        }
+
     }
     
     func checkfield() -> Bool{
@@ -578,7 +586,10 @@ class EditVehicleViewController: UIViewController, UIPickerViewDelegate,UIPicker
     func showAlert(title: String, message: String){
         
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let action = UIAlertAction(title: "Ok", style: .default, handler: nil)
+        let action = UIAlertAction(title: "Ok", style: .default) { (UIAlertAction) in
+            self.backButton.isEnabled = true
+            self.stopActivity()
+        }
         alertController.addAction(action)
         self.present(alertController, animated: true, completion: nil)
         

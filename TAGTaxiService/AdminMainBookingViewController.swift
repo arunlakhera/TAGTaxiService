@@ -38,10 +38,28 @@ class AdminMainBookingViewController: UIViewController {
     
     var driverButtonCenter: CGPoint!
     var vehicleButtonCenter: CGPoint!
-    var menuShow = false
+    var menuShow = true
     let dateformatter = DateFormatter()
     
+    var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
+    
+    func startActivity(){
+        
+        activityIndicator.center = view.center
+        //activityIndicator.activityIndicatorViewStyle = .gray
+        activityIndicator.color = UIColor.yellow
+        self.view.addSubview(activityIndicator)
+        
+        activityIndicator.startAnimating()
+        
+    }
+    
+    func stopActivity(){
+        activityIndicator.stopAnimating()
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
+        self.startActivity()
         driverButtonCenter = driverButton.center
         vehicleButtonCenter = vehicleButton.center
         driverButton.center = moreButton.center
@@ -139,6 +157,7 @@ class AdminMainBookingViewController: UIViewController {
         }) { (error) in
             print("Error Occured while calculating Admin data")
         }
+        self.stopActivity()
 
     }
     

@@ -130,7 +130,33 @@ class SignUpViewController: UIViewController {
           
         }
         }else{
-            self.showAlert(title: "Failure", message: "Internet Connection not Available!") //Show Failure Message
+           // self.showAlert(title: "Failure", message: "Internet Connection not Available!") //Show Failure Message
+            
+            let alert = UIAlertController(title: "Failure!!", message: "Internet Connection not available! Connect to Internet", preferredStyle: .alert)
+            let okButton = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
+            let callUs = UIAlertAction(title: "Call Tag Taxi", style: .default, handler: { (callAction) in
+                
+                //let callNumber = "8979743264"
+                
+                if let phoneCallURL:URL = URL(string: "tel:\(MessageComposer.instance.callNumber)") {
+                    let application:UIApplication = UIApplication.shared
+                    
+                    if (application.canOpenURL(phoneCallURL)) {
+                        application.open(phoneCallURL, options: [:], completionHandler: nil)
+                    }else{
+                         self.showAlert(title: "Error", message: "Not able to make Phone Call!")
+                    }
+                    
+                }else{
+                     self.showAlert(title: "Error", message: "Not able to make Phone Call!")
+                }
+                
+            })
+            
+            alert.addAction(okButton)
+            alert.addAction(callUs)
+            present(alert, animated: true, completion: nil)
+            
         }
     }
     

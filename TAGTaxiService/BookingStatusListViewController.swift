@@ -28,23 +28,29 @@ class BookingStatusListViewController: UIViewController, UITableViewDelegate, UI
     
     func startActivity(){
         
-        activityIndicator.center = self.view.center
-        activityIndicator.hidesWhenStopped = true
-        activityIndicator.activityIndicatorViewStyle = .whiteLarge
-        view.addSubview(activityIndicator)
+        activityIndicator.center = view.center
+        //activityIndicator.activityIndicatorViewStyle = .gray
+        activityIndicator.color = UIColor.yellow
+        self.view.addSubview(activityIndicator)
+        
         activityIndicator.startAnimating()
         
     }
     
     func stopActivity(){
-        
         activityIndicator.stopAnimating()
-        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        startActivity()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        if Reachability.isConnectedToNetwork() == true
+        {
+            
         tableView.delegate = self
         tableView.dataSource = self
         self.startActivity()
@@ -92,6 +98,34 @@ class BookingStatusListViewController: UIViewController, UITableViewDelegate, UI
         }
         //self.tableView.reloadData()
         self.stopActivity()
+        
+        }else{
+            let alert = UIAlertController(title: "Failure!!", message: "Internet Connection not available! Connect to Internet", preferredStyle: .alert)
+            let okButton = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
+            let callUs = UIAlertAction(title: "Call Tag Taxi", style: .default, handler: { (callAction) in
+                
+               // let callNumber = "8979743264"
+                
+                if let phoneCallURL:URL = URL(string: "tel:\(MessageComposer.instance.callNumber)") {
+                    let application:UIApplication = UIApplication.shared
+                    
+                    if (application.canOpenURL(phoneCallURL)) {
+                        application.open(phoneCallURL, options: [:], completionHandler: nil)
+                    }else{
+                        self.showAlert(title: "Error", message: "Not able to make Phone Call!")
+                    }
+                    
+                }else{
+                     self.showAlert(title: "Error", message: "Not able to make Phone Call!")
+                }
+                
+            })
+            
+            alert.addAction(okButton)
+            alert.addAction(callUs)
+            present(alert, animated: true, completion: nil)
+        }
+    
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -153,7 +187,7 @@ class BookingStatusListViewController: UIViewController, UITableViewDelegate, UI
             cell?.TravelDateLabel.textColor = UIColor.white
             cell?.statusLabel.textColor = UIColor.white
         }
-       
+       self.stopActivity()
         return cell!
     }
     

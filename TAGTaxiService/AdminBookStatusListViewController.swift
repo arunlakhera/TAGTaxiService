@@ -27,6 +27,27 @@ class AdminBookStatusListViewController: UIViewController, UITableViewDelegate, 
     let todayDate = Date()
     var today: String?
     
+    var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
+    
+    func startActivity(){
+        
+        activityIndicator.center = view.center
+        //activityIndicator.activityIndicatorViewStyle = .gray
+        activityIndicator.color = UIColor.yellow
+        self.view.addSubview(activityIndicator)
+        
+        activityIndicator.startAnimating()
+        
+    }
+    
+    func stopActivity(){
+        activityIndicator.stopAnimating()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        self.startActivity()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
          riderName = ""
@@ -158,6 +179,7 @@ class AdminBookStatusListViewController: UIViewController, UITableViewDelegate, 
                     
             }, completion: nil)
         }
+        self.stopActivity()
         return cell!
     }
     

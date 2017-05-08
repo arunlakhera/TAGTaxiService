@@ -44,6 +44,30 @@ class AdminBookDetailViewController: UIViewController, UITextFieldDelegate {
     // Create a MessageComposer
     let messageComposer = MessageComposer()
     
+    var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
+    
+    func startActivity(){
+        
+        activityIndicator.center = view.center
+        //activityIndicator.activityIndicatorViewStyle = .gray
+        activityIndicator.color = UIColor.yellow
+        self.view.addSubview(activityIndicator)
+        
+        activityIndicator.startAnimating()
+        
+    }
+    
+    func stopActivity(){
+        activityIndicator.stopAnimating()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        self.startActivity()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        self.stopActivity()
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -183,7 +207,7 @@ class AdminBookDetailViewController: UIViewController, UITextFieldDelegate {
             statusText.textColor = UIColor.white
             
         }
-        
+        self.stopActivity()
     }
     
     
@@ -216,6 +240,7 @@ class AdminBookDetailViewController: UIViewController, UITextFieldDelegate {
         
         if Reachability.isConnectedToNetwork() == true
         {
+            self.startActivity()
             
         if amountText.text == "" || amountText.text == "Pending" {
             let alert = UIAlertController(title: "Error!", message: "Please Enter Amount.", preferredStyle: .alert)
@@ -235,6 +260,8 @@ class AdminBookDetailViewController: UIViewController, UITextFieldDelegate {
                 statusText.text = "Completed"
                 send.isHidden = true
                 send.isEnabled = false
+                
+                self.stopActivity()
             } else{//
             
             bookStatus = "Quoted"
@@ -248,6 +275,7 @@ class AdminBookDetailViewController: UIViewController, UITextFieldDelegate {
                 
             statusText.text = bookStatus
             send.isHidden = true
+                self.stopActivity()
             }
         } else{
             let alert = UIAlertController(title: "Error!", message: "Please Enter Valid Amount.", preferredStyle: .alert)
@@ -276,7 +304,8 @@ class AdminBookDetailViewController: UIViewController, UITextFieldDelegate {
             
             let textMessage = "TAG Taxi Service \n Booking Name: \(bookName) \n  \(bookFrom) - \(bookTo) \n Date: \(bookTravelDate) \n Amount: Rs.\(bookAmount) \n Booking Status: \(bookStatus) \n"
             
-            let messageComposeVC = messageComposer.configuredMessageComposeViewController(textMessage: textMessage)
+            let messageComposeVC = messageComposer.configuredMessageComposeViewController(textMessage: textMessage, textMessageRecipients: [bookPhone])
+            //(textMessage: textMessage, )
        
             // Present the configured MFMessageComposeViewController instance
             present(messageComposeVC, animated: true, completion: nil)

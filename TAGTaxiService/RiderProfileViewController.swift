@@ -50,11 +50,11 @@ class RiderProfileViewController: UIViewController, UIPickerViewDataSource, UIPi
     
     func startActivity(){
         
-        activityIndicator.center = self.view.center
-        activityIndicator.hidesWhenStopped = true
-        activityIndicator.activityIndicatorViewStyle = .whiteLarge
-        activityIndicator.isHidden = false
-        view.addSubview(activityIndicator)
+        activityIndicator.center = view.center
+        //activityIndicator.activityIndicatorViewStyle = .gray
+        activityIndicator.color = UIColor.yellow
+        self.view.addSubview(activityIndicator)
+        
         activityIndicator.startAnimating()
         
     }
@@ -63,6 +63,20 @@ class RiderProfileViewController: UIViewController, UIPickerViewDataSource, UIPi
         activityIndicator.stopAnimating()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        self.startActivity()
+        // Check if internet connection is available
+        if Reachability.isConnectedToNetwork() == true
+        {
+            // Call Load profile function
+            self.loadProfile()
+        }else{
+            
+            self.showAlert(title: "Profile", message: "Could not Load Profile as Internet Connection is not Available!") //Show Failure Message
+            
+        }
+        
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
       
@@ -85,15 +99,7 @@ class RiderProfileViewController: UIViewController, UIPickerViewDataSource, UIPi
         dateOfBirthTextField.inputView = dateOfBirthPicker
         dateOfBirthPicker.addTarget(self, action: #selector(self.datePickerValueChanged), for: UIControlEvents.valueChanged)
         
-        // Check if internet connection is available
-        if Reachability.isConnectedToNetwork() == true
-        {
-            // Call Load profile function
-            self.loadProfile()
-        }else{
-           
-            self.showAlert(title: "Profile", message: "Could not Load Profile as Internet Connection is not Available!") //Show Failure Message
-        }
+        
         
         // MARK: Create variable and assign return properties from addDoneButton()
         let toolBarWithDoneButton =  addDoneButton()
@@ -107,7 +113,7 @@ class RiderProfileViewController: UIViewController, UIPickerViewDataSource, UIPi
       
     }
     
-  
+    
     // MARK: Function to add toolbar to the Keyboard
     func addDoneButton() -> UIToolbar{
         
@@ -203,7 +209,7 @@ class RiderProfileViewController: UIViewController, UIPickerViewDataSource, UIPi
         // Function to load the profile data if it already exists
     func loadProfile(){
         
-           self.startActivity()
+        
            riderProfile.observe(.value, with: { snapshot in
             
             // if snapshot does not exists return
@@ -239,7 +245,7 @@ class RiderProfileViewController: UIViewController, UIPickerViewDataSource, UIPi
         {
             if checkFields()
             {
-                
+                self.startActivity()
                 backButton.isEnabled = false
                 saveButton.isEnabled = false
                 saveButton.isHidden = true
@@ -345,10 +351,13 @@ class RiderProfileViewController: UIViewController, UIPickerViewDataSource, UIPi
     func showAlert(title: String, message: String){
         
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let action = UIAlertAction(title: "Ok", style: .default, handler: nil)
+       // let action = UIAlertAction(title: "Ok", style: .default, handler: nil)
+        let action = UIAlertAction(title: "Ok", style: .default) { (UIAlertAction) in
+           self.stopActivity()
+        }
         alertController.addAction(action)
         self.present(alertController, animated: true, completion: nil)
-        
+        //self.stopActivity()
     }
     
 }

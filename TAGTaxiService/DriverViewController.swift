@@ -27,13 +27,34 @@ class DriverViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     var expiryDays: Dictionary<String, Int> = [:]
     
+    var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
+    
+    func startActivity(){
+        
+        activityIndicator.center = view.center
+        //activityIndicator.activityIndicatorViewStyle = .gray
+        activityIndicator.color = UIColor.yellow
+        self.view.addSubview(activityIndicator)
+        
+        activityIndicator.startAnimating()
+        
+    }
+    
+    func stopActivity(){
+        activityIndicator.stopAnimating()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        startActivity()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         tableView.delegate = self
         tableView.dataSource = self
         dateformatter.dateFormat = "YYYY-MM-dd"
-        
+        self.stopActivity()
         DataService.ds.REF_DRIVER.observe(.value, with: { snapshot in
           if let snapshots = snapshot.children.allObjects as? [FIRDataSnapshot]{
              self.driverList = []
@@ -62,10 +83,12 @@ class DriverViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 }
                 
             }
+            
             self.showAlert(title: "Alert!!", message: "Driving License Expiring for \(self.count) Drivers: \(self.dname)")
             self.tableView.reloadData()
             
         })
+        
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -123,6 +146,7 @@ class DriverViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 cell?.DLValidTill.text = driver.drivingLicenseValidTill
             }
          }
+        self.stopActivity()
         return cell!
     }
 
@@ -151,6 +175,9 @@ class DriverViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
     
     }
+    
+  
+
     
     func showAlert(title: String, message: String){
         

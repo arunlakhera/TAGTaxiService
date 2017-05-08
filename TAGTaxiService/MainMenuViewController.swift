@@ -27,7 +27,7 @@ class MainMenuViewController: UIViewController, CLLocationManagerDelegate {
     
     // MARK: Variables for Location manager
     let manager = CLLocationManager()
-    var menuShow = false
+    var menuShow = true
     
     override func viewDidLoad() {
         super.viewDidLoad()

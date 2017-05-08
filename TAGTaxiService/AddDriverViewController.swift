@@ -55,31 +55,25 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     var bloodGroup = ["---","O+","O-","A+","A-","B+","B-","AB+","AB-"]
     let bloodGroupPicker = UIPickerView()
    
-    var activityIndicator: UIActivityIndicatorView!
+    var completeFlag = false
+    
+    var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
     
     func startActivity(){
         
-        activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
-        activityIndicator.frame = CGRect(x: 150, y: 330, width: 100, height: 100)
         activityIndicator.center = view.center
-        activityIndicator.backgroundColor = UIColor.blue
         activityIndicator.color = UIColor.yellow
-        activityIndicator.hidesWhenStopped = true
         self.view.addSubview(activityIndicator)
         
-        //activityIndicator.isHidden = false
         activityIndicator.startAnimating()
-
         
     }
     
     func stopActivity(){
-        
-     activityIndicator.stopAnimating()
+        activityIndicator.stopAnimating()
     }
- 
     
-        override func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
         
         firstNameTextField.delegate = self
@@ -308,83 +302,26 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     
     @IBAction func saveButtonClicked(_ sender: UIButton)
     {
-    
+        
         if Reachability.isConnectedToNetwork() == true
         {
             if checkFields(){
-                
+            
                 self.startActivity()
+                
                 saveButton.isEnabled = false
+               // saveButton.isHidden = true
                 uploadButton.isEnabled = false
+                backButton.isEnabled = false
                 
-                var completeFlag = false
-                
-                let driverID = DataService.ds.REF_DRIVER.childByAutoId()
-                let formatter = DateFormatter()
-                formatter.dateFormat = "YYYY-MM-dd"
-                
-                let driverIDWithPath = String(describing: driverID)
-                let driverPath = String(describing: DataService.ds.REF_DRIVER)
-                let driverImageID = driverIDWithPath.replacingOccurrences(of: driverPath, with: "")
-                
-                if let driverImage = driverImageView.image {
-                    image = driverImage
-                                        
-                }else{
-                    image = UIImage(named: "PhotoAvatarJPG.jpg")
-                    
-                }
-                
-                if let imgData = UIImageJPEGRepresentation(image!, 0.2) {
-                    let metadata = FIRStorageMetadata()
-                    metadata.contentType = "image/jpeg"
-                    
-                    let uploadTask = DataService.ds.REF_DRIVER_IMAGE.child("\(driverImageID)").put(imgData, metadata: metadata) { (metadata, error) in
-                        if error != nil{
-                            print("Unable to upload image")
-                        }else{
-                            print("Successfully Uploaded image")
-                            let downloadURL = metadata?.downloadURL()?.absoluteString
-                            driverID.child("ImageURL").setValue(downloadURL) {(error) in print("Error while Writing Image URL to Database")}
-                            driverID.child("FirstName").setValue(self.firstNameTextField.text) {(error) in print("Error while Writing First Name to Database")}
-                            driverID.child("LastName").setValue(self.lastNameTextField.text) {(error) in print("Error while Writing Last Name to Database")}
-                            driverID.child("PhoneNumber").setValue(self.phoneNumberTextField.text) {(error) in print("Error while Writing Phone Number to Database")}
-                            driverID.child("DateOfBirth").setValue(self.dateOfBirthTextField.text) {(error) in print("Error while Writing Date of Birth to Database")}
-                            driverID.child("Address1").setValue(self.address1TextField.text) {(error) in print("Error while Writing Address 1 to Database")}
-                            driverID.child("Address2").setValue(self.address2TextField.text) {(error) in print("Error while Writing Address 2 to Database")}
-                            driverID.child("City").setValue(self.cityTextField.text) {(error) in print("Error while Writing Cty to Database")}
-                            driverID.child("State").setValue(self.stateTextField.text) {(error) in print("Error while Writing State to Database")}
-                            driverID.child("DLNumber").setValue(self.DLNumberTextField.text) {(error) in print("Error while Writing DLNumber to Database")}
-                            driverID.child("DLValidFrom").setValue(self.DLValidFromTextField.text) {(error) in print("Error while Writing DL Valid From to Database")}
-                            driverID.child("DLValidTill").setValue(self.DLValidTillTextField.text) {(error) in print("Error while Writing DL Valid Till to Database")}
-                            driverID.child("PoliceVerified").setValue(self.policeVerifiedTextField.text) {(error) in print("Error while Writing DL Valid From to Database")}
-                            driverID.child("BloodGroup").setValue(self.bloodGroupTextField.text) {(error) in print("Error while Writing Blood Group to Database")}
-                            driverID.child("Active").setValue(self.activeLabel.text) {(error) in print("Error while Writing Active to Database")}
-                        
-                            driverID.child("CreatedOnDate").setValue(String(describing: NSDate())){(error) in print("Error while Writing Created on Date to Database")}
-                            driverID.child("CreatedBy").setValue(AuthService.instance.riderID!){(error) in print("Error while Writing Created By to Database")}
-                            driverID.child("LastUpdatedOnDate").setValue(String(describing: NSDate())){(error) in print("Error while Writing Last Updated On Date to Database")}
-                            driverID.child("UpdatedBy").setValue(AuthService.instance.riderID!){(error) in print("Error while Writing Updated By to Database")}
-                            
-                        }
-                    }
-                    uploadTask.observe(.success, handler: { (snapshot) in
-                        
-                        self.showAlert(title: "Saved", message: "Record Saved Successfully!")
-                        completeFlag = true
-                        print(snapshot)
-                        
-                    })
-                    
-                }
-                
-               self.stopActivity()
-                
-                backButton.isEnabled = true
-                saveButton.isHidden = true
+                completeFlag = addDriverDetails()
+               
                 if completeFlag {
-                    
+                  //  backButton.isEnabled = true
+                    saveButton.isHidden = true
                     self.performSegue(withIdentifier: "driverListSegue", sender: nil)
+                    self.stopActivity()
+                    
                 }
               // self.performSegue(withIdentifier: "driverListSegue", sender: nil)
             }
@@ -396,10 +333,74 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
         
     }
     
+    func addDriverDetails() -> Bool{
+        
+        let driverID = DataService.ds.REF_DRIVER.childByAutoId()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "YYYY-MM-dd"
+        
+        let driverIDWithPath = String(describing: driverID)
+        let driverPath = String(describing: DataService.ds.REF_DRIVER)
+        let driverImageID = driverIDWithPath.replacingOccurrences(of: driverPath, with: "")
+        
+        if let driverImage = driverImageView.image {
+            image = driverImage
+            
+        }else{
+            image = UIImage(named: "PhotoAvatarJPG.jpg")
+            
+        }
+        
+        if let imgData = UIImageJPEGRepresentation(image!, 0.2) {
+            let metadata = FIRStorageMetadata()
+            metadata.contentType = "image/jpeg"
+            
+            let uploadTask = DataService.ds.REF_DRIVER_IMAGE.child("\(driverImageID)").put(imgData, metadata: metadata) { (metadata, error) in
+                if error != nil{
+                    print("Unable to upload image")
+                }else{
+                    print("Successfully Uploaded image")
+                    let downloadURL = metadata?.downloadURL()?.absoluteString
+                    driverID.child("ImageURL").setValue(downloadURL) {(error) in print("Error while Writing Image URL to Database")}
+                    driverID.child("FirstName").setValue(self.firstNameTextField.text) {(error) in print("Error while Writing First Name to Database")}
+                    driverID.child("LastName").setValue(self.lastNameTextField.text) {(error) in print("Error while Writing Last Name to Database")}
+                    driverID.child("PhoneNumber").setValue(self.phoneNumberTextField.text) {(error) in print("Error while Writing Phone Number to Database")}
+                    driverID.child("DateOfBirth").setValue(self.dateOfBirthTextField.text) {(error) in print("Error while Writing Date of Birth to Database")}
+                    driverID.child("Address1").setValue(self.address1TextField.text) {(error) in print("Error while Writing Address 1 to Database")}
+                    driverID.child("Address2").setValue(self.address2TextField.text) {(error) in print("Error while Writing Address 2 to Database")}
+                    driverID.child("City").setValue(self.cityTextField.text) {(error) in print("Error while Writing Cty to Database")}
+                    driverID.child("State").setValue(self.stateTextField.text) {(error) in print("Error while Writing State to Database")}
+                    driverID.child("DLNumber").setValue(self.DLNumberTextField.text) {(error) in print("Error while Writing DLNumber to Database")}
+                    driverID.child("DLValidFrom").setValue(self.DLValidFromTextField.text) {(error) in print("Error while Writing DL Valid From to Database")}
+                    driverID.child("DLValidTill").setValue(self.DLValidTillTextField.text) {(error) in print("Error while Writing DL Valid Till to Database")}
+                    driverID.child("PoliceVerified").setValue(self.policeVerifiedTextField.text) {(error) in print("Error while Writing DL Valid From to Database")}
+                    driverID.child("BloodGroup").setValue(self.bloodGroupTextField.text) {(error) in print("Error while Writing Blood Group to Database")}
+                    driverID.child("Active").setValue(self.activeLabel.text) {(error) in print("Error while Writing Active to Database")}
+                    
+                    driverID.child("CreatedOnDate").setValue(String(describing: NSDate())){(error) in print("Error while Writing Created on Date to Database")}
+                    driverID.child("CreatedBy").setValue(AuthService.instance.riderID!){(error) in print("Error while Writing Created By to Database")}
+                    driverID.child("LastUpdatedOnDate").setValue(String(describing: NSDate())){(error) in print("Error while Writing Last Updated On Date to Database")}
+                    driverID.child("UpdatedBy").setValue(AuthService.instance.riderID!){(error) in print("Error while Writing Updated By to Database")}
+                    
+                }
+            }
+            uploadTask.observe(.success, handler: { (snapshot) in
+                
+                self.showAlert(title: "Saved", message: "Record Saved Successfully!")
+                self.completeFlag = true
+                
+            })
+            
+        }
+        
+        return completeFlag
+    }
+    
     
     func checkFields() -> Bool{
        
         var checkFlag = true
+       
         guard
             let firstName = firstNameTextField.text,
             let lastName = lastNameTextField.text,
@@ -480,7 +481,11 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     func showAlert(title: String, message: String){
         
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let action = UIAlertAction(title: "Ok", style: .default, handler: nil)
+        //let action = UIAlertAction(title: "Ok", style: .default, handler: nil)
+        let action = UIAlertAction(title: "Ok", style: .default) { (UIAlertAction) in
+            self.backButton.isEnabled = true
+            self.stopActivity()
+        }
         alertController.addAction(action)
         self.present(alertController, animated: true, completion: nil)
         

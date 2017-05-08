@@ -42,6 +42,30 @@ class BookingDetailViewController: UIViewController {
     @IBOutlet weak var acceptButton: UIButton!
     @IBOutlet weak var cancelButton: UIBarButtonItem!
     
+    var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
+    
+    func startActivity(){
+        
+        activityIndicator.center = view.center
+        //activityIndicator.activityIndicatorViewStyle = .gray
+        activityIndicator.color = UIColor.yellow
+        self.view.addSubview(activityIndicator)
+        
+        activityIndicator.startAnimating()
+        
+    }
+    
+    func stopActivity(){
+        activityIndicator.stopAnimating()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        startActivity()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        stopActivity()
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -159,38 +183,40 @@ class BookingDetailViewController: UIViewController {
         // Check if internet connection is available
         if Reachability.isConnectedToNetwork() == true
         {
-            
+         self.startActivity()
         bookStatus = "Accepted"
         DataService.ds.REF_RIDEBOOKING.child(bookKey).child("Status").setValue(bookStatus)
         
         DataService.ds.REF_RIDEBOOKING.child(bookKey).child("LastUpdatedOnDate").setValue(String(describing: NSDate())){(error) in print("Error while Writing Last Updated On Date to Database")}
         DataService.ds.REF_RIDEBOOKING.child(bookKey).child("UpdatedBy").setValue(AuthService.instance.riderID!){(error) in print("Error while Writing Updated By to Database")}
         
+            self.showAlert(title: "Quote Accepted", message: "Thank You! We will be happy to provide you with our Taxi Service")
         viewDidLoad()
         
         }else{
-            self.showAlert(title: "Failure", message: "Internet Connection not Available!") //Show Failure Message
-            
+           // self.showAlert(title: "Failure", message: "Internet Connection not Available!") //Show Failure Message
+            callUs()
         }
 
     }
-    
     
     // Action when Decline button is pressed
     @IBAction func declineBooking(sender: UIButton) {
         // Check if internet connection is available
         if Reachability.isConnectedToNetwork() == true
         {
+            self.startActivity()
         bookStatus = "Declined"
         DataService.ds.REF_RIDEBOOKING.child(bookKey).child("Status").setValue(bookStatus)
             
         DataService.ds.REF_RIDEBOOKING.child(bookKey).child("LastUpdatedOnDate").setValue(String(describing: NSDate())){(error) in print("Error while Writing Last Updated On Date to Database")}
         DataService.ds.REF_RIDEBOOKING.child(bookKey).child("UpdatedBy").setValue(AuthService.instance.riderID!){(error) in print("Error while Writing Updated By to Database")}
             
+            self.showAlert(title: "Quote Declined", message: "You have Declined the Quote. We hope to provide you with our Taxi Service in the future.")
         viewDidLoad()
         }else{
-            self.showAlert(title: "Failure", message: "Internet Connection not Available!") //Show Failure Message
-            
+            //self.showAlert(title: "Failure", message: "Internet Connection not Available!") //Show Failure Message
+            callUs()
         }
 
     }
@@ -218,13 +244,46 @@ class BookingDetailViewController: UIViewController {
             alert.addAction(actionNo)
             present(alert, animated: true, completion: nil)
             
+        }else{
+            callUs()
         }
     }
     
+    func callUs(){
+        
+            let alert = UIAlertController(title: "Failure!!", message: "Internet Connection not available! Connect to Internet", preferredStyle: .alert)
+            let okButton = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
+            let callUs = UIAlertAction(title: "Call Tag Taxi", style: .default, handler: { (callAction) in
+        
+          //  let callNumber = "8979743264"
+            
+            if let phoneCallURL:URL = URL(string: "tel:\(MessageComposer.instance.callNumber)") {
+                let application:UIApplication = UIApplication.shared
+                
+                if (application.canOpenURL(phoneCallURL)) {
+                    application.open(phoneCallURL, options: [:], completionHandler: nil)
+                }else{
+                    self.showAlert(title: "Error", message: "Not able to make Phone Call!")
+                }
+                
+            }else{
+                 self.showAlert(title: "Error", message: "Not able to make Phone Call!")
+            }
+            
+        })
+        
+        alert.addAction(okButton)
+        alert.addAction(callUs)
+        present(alert, animated: true, completion: nil)
+        
+    }
+
     func showAlert(title: String, message: String){
         
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let action = UIAlertAction(title: "Ok", style: .default, handler: nil)
+        let action = UIAlertAction(title: "Ok", style: .default) { (UIAlertAction) in
+            self.stopActivity()
+        }
         alertController.addAction(action)
         self.present(alertController, animated: true, completion: nil)
         

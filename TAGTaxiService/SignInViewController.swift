@@ -23,14 +23,15 @@ class SignInViewController: UIViewController {
         
         activityIndicator.center = self.view.center
         activityIndicator.hidesWhenStopped = true
-        activityIndicator.activityIndicatorViewStyle = .whiteLarge
+        activityIndicator.activityIndicatorViewStyle = .gray
         view.addSubview(activityIndicator)
+        UIApplication.shared.beginIgnoringInteractionEvents()
         activityIndicator.startAnimating()
         
     }
     
     func stopActivity(){
-        
+         UIApplication.shared.endIgnoringInteractionEvents()
         activityIndicator.stopAnimating()
         
     }
@@ -247,19 +248,19 @@ class SignInViewController: UIViewController {
              let okButton = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
              let callUs = UIAlertAction(title: "Call Tag Taxi", style: .default, handler: { (callAction) in
                
-             let callNumber = "8979743264"
+             //let callNumber = "8979743264"
              
-                if let phoneCallURL:URL = URL(string: "tel:\(callNumber)") {
+                if let phoneCallURL:URL = URL(string: "tel:\(MessageComposer.instance.callNumber)") {
                     let application:UIApplication = UIApplication.shared
                 
                     if (application.canOpenURL(phoneCallURL)) {
                         application.open(phoneCallURL, options: [:], completionHandler: nil)
                     }else{
-                        print("Cannot Make Phone Call")
+                         self.showAlert(title: "Error", message: "Not able to make Phone Call!")
                     }
                 
                 }else{
-                    print("Cannot open Call URL")
+                     self.showAlert(title: "Error", message: "Not able to make Phone Call!")
                 }
                 
              })

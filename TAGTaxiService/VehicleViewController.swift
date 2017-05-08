@@ -45,6 +45,27 @@ class VehicleViewController: UIViewController, UITableViewDelegate,UITableViewDa
     var vehicleFitnessMessage = ""
     var expiryMessage = ""
     
+    var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
+    
+    func startActivity(){
+        
+        activityIndicator.center = view.center
+        //activityIndicator.activityIndicatorViewStyle = .gray
+        activityIndicator.color = UIColor.yellow
+        self.view.addSubview(activityIndicator)
+        
+        activityIndicator.startAnimating()
+        
+    }
+    
+    func stopActivity(){
+        activityIndicator.stopAnimating()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        startActivity()
+    }
+    
      override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -246,6 +267,7 @@ class VehicleViewController: UIViewController, UITableViewDelegate,UITableViewDa
                     cell?.vehicleFitnessExpiryDateLabel.alpha = 0
             }, completion: nil)
         }
+        self.stopActivity()
         return cell!
     }
   
