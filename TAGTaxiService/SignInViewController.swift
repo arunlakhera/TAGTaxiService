@@ -36,7 +36,6 @@ class SignInViewController: UIViewController {
         
     }
 
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         // MARK: Create variable and assign return properties from addDoneButton()
@@ -244,13 +243,30 @@ class SignInViewController: UIViewController {
         }
         else
         {
-             let alert = UIAlertController(title: "Failure!!", message: "Internet Connection not available! Connect to Internet", preferredStyle: .alert)
-             let okButton = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
-             let callUs = UIAlertAction(title: "Call Tag Taxi", style: .default, handler: { (callAction) in
-               
-             //let callNumber = "8979743264"
-             
-                if let phoneCallURL:URL = URL(string: "tel:\(MessageComposer.instance.callNumber)") {
+                let alert = UIAlertController(title: "Failure!!", message: "Internet Connection not available! Connect to Internet", preferredStyle: .alert)
+                let okButton = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
+            
+            let callUs1 = UIAlertAction(title: "Call Tag Taxi - Phone 1", style: .default, handler: { (callAction) in
+                
+                if let phoneCallURL:URL = URL(string: "tel:\(MessageComposer.instance.callNumber1)") {
+                    
+                    let application:UIApplication = UIApplication.shared
+                    
+                    if (application.canOpenURL(phoneCallURL)) {
+                        application.open(phoneCallURL, options: [:], completionHandler: nil)
+                    }else{
+                        self.showAlert(title: "Error", message: "Not able to make Phone Call!")
+                    }
+                    
+                }else{
+                    self.showAlert(title: "Error", message: "Not able to make Phone Call!")
+                }
+                
+            })
+                let callUs2 = UIAlertAction(title: "Call Tag Taxi - Phone 2", style: .default, handler: { (callAction) in
+                
+                if let phoneCallURL:URL = URL(string: "tel:\(MessageComposer.instance.callNumber2)") {
+                   
                     let application:UIApplication = UIApplication.shared
                 
                     if (application.canOpenURL(phoneCallURL)) {
@@ -266,7 +282,8 @@ class SignInViewController: UIViewController {
              })
             
             alert.addAction(okButton)
-            alert.addAction(callUs)
+            alert.addAction(callUs1)
+            alert.addAction(callUs2)
             present(alert, animated: true, completion: nil)
             
         }

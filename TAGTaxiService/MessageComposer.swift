@@ -13,7 +13,8 @@ class MessageComposer: NSObject, MFMessageComposeViewControllerDelegate{
     
     static let instance = MessageComposer()
     
-    var callNumber: String = "8979743264"
+    var callNumber1: String = "9456173833"
+    var callNumber2: String = "7895311338"
     
     // A wrapper function to indicate whether or not a text message can be sent from the user's device
     func canSendText() -> Bool {

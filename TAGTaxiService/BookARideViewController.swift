@@ -276,33 +276,49 @@ class BookARideViewController: UIViewController, UIPickerViewDelegate, UIPickerV
             stopActivity()
         }
         }else{
-           // self.showAlert(title: "Failure", message: "Internet Connection not Available!") //Show Failure Message
-
+         
             let alert = UIAlertController(title: "Failure!!", message: "Internet Connection not available! Connect to Internet", preferredStyle: .alert)
             let okButton = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
-            let callUs = UIAlertAction(title: "Call Tag Taxi", style: .default, handler: { (callAction) in
+            
+            let callUs1 = UIAlertAction(title: "Call Tag Taxi - Phone 1", style: .default, handler: { (callAction) in
                 
-                //let callNumber = "8979743264"
-                
-                if let phoneCallURL:URL = URL(string: "tel:\(MessageComposer.instance.callNumber)") {
+                if let phoneCallURL:URL = URL(string: "tel:\(MessageComposer.instance.callNumber1)") {
+                    
                     let application:UIApplication = UIApplication.shared
                     
                     if (application.canOpenURL(phoneCallURL)) {
                         application.open(phoneCallURL, options: [:], completionHandler: nil)
                     }else{
-                         self.showAlert(title: "Error", message: "Not able to make Phone Call!")
+                        self.showAlert(title: "Error", message: "Not able to make Phone Call!")
                     }
                     
                 }else{
-                     self.showAlert(title: "Error", message: "Not able to make Phone Call!")
+                    self.showAlert(title: "Error", message: "Not able to make Phone Call!")
+                }
+                
+            })
+            let callUs2 = UIAlertAction(title: "Call Tag Taxi - Phone 2", style: .default, handler: { (callAction) in
+                
+                if let phoneCallURL:URL = URL(string: "tel:\(MessageComposer.instance.callNumber2)") {
+                    
+                    let application:UIApplication = UIApplication.shared
+                    
+                    if (application.canOpenURL(phoneCallURL)) {
+                        application.open(phoneCallURL, options: [:], completionHandler: nil)
+                    }else{
+                        self.showAlert(title: "Error", message: "Not able to make Phone Call!")
+                    }
+                    
+                }else{
+                    self.showAlert(title: "Error", message: "Not able to make Phone Call!")
                 }
                 
             })
             
             alert.addAction(okButton)
-            alert.addAction(callUs)
+            alert.addAction(callUs1)
+            alert.addAction(callUs2)
             present(alert, animated: true, completion: nil)
-            
             
         }
     }
