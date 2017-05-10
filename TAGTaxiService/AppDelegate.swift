@@ -8,17 +8,62 @@
 
 import UIKit
 import Firebase
+import UserNotifications
+var remindTime: Double = 60.0 * 60.0
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
 
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
         
         FIRApp.configure()
+        
+        // Override point for customization after application launch.
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { (allowed, error) in
+            // Handle Code Goes here
+        }
+        
+        UNUserNotificationCenter.current().delegate = self
+        
         return true
+    }
+
+    // to show notification in foreground
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler(.alert)
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        
+        var trigger: UNTimeIntervalNotificationTrigger?
+        var request: UNNotificationRequest?
+        
+        if response.actionIdentifier == "remindInOne"{
+            print("Remind in 1 Hour..")
+            remindTime = 60.0 * 60.0 * 1.0
+            print("Remind time: \(remindTime)")
+            
+            trigger = UNTimeIntervalNotificationTrigger(timeInterval: remindTime, repeats: false)
+            request = UNNotificationRequest(identifier: "Any", content: content, trigger: trigger)
+            UNUserNotificationCenter.current().add(request!, withCompletionHandler: nil)
+            
+        }else if response.actionIdentifier == "remindInTwo"{
+            print("Remind in 2 Hour..")
+            remindTime = 60.0 * 60.0 * 2.0
+            print("Remind time: \(remindTime)")
+            
+            trigger = UNTimeIntervalNotificationTrigger(timeInterval: remindTime, repeats: false)
+            request = UNNotificationRequest(identifier: "Any", content: content, trigger: trigger)
+            UNUserNotificationCenter.current().add(request!, withCompletionHandler: nil)
+            
+        }else if response.actionIdentifier == "dismiss"{
+            remindTime = 0.0
+            print("Dismiss Reminder.")
+            UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: ["Any"])
+        }
+        
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

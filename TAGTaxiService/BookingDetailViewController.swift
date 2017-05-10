@@ -8,6 +8,12 @@
 
 import UIKit
 import Firebase
+import UserNotifications
+
+let content = UNMutableNotificationContent()
+//var travelDate = "2017-05-11"
+var todayDate = Date()
+let dateformatter = DateFormatter()
 
 class BookingDetailViewController: UIViewController {
 
@@ -183,7 +189,7 @@ class BookingDetailViewController: UIViewController {
         // Check if internet connection is available
         if Reachability.isConnectedToNetwork() == true
         {
-         self.startActivity()
+        self.startActivity()
         bookStatus = "Accepted"
         DataService.ds.REF_RIDEBOOKING.child(bookKey).child("Status").setValue(bookStatus)
         
@@ -191,6 +197,38 @@ class BookingDetailViewController: UIViewController {
         DataService.ds.REF_RIDEBOOKING.child(bookKey).child("UpdatedBy").setValue(AuthService.instance.riderID!){(error) in print("Error while Writing Updated By to Database")}
         
             self.showAlert(title: "Quote Accepted", message: "Thank You! We will be happy to provide you with our Taxi Service")
+        
+        // User Notification
+            dateformatter.dateFormat = "YYYY-MM-dd"
+            
+            let remindInOne = UNNotificationAction(identifier: "remindInOne", title: "Remind me in 1 Hour", options: .foreground)
+            let remindInTwo = UNNotificationAction(identifier: "remindInTwo", title: "Remind me 2 Hour", options: .foreground)
+            let dismiss = UNNotificationAction(identifier: "dismiss", title: "Dismiss Reminder", options: .foreground)
+            
+            let category = UNNotificationCategory(identifier: "reminder", actions: [remindInOne, remindInTwo, dismiss], intentIdentifiers: [], options: [])
+            
+            UNUserNotificationCenter.current().setNotificationCategories([category])
+            
+            let today = dateformatter.string(from: todayDate)
+            
+            let numberOfDays = Int((dateformatter.date(from: bookTravelDate)!.timeIntervalSince(dateformatter.date(from: today)!) ) / (60 * 60 * 24) )
+            
+            if numberOfDays == 1{
+                print("Number of Days: \(numberOfDays)")
+            
+                content.title = "TAG Taxi - Booking Notification"
+                content.subtitle = " Booking Scehduled on \(bookTravelDate) "
+                content.body = " You have a scheduled pickup tomorrow for travel from \(bookFrom) - \(bookTo)"
+                content.categoryIdentifier = "reminder"
+            
+                remindTime = 60.0 * 60.0
+            
+                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: remindTime, repeats: false)
+                let request = UNNotificationRequest(identifier: "Any", content: content, trigger: trigger)
+            
+                UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+            }
+        //
         viewDidLoad()
         
         }else{
@@ -198,6 +236,9 @@ class BookingDetailViewController: UIViewController {
             callUs()
         }
 
+   
+        
+        
     }
     
     // Action when Decline button is pressed
