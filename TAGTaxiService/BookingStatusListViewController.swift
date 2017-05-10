@@ -13,6 +13,7 @@ class BookingStatusListViewController: UIViewController, UITableViewDelegate, UI
 
     // MARK: Outlet
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var statusSegment: UISegmentedControl!
     
     // MARK: Variables
    
@@ -51,61 +52,23 @@ class BookingStatusListViewController: UIViewController, UITableViewDelegate, UI
         if Reachability.isConnectedToNetwork() == true
         {
             
-        tableView.delegate = self
-        tableView.dataSource = self
-        self.startActivity()
-        
-       self.tableView.reloadData()
-        
-       DataService.ds.REF_RIDEBOOKING.observe(.value, with: { (bookingSnapshot) in
-        self.bookings = []
-        if let bookSnap = bookingSnapshot.children.allObjects as? [FIRDataSnapshot]{
-            for book in bookSnap{
-                self.TAGRiderBooking.observe(.value, with: { (snapshots) in
-                    
-                    if let snapshot = snapshots.children.allObjects as? [FIRDataSnapshot]{
-                        for snap in snapshot{
-                            
-                            if book.key == snap.key{
-                                if let bookDict = book.value as? Dictionary<String, String>{
-                                    let key = book.key
-                                    let book = RideBooking(bookingID: key, dictionary: bookDict as Dictionary<String, AnyObject>)
-                                    self.bookings.append(book)
-                                   
-                                    let riderProfile = DataService.ds.REF_RIDER.child(book.riderID!).child("Profile")
-                                    riderProfile.observeSingleEvent(of: .value, with: { (snapshot) in
-                                        let value = snapshot.value as? NSDictionary
-                                        self.riderName = "\(value?["FirstName"] as? String ?? "")  \(value?["LastName"] as? String ?? "")"
-                                        self.riderEmail = value?["EmailID"] as? String ?? ""
-                                        self.riderPhone = value?["PhoneNumber"] as? String ?? ""
-                                        self.tableView.reloadData() // no
-                                    })
-                                }
-                            }
-                        }
-                        
-                    }
-                    self.tableView.reloadData()
-                }, withCancel: { (error) in
-                    print("Error Occured while fetching Rider Bookings...\(error.localizedDescription)")
-                })
-            }
-        }
-        
-        self.tableView.reloadData()
-       }) { (error) in
-            print("Error Occured while checking Bookings.. \(error.localizedDescription)")
-        }
-        //self.tableView.reloadData()
-        self.stopActivity()
+            tableView.delegate = self
+            tableView.dataSource = self
+            
+            statusSegment.setTitle("Current", forSegmentAt: 0)
+            statusSegment.setTitle("History", forSegmentAt: 1)
+            statusSegment.selectedSegmentIndex = 0
+            
+            self.startActivity()
+            
+            loadData(status: "Current")
+            self.stopActivity()
         
         }else{
             let alert = UIAlertController(title: "Failure!!", message: "Internet Connection not available! Connect to Internet", preferredStyle: .alert)
             let okButton = UIAlertAction(title: "Ok", style: .cancel, handler: nil)
             let callUs = UIAlertAction(title: "Call Tag Taxi", style: .default, handler: { (callAction) in
-                
-               // let callNumber = "8979743264"
-                
+          
                 if let phoneCallURL:URL = URL(string: "tel:\(MessageComposer.instance.callNumber)") {
                     let application:UIApplication = UIApplication.shared
                     
@@ -126,6 +89,72 @@ class BookingStatusListViewController: UIViewController, UITableViewDelegate, UI
             present(alert, animated: true, completion: nil)
         }
     
+    }
+    
+    @IBAction func statusSegementSelected(_ sender: UISegmentedControl) {
+        
+        if statusSegment.selectedSegmentIndex == 0{
+            loadData(status: "Current")
+        }else if statusSegment.selectedSegmentIndex == 1{
+            loadData(status: "History")
+        }
+    }
+  
+    
+    
+    func loadData(status: String){
+        self.tableView.reloadData()
+        
+        DataService.ds.REF_RIDEBOOKING.observe(.value, with: { (bookingSnapshot) in
+            self.bookings = []
+            if let bookSnap = bookingSnapshot.children.allObjects as? [FIRDataSnapshot]{
+                for book in bookSnap{
+                    self.TAGRiderBooking.observe(.value, with: { (snapshots) in
+                        
+                        if let snapshot = snapshots.children.allObjects as? [FIRDataSnapshot]{
+                            for snap in snapshot{
+                                
+                                if book.key == snap.key{
+                                    if let bookDict = book.value as? Dictionary<String, String>{
+                                        let key = book.key
+                                        let book = RideBooking(bookingID: key, dictionary: bookDict as Dictionary<String, AnyObject>)
+                                        //self.bookings.append(book)
+                                        // Changed
+                                        if status == "History"{
+                                            if book.status == "Completed" || book.status == "Declined" || book.status == "Cancelled"{
+                                                self.bookings.append(book)
+                                            }
+                                        }else if status == "Current"{
+                                                if book.status == "Pending" || book.status == "Quoted" || book.status == "Accepted" {
+                                                    self.bookings.append(book)
+                                                }
+                                        }
+                                        //
+                                        let riderProfile = DataService.ds.REF_RIDER.child(book.riderID!).child("Profile")
+                                        riderProfile.observeSingleEvent(of: .value, with: { (snapshot) in
+                                            let value = snapshot.value as? NSDictionary
+                                            self.riderName = "\(value?["FirstName"] as? String ?? "")  \(value?["LastName"] as? String ?? "")"
+                                            self.riderEmail = value?["EmailID"] as? String ?? ""
+                                            self.riderPhone = value?["PhoneNumber"] as? String ?? ""
+                                            self.tableView.reloadData() // no
+                                        })
+                                    }
+                                }
+                            }
+                            
+                        }
+                        self.tableView.reloadData()
+                    }, withCancel: { (error) in
+                        print("Error Occured while fetching Rider Bookings...\(error.localizedDescription)")
+                    })
+                }
+            }
+            
+            self.tableView.reloadData()
+        }) { (error) in
+            print("Error Occured while checking Bookings.. \(error.localizedDescription)")
+        }
+        //self.tableView.reloadData()
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {

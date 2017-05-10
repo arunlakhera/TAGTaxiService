@@ -127,8 +127,6 @@ class AdminBookStatusListViewController: UIViewController, UITableViewDelegate, 
             self.riderPhone = riderProfile.phoneNumber!
             cell?.nameLabel.text = self.riderName.capitalized
             
-             print("==INCELL==>>>>>>> \(self.riderName.capitalized)")
-            
         })
         
         cell?.fromToLabel.text = "\(rideFrom!.substring(to: indexFrom!)) - \(rideTo!.substring(to: indexTo!))".capitalized
@@ -174,10 +172,12 @@ class AdminBookStatusListViewController: UIViewController, UITableViewDelegate, 
             cell?.travelDateLabel.alpha = 1
             UIView.animate(withDuration: 1.0, delay: 0.0, options: [.repeat, .autoreverse, []], animations:
                 {
-                    //cell?.travelDateLabel.alpha = 0
-                    cell?.sendCabAlert.alpha = 0
+                     cell?.sendCabAlert.alpha = 0
                     
             }, completion: nil)
+        }else{
+            cell?.sendCabAlert.isHidden = true
+            cell?.travelDateLabel.alpha = 1
         }
         self.stopActivity()
         return cell!
@@ -218,7 +218,6 @@ class AdminBookStatusListViewController: UIViewController, UITableViewDelegate, 
                 }
                 destinationVC.bookAmount = book.amount!
                 destinationVC.bookVehicle = book.vehicle!
-                //destinationVC.bookVehicleType = book.vehicle
                 destinationVC.bookStatus = book.status!
             }
             
