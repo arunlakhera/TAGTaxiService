@@ -243,14 +243,17 @@ class AdminBookDetailViewController: UIViewController, UITextFieldDelegate {
             self.startActivity()
             
         if amountText.text == "" || amountText.text == "Pending" {
+        
             let alert = UIAlertController(title: "Error!", message: "Please Enter Amount.", preferredStyle: .alert)
             let action = UIAlertAction(title: "OK", style: .default, handler: nil)
             alert.addAction(action)
             self.present(alert, animated: true, completion: nil)
+        
         }else if let _ = Double(amountText.text!){
-            //
+            
             if send.title(for: .normal) == "Completed"{
-                bookStatus = "Completed"
+            
+                self.bookStatus = "Completed"
                 DataService.ds.REF_RIDEBOOKING.child(bookKey).child("Status").setValue(bookStatus){(error) in print("Error while Writing Status to Database")}
                 showAlert(title: "Completed", message: "You have Marked the Booking as Completed")
                
@@ -264,18 +267,18 @@ class AdminBookDetailViewController: UIViewController, UITextFieldDelegate {
                 self.stopActivity()
             } else{//
             
-            bookStatus = "Quoted"
+            self.bookStatus = "Quoted"
             DataService.ds.REF_RIDEBOOKING.child(bookKey).child("Amount").setValue(amountText.text!.trimmingCharacters(in: .whitespacesAndNewlines)){(error) in print("Error while Writing Amount to Database")}
             DataService.ds.REF_RIDEBOOKING.child(bookKey).child("Status").setValue(bookStatus){(error) in print("Error while Writing Status to Database")}
             DataService.ds.REF_RIDEBOOKING.child(bookKey).child("Vehicle").setValue(vehicleText.text!.trimmingCharacters(in: .whitespacesAndNewlines)){(error) in print("Error while Writing Vehicle to Database")}
             
-                DataService.ds.REF_RIDEBOOKING.child(bookKey).child("LastUpdatedOnDate").setValue(String(describing: NSDate())){(error) in print("Error while Writing Last Updated On Date to Database")}
-                DataService.ds.REF_RIDEBOOKING.child(bookKey).child("UpdatedBy").setValue(AuthService.instance.riderID!){(error) in print("Error while Writing Updated By to Database")}
-                
+            DataService.ds.REF_RIDEBOOKING.child(bookKey).child("LastUpdatedOnDate").setValue(String(describing: NSDate())){(error) in print("Error while Writing Last Updated On Date to Database")}
+            DataService.ds.REF_RIDEBOOKING.child(bookKey).child("UpdatedBy").setValue(AuthService.instance.riderID!){(error) in print("Error while Writing Updated By to Database")}
                 
             statusText.text = bookStatus
             send.isHidden = true
-                self.stopActivity()
+            self.stopActivity()
+            
             }
         } else{
             let alert = UIAlertController(title: "Error!", message: "Please Enter Valid Amount.", preferredStyle: .alert)
@@ -283,8 +286,6 @@ class AdminBookDetailViewController: UIViewController, UITextFieldDelegate {
             alert.addAction(action)
             present(alert, animated: true, completion: nil)
         }
-            
-           // self.showAlert(title: "BOOK STATUS", message: "Book Status-->\(bookStatus)")
             
             if bookStatus == "Quoted"{
                 sendMessage()
@@ -302,7 +303,7 @@ class AdminBookDetailViewController: UIViewController, UITextFieldDelegate {
         if (messageComposer.canSendText()) {
             // Obtain a configured MFMessageComposeViewController
             
-            let textMessage = "TAG Taxi Service \n Booking Name: \(bookName) \n  \(bookFrom) - \(bookTo) \n Date: \(bookTravelDate) \n Amount: Rs.\(bookAmount) \n Booking Status: \(bookStatus) \n"
+            let textMessage = "TAG Taxi Service \n Booking Name: \(bookName) \n  \(bookFrom) - \(bookTo) \n Date: \(bookTravelDate) \n Amount: Rs.\(String(describing: amountText.text!)) \n Booking Status: \(bookStatus) \n"
             
             let messageComposeVC = messageComposer.configuredMessageComposeViewController(textMessage: textMessage, textMessageRecipients: [bookPhone])
             //(textMessage: textMessage, )
