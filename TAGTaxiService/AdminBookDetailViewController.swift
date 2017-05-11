@@ -297,8 +297,6 @@ class AdminBookDetailViewController: UIViewController, UITextFieldDelegate {
     }
     
     func sendMessage(){
-        
-        // Sending Message Begin
         // Make sure the device can send text messages
         if (messageComposer.canSendText()) {
             // Obtain a configured MFMessageComposeViewController
@@ -306,7 +304,6 @@ class AdminBookDetailViewController: UIViewController, UITextFieldDelegate {
             let textMessage = "TAG Taxi Service \n Booking Name: \(bookName) \n  \(bookFrom) - \(bookTo) \n Date: \(bookTravelDate) \n Amount: Rs.\(String(describing: amountText.text!)) \n Booking Status: \(bookStatus) \n"
             
             let messageComposeVC = messageComposer.configuredMessageComposeViewController(textMessage: textMessage, textMessageRecipients: [bookPhone])
-            //(textMessage: textMessage, )
        
             // Present the configured MFMessageComposeViewController instance
             present(messageComposeVC, animated: true, completion: nil)
