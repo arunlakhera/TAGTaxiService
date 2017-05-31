@@ -228,17 +228,14 @@ class BookingDetailViewController: UIViewController {
             
                 UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
             }
-        //
-        viewDidLoad()
+  
+            viewDidLoad()
         
         }else{
            // self.showAlert(title: "Failure", message: "Internet Connection not Available!") //Show Failure Message
             callUs()
         }
-
-   
-        
-        
+      
     }
     
     // Action when Decline button is pressed
