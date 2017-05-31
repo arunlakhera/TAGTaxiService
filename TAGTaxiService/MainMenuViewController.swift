@@ -20,21 +20,23 @@ class MainMenuViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet weak var addressLabel: UILabel!
  
     // Menu View Outlets
-    @IBOutlet weak var leadingConstraint: NSLayoutConstraint!
+ //   @IBOutlet weak var leadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var menuView: UIView!
     @IBOutlet weak var menuNameLabel: UILabel!
     @IBOutlet weak var menuImage: UIImageView!
     
     // MARK: Variables for Location manager
     let manager = CLLocationManager()
-    var menuShow = true
+   var menuShow = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        leadingConstraint.constant = -170
+        
+ //       leadingConstraint.constant = -170
         
         // Menu Properties
+        menuView.isHidden = true
         menuView.layer.shadowOpacity = 1
         menuView.layer.shadowRadius = 6
      
@@ -88,12 +90,13 @@ class MainMenuViewController: UIViewController, CLLocationManagerDelegate {
     // Action when Menu button is clicked, Menu slides from left
     @IBAction func menuButton(_ sender: Any) {
         if (menuShow){
-            leadingConstraint.constant = 0
+           // leadingConstraint.constant = 0
+            menuView.isHidden = false
             menuNameLabel.text = AuthService.instance.userName
             
         }else{
-            leadingConstraint.constant = -170
-            
+            //eadingConstraint.constant = -170
+            menuView.isHidden = true
             UIView.animate(withDuration: 0.5, animations: {
                 self.view.layoutIfNeeded()
             })

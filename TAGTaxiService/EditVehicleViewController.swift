@@ -31,8 +31,8 @@ class EditVehicleViewController: UIViewController, UIPickerViewDelegate,UIPicker
     @IBOutlet weak var mileageTextField: UITextField!
     @IBOutlet weak var lastServiceDateTextField: UITextField!
     @IBOutlet weak var scrollView: UIScrollView!
-    @IBOutlet weak var activeLabel: UILabel!
-    @IBOutlet weak var activeSwitch: UISwitch!
+    @IBOutlet weak var activeSegment: UISegmentedControl!
+   
     
     @IBOutlet weak var backButton: UIBarButtonItem!
     @IBOutlet weak var editButton: UIBarButtonItem!
@@ -55,7 +55,7 @@ class EditVehicleViewController: UIViewController, UIPickerViewDelegate,UIPicker
     var vehicleFitnessExpiryDate = ""
     var mileage = ""
     var lastServiceDate = ""
-    var active = ""
+    var activeRecord: String?
     
     // Variable for Date picker
     let vehicleModelYearPicker = UIDatePicker()
@@ -130,6 +130,8 @@ class EditVehicleViewController: UIViewController, UIPickerViewDelegate,UIPicker
         vehicleTypePicker.delegate = self
         vehicleTypePicker.dataSource = self
         
+        activeSegment.isEnabled = false
+        
         vehicleCompanyNameTextField.inputView = vehicleCompanyPicker
         vehicleTypeTextField.inputView = vehicleTypePicker
         
@@ -187,12 +189,13 @@ class EditVehicleViewController: UIViewController, UIPickerViewDelegate,UIPicker
         vehicleFitnessExpiryDateTextField.text = vehicleFitnessExpiryDate
         mileageTextField.text = mileage
         lastServiceDateTextField.text = lastServiceDate
-        activeLabel.text = active
+        activeRecord = "Yes"
         
-        if active == "No"{
-            activeSwitch.isOn = false
+        if activeRecord == "No"{
+            activeSegment.selectedSegmentIndex = 1
         }else{
-            activeSwitch.isOn = true
+            activeSegment.selectedSegmentIndex = 0
+
         }
         
         let vehicleImageRef = DataService.ds.REF_VEHICLE_IMAGE.child("\(String(describing: vehicleKey))")
@@ -224,7 +227,6 @@ class EditVehicleViewController: UIViewController, UIPickerViewDelegate,UIPicker
         mileageTextField.isEnabled = false
         lastServiceDateTextField.isEnabled = false
         uploadButton.isEnabled = false
-        activeSwitch.isEnabled = false
         
     }
     
@@ -233,7 +235,7 @@ class EditVehicleViewController: UIViewController, UIPickerViewDelegate,UIPicker
         dateformatter.dateFormat = "YYYY"
         
         vehicleModelYearTextField.text = dateformatter.string(from: sender.date)
-        self.view.endEditing(true)
+        //self.view.endEditing(true)
         
     }
     
@@ -242,7 +244,7 @@ class EditVehicleViewController: UIViewController, UIPickerViewDelegate,UIPicker
         dateformatter.dateFormat = "YYYY-MM-dd"
         
         insuranceExpiryDateTextField.text = dateformatter.string(from: sender.date)
-        self.view.endEditing(true)
+        //self.view.endEditing(true)
         
     }
     
@@ -251,7 +253,7 @@ class EditVehicleViewController: UIViewController, UIPickerViewDelegate,UIPicker
         dateformatter.dateFormat = "YYYY-MM-dd"
         
         pollutionCertificateExpiryDateTextField.text = dateformatter.string(from: sender.date)
-        self.view.endEditing(true)
+       // self.view.endEditing(true)
         
     }
     
@@ -260,7 +262,7 @@ class EditVehicleViewController: UIViewController, UIPickerViewDelegate,UIPicker
         dateformatter.dateFormat = "YYYY-MM-dd"
         
         permitExpiryDateTextField.text = dateformatter.string(from: sender.date)
-        self.view.endEditing(true)
+       // self.view.endEditing(true)
         
     }
     
@@ -269,7 +271,7 @@ class EditVehicleViewController: UIViewController, UIPickerViewDelegate,UIPicker
         dateformatter.dateFormat = "YYYY-MM-dd"
         
         vehicleFitnessExpiryDateTextField.text = dateformatter.string(from: sender.date)
-        self.view.endEditing(true)
+       // self.view.endEditing(true)
         
     }
     
@@ -278,7 +280,7 @@ class EditVehicleViewController: UIViewController, UIPickerViewDelegate,UIPicker
         dateformatter.dateFormat = "YYYY-MM-dd"
         
         lastServiceDateTextField.text = dateformatter.string(from: sender.date)
-        self.view.endEditing(true)
+       // self.view.endEditing(true)
         
     }
     
@@ -341,14 +343,16 @@ class EditVehicleViewController: UIViewController, UIPickerViewDelegate,UIPicker
         self.view.endEditing(true)
     }
     
-    @IBAction func activeSwitchToggled(_ sender: UISwitch) {
-        if activeSwitch.isOn{
-            activeLabel.text = "Yes"
-        }else{
-            activeLabel.text = "No"
+    @IBAction func activeSegmentSelected(_ sender: Any) {
+        
+        if activeSegment.selectedSegmentIndex == 0{
+            activeRecord = "Yes"
+        }else if activeSegment.selectedSegmentIndex == 1{
+            activeRecord = "No"
         }
+        scrollView.setContentOffset(CGPoint.init(x: 0, y: 0), animated: true)
     }
-    
+
     @IBAction func editButtonClicked(_ sender: UIBarButtonItem) {
         backButton.isEnabled = false
         saveButton.isHidden = false
@@ -423,7 +427,8 @@ class EditVehicleViewController: UIViewController, UIPickerViewDelegate,UIPicker
         mileageTextField.isEnabled = true
         lastServiceDateTextField.isEnabled = true
         uploadButton.isEnabled = true
-        activeSwitch.isEnabled = true
+        activeSegment.isEnabled = true
+        
         
     }
     
@@ -434,8 +439,8 @@ class EditVehicleViewController: UIViewController, UIPickerViewDelegate,UIPicker
             if checkfield(){
         
                 uploadButton.isEnabled = false
-                activeSwitch.isEnabled = false
                 backButton.isEnabled = false
+                activeSegment.isEnabled = false
                 
                 self.startActivity()
                 
@@ -498,7 +503,7 @@ class EditVehicleViewController: UIViewController, UIPickerViewDelegate,UIPicker
                     
                     vehicleID.child("Mileage").setValue(self.mileageTextField.text) {(error) in print("Error while Writing First Name to Database")}
                     vehicleID.child("LastServiceDate").setValue(self.lastServiceDateTextField.text) {(error) in print("Error while Writing Mileage to Database")}
-                    vehicleID.child("Active").setValue(self.activeLabel.text) {(error) in print("Error while Writing Active to Database")}
+                    vehicleID.child("Active").setValue(self.activeRecord!) {(error) in print("Error while Writing Active to Database")}
                     
                     vehicleID.child("LastUpdatedOnDate").setValue(String(describing: NSDate())){(error) in print("Error while Writing Last Updated On Date to Database")}
                     vehicleID.child("UpdatedBy").setValue(AuthService.instance.riderID!){(error) in print("Error while Writing Updated By to Database")}

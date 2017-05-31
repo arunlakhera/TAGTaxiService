@@ -157,6 +157,10 @@ class VehicleViewController: UIViewController, UITableViewDelegate,UITableViewDa
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if vehicleList.count == 0{
+            self.stopActivity()
+        }
+
         return vehicleList.count
     }
     
@@ -294,7 +298,7 @@ class VehicleViewController: UIViewController, UITableViewDelegate,UITableViewDa
                 
                 destinationVC.mileage = vehicle.mileage != nil ? vehicle.mileage! : "Not Available"
                 destinationVC.lastServiceDate = vehicle.lastServiceDate != nil ? vehicle.lastServiceDate! : "Not Available"
-                destinationVC.active = vehicle.isActiveFlag != nil ? vehicle.isActiveFlag! : "Not Available"
+                destinationVC.activeRecord = vehicle.isActiveFlag != nil ? vehicle.isActiveFlag! : "Not Available"
                
             }
         }

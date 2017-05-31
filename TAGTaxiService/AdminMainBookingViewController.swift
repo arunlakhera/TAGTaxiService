@@ -22,9 +22,9 @@ class AdminMainBookingViewController: UIViewController {
     @IBOutlet weak var completedCountButton: UIButton!
     @IBOutlet weak var driverButton: UIButton!
     @IBOutlet weak var vehicleButton: UIButton!
-    @IBOutlet weak var moreButton: UIButton!
+   // @IBOutlet weak var moreButton: UIButton!
     
-    @IBOutlet weak var leadingConstraint: NSLayoutConstraint!
+    //@IBOutlet weak var leadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var menuView: UIView!
     @IBOutlet weak var upcomingLabel: UILabel!
     
@@ -60,10 +60,10 @@ class AdminMainBookingViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         self.startActivity()
-        driverButtonCenter = driverButton.center
-        vehicleButtonCenter = vehicleButton.center
-        driverButton.center = moreButton.center
-        vehicleButton.center = moreButton.center
+ //       driverButtonCenter = driverButton.center
+  //      vehicleButtonCenter = vehicleButton.center
+   //     driverButton.center = moreButton.center
+    //    vehicleButton.center = moreButton.center
 
     }
     override func viewDidLoad() {
@@ -72,7 +72,8 @@ class AdminMainBookingViewController: UIViewController {
          dateformatter.dateFormat = "YYYY-MM-dd"
         
         // Menu Propertiee
-        leadingConstraint.constant = -170
+        //leadingConstraint.constant = -170
+        menuView.isHidden = true
         menuView.layer.shadowOpacity = 1
         menuView.layer.shadowRadius = 4
         
@@ -164,11 +165,11 @@ class AdminMainBookingViewController: UIViewController {
     
     @IBAction func menuButton(_ sender: Any){
         if(menuShow){
-            leadingConstraint.constant = 0
-            
+           // leadingConstraint.constant = 0
+            menuView.isHidden = false
         }else{
-            leadingConstraint.constant = -170
-            
+            //leadingConstraint.constant = -170
+            menuView.isHidden = true
             UIView.animate(withDuration: 0.5, animations: {
                 self.view.layoutIfNeeded()
             })
@@ -224,7 +225,7 @@ class AdminMainBookingViewController: UIViewController {
     }
     
     /// More Button Outlets
-    
+    /*
     @IBAction func moreButtonClicked(_ sender: UIButton) {
         
         if moreButton.currentImage == #imageLiteral(resourceName: "MoreButtonOff"){
@@ -248,6 +249,7 @@ class AdminMainBookingViewController: UIViewController {
         
         toggleButtonImage(button: moreButton, onImage: #imageLiteral(resourceName: "MoreButtonOn"), offImage: #imageLiteral(resourceName: "MoreButtonOff"))
     }
+    */
     
     @IBAction func driverButtonClicked(_ sender: UIButton) {
         toggleButtonImage(button: driverButton , onImage: #imageLiteral(resourceName: "DriverButtonOn"), offImage: #imageLiteral(resourceName: "DriverButtonOff"))
@@ -274,7 +276,7 @@ class AdminMainBookingViewController: UIViewController {
             button.setImage(offImage, for: .normal)
         }
     }
-    
+ 
     // Main Menu Code
     
     @IBAction func driverMenuButtonClicked(_ sender: UIButton) {

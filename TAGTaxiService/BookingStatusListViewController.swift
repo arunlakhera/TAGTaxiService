@@ -193,15 +193,15 @@ class BookingStatusListViewController: UIViewController, UITableViewDelegate, UI
         let rideFrom = String(book.rideFrom!)
         let rideTo = String(book.rideTo!)
         
-        if (rideFrom?.characters.count)! > 10{
-            let indexFrom = rideFrom?.index((rideFrom!.startIndex), offsetBy: 10)
+        if (rideFrom?.characters.count)! > 35{
+            let indexFrom = rideFrom?.index((rideFrom!.startIndex), offsetBy: 35)
             cell?.fromLabel.text = rideFrom!.substring(to: indexFrom!)
         }else{
             cell?.fromLabel.text = rideFrom?.capitalized
         }
        
-        if (rideTo?.characters.count)! > 10{
-            let indexTo = rideTo?.index((rideTo!.startIndex), offsetBy: 10)
+        if (rideTo?.characters.count)! > 35{
+            let indexTo = rideTo?.index((rideTo!.startIndex), offsetBy: 35)
             cell?.toLabel.text = rideTo!.substring(to: indexTo!)
         }else{
             cell?.toLabel.text = rideTo?.capitalized

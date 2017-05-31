@@ -13,7 +13,6 @@ class AdminBookStatusListViewController: UIViewController, UITableViewDelegate, 
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var toolBar: UINavigationBar!
-    @IBOutlet weak var toolBarTitle: UILabel!
     
     var bookings = [RideBooking]()
     var riderName = ""
@@ -58,9 +57,8 @@ class AdminBookStatusListViewController: UIViewController, UITableViewDelegate, 
         tableView.dataSource = self
         
         dateformatter.dateFormat = "YYYY-MM-dd"
-
-        toolBarTitle.text = "\(bookingStatusList) List"
-   
+        self.toolBar.topItem?.title =  "\(bookingStatusList) List"
+        
         DataService.ds.REF_RIDEBOOKING.observe(.value, with: { (snapshot) in
             self.bookings = []
             
@@ -89,6 +87,9 @@ class AdminBookStatusListViewController: UIViewController, UITableViewDelegate, 
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if bookings.count == 0{
+            self.stopActivity()
+        }
         return bookings.count
     }
     

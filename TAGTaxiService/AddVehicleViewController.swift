@@ -30,9 +30,10 @@ class AddVehicleViewController: UIViewController, UIPickerViewDelegate,UIPickerV
     @IBOutlet weak var mileageTextField: UITextField!
     @IBOutlet weak var lastServiceDateTextField: UITextField!
     @IBOutlet weak var scrollView: UIScrollView!
-    @IBOutlet weak var activeLabel: UILabel!
-    @IBOutlet weak var activeSwitch: UISwitch!
     @IBOutlet weak var backButton: UIBarButtonItem!
+    @IBOutlet weak var activeSegment: UISegmentedControl!
+    
+    var activeRecord: String?
     
     @IBOutlet weak var saveButton: UIButton!
     
@@ -74,6 +75,8 @@ class AddVehicleViewController: UIViewController, UIPickerViewDelegate,UIPickerV
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        activeRecord = "Yes"
         
         vehicleCompanyNameTextField.delegate = self
         vehicleModelNameTextField.delegate = self
@@ -163,7 +166,7 @@ class AddVehicleViewController: UIViewController, UIPickerViewDelegate,UIPickerV
         dateformatter.dateFormat = "YYYY-MM-dd"
         
         insuranceExpiryDateTextField.text = dateformatter.string(from: sender.date)
-        self.view.endEditing(true)
+        //self.view.endEditing(true)
         
     }
     
@@ -172,7 +175,7 @@ class AddVehicleViewController: UIViewController, UIPickerViewDelegate,UIPickerV
         dateformatter.dateFormat = "YYYY-MM-dd"
         
         pollutionCertificateExpiryDateTextField.text = dateformatter.string(from: sender.date)
-        self.view.endEditing(true)
+        //self.view.endEditing(true)
         
     }
   
@@ -181,7 +184,7 @@ class AddVehicleViewController: UIViewController, UIPickerViewDelegate,UIPickerV
         dateformatter.dateFormat = "YYYY-MM-dd"
         
         permitExpiryDateTextField.text = dateformatter.string(from: sender.date)
-        self.view.endEditing(true)
+        //self.view.endEditing(true)
         
     }
     
@@ -190,7 +193,7 @@ class AddVehicleViewController: UIViewController, UIPickerViewDelegate,UIPickerV
         dateformatter.dateFormat = "YYYY-MM-dd"
         
         vehicleFitnessExpiryDateTextField.text = dateformatter.string(from: sender.date)
-        self.view.endEditing(true)
+        //self.view.endEditing(true)
         
     }
     
@@ -199,7 +202,7 @@ class AddVehicleViewController: UIViewController, UIPickerViewDelegate,UIPickerV
         dateformatter.dateFormat = "YYYY-MM-dd"
         
         lastServiceDateTextField.text = dateformatter.string(from: sender.date)
-        self.view.endEditing(true)
+        //self.view.endEditing(true)
         
     }
     
@@ -294,14 +297,7 @@ class AddVehicleViewController: UIViewController, UIPickerViewDelegate,UIPickerV
         self.present(actionSheet, animated: true, completion: nil)
         
     }
-    
-    @IBAction func activeSwitchToggled(_ sender: UISwitch) {
-        if activeSwitch.isOn{
-            activeLabel.text = "Yes"
-        }else{
-            activeLabel.text = "No"
-        }
-    }
+   
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         
@@ -320,16 +316,17 @@ class AddVehicleViewController: UIViewController, UIPickerViewDelegate,UIPickerV
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         self.dismiss(animated: true, completion: nil)
     }
-    
-    @IBAction func activeSwitchClicked(_ sender: Any) {
-        if activeSwitch.isOn{
-            activeLabel.text = "Yes"
-        }else{
-            activeLabel.text = "No"
+   
+    @IBAction func activeSegmentSelected(_ sender: Any) {
+        
+        if activeSegment.selectedSegmentIndex == 0{
+            activeRecord = "Yes"
+        }else if activeSegment.selectedSegmentIndex == 1{
+            activeRecord = "No"
         }
         scrollView.setContentOffset(CGPoint.init(x: 0, y: 0), animated: true)
-        
     }
+    
     
     @IBAction func saveButton(_ sender: UIButton) {
         uploadButton.isEnabled = false
@@ -400,7 +397,7 @@ class AddVehicleViewController: UIViewController, UIPickerViewDelegate,UIPickerV
                     
                     vehicleID.child("Mileage").setValue(self.mileageTextField.text) {(error) in print("Error while Writing First Name to Database")}
                     vehicleID.child("LastServiceDate").setValue(self.lastServiceDateTextField.text) {(error) in print("Error while Writing Mileage to Database")}
-                    vehicleID.child("Active").setValue(self.activeLabel.text) {(error) in print("Error while Writing Active to Database")}
+                    vehicleID.child("Active").setValue(self.activeRecord!) {(error) in print("Error while Writing Active to Database")}
                     
                     vehicleID.child("CreatedOnDate").setValue(String(describing: NSDate())){(error) in print("Error while Writing Created on Date to Database")}
                     vehicleID.child("CreatedBy").setValue(AuthService.instance.riderID!){(error) in print("Error while Writing Created By to Database")}

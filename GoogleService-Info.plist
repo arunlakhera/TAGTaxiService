@@ -7,21 +7,21 @@
 	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
 	<string>ca-app-pub-3940256099942544/4411468910</string>
 	<key>CLIENT_ID</key>
-	<string>1075157834234-k8270crqn28cai1i7ui2hhudsq3k7cm5.apps.googleusercontent.com</string>
+	<string>987347505099-b3osn561j0i1f6mp59t3agclkdp7khve.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.1075157834234-k8270crqn28cai1i7ui2hhudsq3k7cm5</string>
+	<string>com.googleusercontent.apps.987347505099-b3osn561j0i1f6mp59t3agclkdp7khve</string>
 	<key>API_KEY</key>
-	<string>AIzaSyABeYfKFUg1SmfPeI5ddYNcbV4qAU5pCow</string>
+	<string>AIzaSyADff-Q0Bv7NUU_P8dpK1D4XioqdOkBiS4</string>
 	<key>GCM_SENDER_ID</key>
-	<string>1075157834234</string>
+	<string>987347505099</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.MyCompany.TAGTaxiService</string>
+	<string>com.MyCompany.TAGTaxi</string>
 	<key>PROJECT_ID</key>
-	<string>tagtaxiservice-c96a0</string>
+	<string>tagtaxiservices-72c2d</string>
 	<key>STORAGE_BUCKET</key>
-	<string>tagtaxiservice-c96a0.appspot.com</string>
+	<string>tagtaxiservices-72c2d.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<true/>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -33,8 +33,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true/>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:1075157834234:ios:45342f06c9b3ca1c</string>
+	<string>1:987347505099:ios:ca9ab2a21780cc21</string>
 	<key>DATABASE_URL</key>
-	<string>https://tagtaxiservice-c96a0.firebaseio.com</string>
+	<string>https://tagtaxiservices-72c2d.firebaseio.com</string>
 </dict>
 </plist>

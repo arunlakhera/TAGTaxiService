@@ -23,6 +23,7 @@ class BookARideViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     @IBOutlet weak var typeOfVehicleTextField: UITextField!
     @IBOutlet weak var returnDateLabel: UILabel!
     @IBOutlet weak var TravelEndDateImageView: UIImageView!
+    @IBOutlet weak var travelEndDateView: UIView!
     
     // MARK: Variables
     var travelFrom = ""
@@ -50,7 +51,6 @@ class BookARideViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     func startActivity(){
         
         activityIndicator.center = view.center
-        //activityIndicator.activityIndicatorViewStyle = .gray
         activityIndicator.color = UIColor.yellow
         self.view.addSubview(activityIndicator)
         
@@ -74,8 +74,6 @@ class BookARideViewController: UIViewController, UIPickerViewDelegate, UIPickerV
         travelFromTextField.text = TravelFromCity
         
         // By default show today date as travel date
-       
-       // showAlert(title: "Phone Number", message: AuthService.instance)
         
         formatter.dateFormat = "YYYY-MM-dd"
         travelBeginDateTextField.text = formatter.string(from: travelMinDate as Date)
@@ -158,7 +156,7 @@ class BookARideViewController: UIViewController, UIPickerViewDelegate, UIPickerV
         
     }
     
-    // Function to remove Picker view from screen once the user has selected and touched the screen putside view
+    // Function to remove Picker view from screen once the user has selected and touched the screen outside view
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
@@ -177,7 +175,7 @@ class BookARideViewController: UIViewController, UIPickerViewDelegate, UIPickerV
             travelEndMinDate = sender.date as NSDate
             travelEndDateTextField.text = formatter.string(from: sender.date)
             
-            self.view.endEditing(true)
+           // self.view.endEditing(true)
             
         }
     }
@@ -190,7 +188,7 @@ class BookARideViewController: UIViewController, UIPickerViewDelegate, UIPickerV
             
         }else{
             travelEndDateTextField.text = formatter.string(from: sender.date)
-            self.view.endEditing(true)
+            //self.view.endEditing(true)
         }
 }
 

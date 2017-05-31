@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -22,16 +21,31 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PikchillyLogo.png" translatesAutoresizingMaskIntoConstraints="NO" id="I0c-I5-WDN">
-                                <rect key="frame" x="18" y="236.5" width="284" height="95"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pikchillyImage.png" translatesAutoresizingMaskIntoConstraints="NO" id="epL-na-4NT">
+                                <rect key="frame" x="120" y="184" width="80" height="200"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="80" id="vNg-y4-zky"/>
+                                </constraints>
                             </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pickchilly Technologies Pvt Ltd" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QyD-Nl-F1e">
+                                <rect key="frame" x="0.0" y="518" width="320" height="50"/>
+                                <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="d8w-G7-ooc"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="TimesNewRomanPS-BoldMT" family="Times New Roman" pointSize="20"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="I0c-I5-WDN" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="JxV-hb-msc"/>
-                            <constraint firstItem="I0c-I5-WDN" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leadingMargin" constant="2" id="KUq-pe-y6v"/>
-                            <constraint firstItem="I0c-I5-WDN" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="VbK-75-RLw"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="I0c-I5-WDN" secondAttribute="trailing" constant="2" id="zlJ-pS-ERJ"/>
+                            <constraint firstAttribute="trailing" secondItem="QyD-Nl-F1e" secondAttribute="trailing" id="4wx-XQ-Gsq"/>
+                            <constraint firstItem="QyD-Nl-F1e" firstAttribute="bottom" secondItem="xb3-aO-Qok" secondAttribute="top" id="EMW-tg-R5t"/>
+                            <constraint firstItem="epL-na-4NT" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="164" id="doc-34-kg3"/>
+                            <constraint firstItem="epL-na-4NT" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="l52-T8-c00"/>
+                            <constraint firstItem="QyD-Nl-F1e" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="qBp-LV-izY"/>
+                            <constraint firstItem="epL-na-4NT" firstAttribute="centerX" secondItem="QyD-Nl-F1e" secondAttribute="centerX" id="s6E-8M-c4R"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -41,6 +55,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="PikchillyLogo.png" width="175" height="95"/>
+        <image name="pikchillyImage.png" width="78" height="325"/>
     </resources>
 </document>

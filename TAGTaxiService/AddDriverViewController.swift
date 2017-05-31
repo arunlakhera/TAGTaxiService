@@ -29,16 +29,17 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     @IBOutlet weak var DLValidTillTextField: UITextField!
     @IBOutlet weak var policeVerifiedTextField: UITextField!
     @IBOutlet weak var bloodGroupTextField: UITextField!
-    @IBOutlet weak var activeLabel: UILabel!
-    @IBOutlet weak var activeSwitch: UISwitch!
     @IBOutlet weak var saveButton: UIButton!
     @IBOutlet weak var backButton: UIBarButtonItem!
     @IBOutlet weak var uploadButton: UIButton!
+    @IBOutlet weak var activeSegment: UISegmentedControl!
     
     // MARK: VARIABLES
 
     let imagePicker = UIImagePickerController()
     var image: UIImage?
+    
+    var activeRecord: String?
     
     // Variable for Date of Birth picker
     let dateOfBirthPicker = UIDatePicker()
@@ -75,6 +76,8 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        activeRecord = "Yes"
         
         firstNameTextField.delegate = self
         lastNameTextField.delegate = self
@@ -149,7 +152,7 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
         let validFrom = (dateformatter.date(from: DLValidFrom!) != nil ? dateformatter.date(from: DLValidFrom!) : dateformatter.date(from: "2001-01-01"))
         if ((sender.date).compare(validFrom!).rawValue > 0){
             DLValidTillTextField.text = dateformatter.string(from: sender.date)
-            self.view.endEditing(true)
+           // self.view.endEditing(true)
         }else{
             self.showAlert(title: "Error", message: "DL Valid Till Date cannot be before DL Valid From Date")
         }
@@ -165,7 +168,7 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
             
             }else{
             dateOfBirthTextField.text = dateformatter.string(from: sender.date)
-            self.view.endEditing(true)
+            //self.view.endEditing(true)
             
         }
     }
@@ -290,14 +293,14 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
         self.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func activeSwitchClicked(_ sender: Any) {
-        if activeSwitch.isOn{
-            activeLabel.text = "Yes"
-        }else{
-            activeLabel.text = "No"
+    @IBAction func activeSegmentSelected(_ sender: Any) {
+        
+        if activeSegment.selectedSegmentIndex == 0{
+            activeRecord = "Yes"
+        }else if activeSegment.selectedSegmentIndex == 1{
+            activeRecord = "No"
         }
         scrollView.setContentOffset(CGPoint.init(x: 0, y: 0), animated: true)
-        
     }
     
     @IBAction func saveButtonClicked(_ sender: UIButton)
@@ -310,20 +313,16 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
                 self.startActivity()
                 
                 saveButton.isEnabled = false
-               // saveButton.isHidden = true
+                saveButton.isHidden = true
                 uploadButton.isEnabled = false
                 backButton.isEnabled = false
                 
                 completeFlag = addDriverDetails()
                
                 if completeFlag {
-                  //  backButton.isEnabled = true
-                    saveButton.isHidden = true
                     self.performSegue(withIdentifier: "driverListSegue", sender: nil)
                     self.stopActivity()
-                    
                 }
-              // self.performSegue(withIdentifier: "driverListSegue", sender: nil)
             }
         
         }else{
@@ -375,7 +374,7 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
                     driverID.child("DLValidTill").setValue(self.DLValidTillTextField.text) {(error) in print("Error while Writing DL Valid Till to Database")}
                     driverID.child("PoliceVerified").setValue(self.policeVerifiedTextField.text) {(error) in print("Error while Writing DL Valid From to Database")}
                     driverID.child("BloodGroup").setValue(self.bloodGroupTextField.text) {(error) in print("Error while Writing Blood Group to Database")}
-                    driverID.child("Active").setValue(self.activeLabel.text) {(error) in print("Error while Writing Active to Database")}
+                    driverID.child("Active").setValue(self.activeRecord!) {(error) in print("Error while Writing Active to Database")}
                     
                     driverID.child("CreatedOnDate").setValue(String(describing: NSDate())){(error) in print("Error while Writing Created on Date to Database")}
                     driverID.child("CreatedBy").setValue(AuthService.instance.riderID!){(error) in print("Error while Writing Created By to Database")}
@@ -445,11 +444,13 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        print("====>>>TOCHES BEGAN===")
         self.view.endEditing(true)
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
+        self.view.endEditing(true)
         return true
     }
     
@@ -476,6 +477,7 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         scrollView.setContentOffset(CGPoint.init(x: 0, y: 0), animated: true)
+       // self.view.endEditing(true)
     }
     
     func showAlert(title: String, message: String){

@@ -26,12 +26,12 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
     @IBOutlet weak var DLValidTillTextField: UITextField!
     @IBOutlet weak var policeVerifiedTextField: UITextField!
     @IBOutlet weak var bloodGroupTextField: UITextField!
-    @IBOutlet weak var activeLabel: UILabel!
-    @IBOutlet weak var activeSwitch: UISwitch!
     @IBOutlet weak var editButton: UIBarButtonItem!
     @IBOutlet weak var saveButton: UIButton!
     @IBOutlet weak var backButton: UIBarButtonItem!
     @IBOutlet weak var uploadButton: UIButton!
+    @IBOutlet weak var activeSegment: UISegmentedControl!
+    
     
     var driverKey = ""
     var firstName = "NA"
@@ -47,8 +47,10 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
     var DLValidTill = "NA"
     var policeVerified = "NA"
     var driverBloodGroup = "NA"
-    var active = "NA"
+    var active = "Yes"
     var numberOfDaysForExpiry: Int?
+    
+    var activeRecord: String?
     
     // MARK: VARIABLES
     var storage: FIRStorage!
@@ -116,6 +118,8 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
         policeVerifiedTextField.delegate = self
         bloodGroupTextField.delegate = self
         
+        activeSegment.isEnabled = false
+        
         dateOfBirthPicker.datePickerMode = UIDatePickerMode.date
         dateOfBirthTextField.inputView = dateOfBirthPicker
         dateOfBirthPicker.addTarget(self, action: #selector(self.datePickerValueChanged), for: .valueChanged)
@@ -176,12 +180,12 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
             }
         }
         
-        activeLabel.text = active
-     
-        if active == "No"{
-            activeSwitch.isOn = false
+        activeRecord = active
+        
+        if activeRecord == "No"{
+            activeSegment.selectedSegmentIndex = 1
         }else{
-            activeSwitch.isOn = true
+            activeSegment.selectedSegmentIndex = 0
         }
         
         for bg in bloodGroupArray{
@@ -220,8 +224,6 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
         DLValidTillTextField.isEnabled = false
         policeVerifiedTextField.isEnabled = false
         bloodGroupTextField.isEnabled = false
-        activeLabel.isEnabled = false
-        activeSwitch.isEnabled = false
         uploadButton.isEnabled = false
         
     }
@@ -283,7 +285,7 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
      dateformatter.dateFormat = "YYYY-MM-dd"
         
         DLValidFromTextField.text = dateformatter.string(from: sender.date)
-        self.view.endEditing(true)
+        //self.view.endEditing(true)
     }
     
     func dateDLValidTillPickerValueChanged(_ sender: UIDatePicker){
@@ -294,11 +296,11 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
         let validFrom = dateformatter.date(from: DLValidFrom!)
         if ((sender.date).compare(validFrom!).rawValue > 0){
             DLValidTillTextField.text = dateformatter.string(from: sender.date)
-            self.view.endEditing(true)
+            //self.view.endEditing(true)
         }else{
             self.showAlert(title: "Error", message: "DL Valid Till Date cannot be before DL Valid From Date")
         }
-        self.view.endEditing(true)
+        //self.view.endEditing(true)
     }
     
     func datePickerValueChanged(_ sender: UIDatePicker){
@@ -311,7 +313,7 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
             
         }else{
             dateOfBirthTextField.text = dateformatter.string(from: sender.date)
-            self.view.endEditing(true)
+           // self.view.endEditing(true)
             
         }
     }
@@ -382,20 +384,22 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
         self.view.endEditing(true)
     }
    
-    @IBAction func activeSwitchClicked(_ sender: UISwitch) {
-        if activeSwitch.isOn{
-            activeLabel.text = "Yes"
-        }else{
-            activeLabel.text = "No"
+    @IBAction func activeSegmentSelected(_ sender: Any) {
+        
+        if activeSegment.selectedSegmentIndex == 0{
+            activeRecord = "Yes"
+        }else if activeSegment.selectedSegmentIndex == 1{
+            activeRecord = "No"
         }
         scrollView.setContentOffset(CGPoint.init(x: 0, y: 0), animated: true)
-        
     }
+
     
     @IBAction func editButtonClicked(_ sender: Any) {
         saveButton.isHidden = false
         backButton.isEnabled = false
         editButton.isEnabled = false
+        
         
         enableFields()
     }
@@ -415,9 +419,9 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
         DLValidTillTextField.isEnabled = true
         policeVerifiedTextField.isEnabled = true
         bloodGroupTextField.isEnabled = true
-        activeLabel.isEnabled = true
-        activeSwitch.isEnabled = true
         uploadButton.isEnabled = true
+        activeSegment.isEnabled = true
+        
     }
     
     
@@ -429,8 +433,8 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
                 
                 startActivity()
                 uploadButton.isEnabled = false
-                activeSwitch.isEnabled = false
                 backButton.isEnabled = false
+                activeSegment.isEnabled = false
                 
                 editDriverDetail()
                 
@@ -487,7 +491,7 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
                     driver.child("DLValidTill").setValue(self.DLValidTillTextField.text) {(error) in print("Error while Writing DL Valid Till to Database")}
                     driver.child("PoliceVerified").setValue(self.policeVerifiedTextField.text) {(error) in print("Error while Writing Police Verified to Database")}
                     driver.child("BloodGroup").setValue(self.bloodGroupTextField.text) {(error) in print("Error while Writing Blood Group to Database")}
-                    driver.child("Active").setValue(self.activeLabel.text) {(error) in print("Error while Writing Active to Database")}
+                    driver.child("Active").setValue(self.activeRecord!) {(error) in print("Error while Writing Active to Database")}
                     driverID.child("LastUpdatedOnDate").setValue(String(describing: NSDate())){(error) in print("Error while Writing Last Updated On Date to Database")}
                     driverID.child("UpdatedBy").setValue(AuthService.instance.riderID!){(error) in print("Error while Writing Updated By to Database")}
                 }

@@ -148,7 +148,7 @@ class RiderProfileViewController: UIViewController, UIPickerViewDataSource, UIPi
             showAlert(title: "Error!", message: "Date of Birth Needs to be corrected")
         }else{
             dateOfBirthTextField.text = dateformatter.string(from: sender.date)
-            self.view.endEditing(true)
+           // self.view.endEditing(true)
          
             
         }

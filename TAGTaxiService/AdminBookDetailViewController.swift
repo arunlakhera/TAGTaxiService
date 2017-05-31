@@ -39,20 +39,17 @@ class AdminBookDetailViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var vehicleText: UITextField!
     @IBOutlet weak var send: UIButton!
     @IBOutlet weak var statusText: UILabel!
-    
+    @IBOutlet weak var cancelButton: UIBarButtonItem!
     
     // Create a MessageComposer
     let messageComposer = MessageComposer()
-    
     var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
     
     func startActivity(){
         
         activityIndicator.center = view.center
-        //activityIndicator.activityIndicatorViewStyle = .gray
         activityIndicator.color = UIColor.yellow
         self.view.addSubview(activityIndicator)
-        
         activityIndicator.startAnimating()
         
     }
@@ -71,23 +68,26 @@ class AdminBookDetailViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        
         let toolBarWithDoneButton =  addDoneButton()
         
         amountText.delegate = self
         vehicleText.delegate = self
         
-        nameLabel.text = bookName
+        nameLabel.text = bookName.capitalized
         phoneLabel.text = bookPhone
         travelDateLabel.text = bookTravelDate
-        travelFromLabel.text = bookFrom
-        travelToLabel.text = bookTo
-        roundTripLabel.text = bookRoundTrip
+        travelFromLabel.text = bookFrom.capitalized
+        travelToLabel.text = bookTo.capitalized
+        roundTripLabel.text = bookRoundTrip.capitalized
         noOfTravellersLabel.text = bookNoOfTravellers
-        statusText.text = bookStatus
+        statusText.text = bookStatus.capitalized
         amountText.text = bookAmount
-        vehicleText.text = "\(bookVehicle.trimmingCharacters(in: .whitespacesAndNewlines)) \(bookVehicleType.trimmingCharacters(in: .whitespacesAndNewlines)) "
+        vehicleText.text = "\(bookVehicle.trimmingCharacters(in: .whitespacesAndNewlines).capitalized) \(bookVehicleType.trimmingCharacters(in: .whitespacesAndNewlines).capitalized) "
         
-        //statusText.isEnabled = false
+        if (statusText.text == "Cancelled" || statusText.text == "Declined" || statusText.text == "Completed"){
+            cancelButton.isEnabled = false
+        }
         
         if statusText.text == "Pending" {
             amountText.isEnabled = true
@@ -125,7 +125,7 @@ class AdminBookDetailViewController: UIViewController, UITextFieldDelegate {
                 self.bookName = String(describing: riderProfile.emailID)
             }
             
-            self.nameLabel.text = self.bookName
+            self.nameLabel.text = self.bookName.capitalized
             
         })
         
@@ -159,7 +159,6 @@ class AdminBookDetailViewController: UIViewController, UITextFieldDelegate {
             travelToLabel.textColor = UIColor.green
             roundTripLabel.textColor = UIColor.green
             noOfTravellersLabel.textColor = UIColor.green
-            amountText.textColor = UIColor.green
             amountText.textColor = UIColor.green
             vehicleText.textColor = UIColor.green
             statusText.textColor = UIColor.green
@@ -242,50 +241,53 @@ class AdminBookDetailViewController: UIViewController, UITextFieldDelegate {
         {
             self.startActivity()
             
-        if amountText.text == "" || amountText.text == "Pending" {
+            if amountText.text == "" || amountText.text == "Pending" {
         
-            let alert = UIAlertController(title: "Error!", message: "Please Enter Amount.", preferredStyle: .alert)
-            let action = UIAlertAction(title: "OK", style: .default, handler: nil)
-            alert.addAction(action)
-            self.present(alert, animated: true, completion: nil)
+                let alert = UIAlertController(title: "Error!", message: "Please Enter Amount.", preferredStyle: .alert)
+                let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+                alert.addAction(action)
+                self.present(alert, animated: true, completion: nil)
         
-        }else if let _ = Double(amountText.text!){
+            }else if let _ = Double(amountText.text!){
             
-            if send.title(for: .normal) == "Completed"{
+                if send.title(for: .normal) == "Completed"{
             
-                self.bookStatus = "Completed"
-                DataService.ds.REF_RIDEBOOKING.child(bookKey).child("Status").setValue(bookStatus){(error) in print("Error while Writing Status to Database")}
-                showAlert(title: "Completed", message: "You have Marked the Booking as Completed")
+                    self.bookStatus = "Completed"
+                    DataService.ds.REF_RIDEBOOKING.child(bookKey).child("Status").setValue(bookStatus){(error) in print("Error while Writing Status to Database")}
+                    showAlert(title: "Completed", message: "You have Marked the Booking as Completed")
                
+                    DataService.ds.REF_RIDEBOOKING.child(bookKey).child("LastUpdatedOnDate").setValue(String(describing: NSDate())){(error) in print("Error while Writing Last Updated On Date to Database")}
+                    DataService.ds.REF_RIDEBOOKING.child(bookKey).child("UpdatedBy").setValue(AuthService.instance.riderID!){(error) in print("Error while Writing Updated By to Database")}
+                
+                    statusText.text = "Completed"
+                    send.isHidden = true
+                    send.isEnabled = false
+                
+                    self.stopActivity()
+                }else{
+            
+                self.bookStatus = "Quoted"
+                
+                DataService.ds.REF_RIDEBOOKING.child(bookKey).child("Amount").setValue(amountText.text!.trimmingCharacters(in: .whitespacesAndNewlines)){(error) in print("Error while Writing Amount to Database")}
+                DataService.ds.REF_RIDEBOOKING.child(bookKey).child("Status").setValue(bookStatus){(error) in print("Error while Writing Status to Database")}
+                DataService.ds.REF_RIDEBOOKING.child(bookKey).child("Vehicle").setValue(vehicleText.text!.trimmingCharacters(in: .whitespacesAndNewlines)){(error) in print("Error while Writing Vehicle to Database")}
+            
                 DataService.ds.REF_RIDEBOOKING.child(bookKey).child("LastUpdatedOnDate").setValue(String(describing: NSDate())){(error) in print("Error while Writing Last Updated On Date to Database")}
                 DataService.ds.REF_RIDEBOOKING.child(bookKey).child("UpdatedBy").setValue(AuthService.instance.riderID!){(error) in print("Error while Writing Updated By to Database")}
                 
-                statusText.text = "Completed"
+                statusText.text = bookStatus
                 send.isHidden = true
-                send.isEnabled = false
-                
                 self.stopActivity()
-            } else{//
             
-            self.bookStatus = "Quoted"
-            DataService.ds.REF_RIDEBOOKING.child(bookKey).child("Amount").setValue(amountText.text!.trimmingCharacters(in: .whitespacesAndNewlines)){(error) in print("Error while Writing Amount to Database")}
-            DataService.ds.REF_RIDEBOOKING.child(bookKey).child("Status").setValue(bookStatus){(error) in print("Error while Writing Status to Database")}
-            DataService.ds.REF_RIDEBOOKING.child(bookKey).child("Vehicle").setValue(vehicleText.text!.trimmingCharacters(in: .whitespacesAndNewlines)){(error) in print("Error while Writing Vehicle to Database")}
+                }
+            }else{
             
-            DataService.ds.REF_RIDEBOOKING.child(bookKey).child("LastUpdatedOnDate").setValue(String(describing: NSDate())){(error) in print("Error while Writing Last Updated On Date to Database")}
-            DataService.ds.REF_RIDEBOOKING.child(bookKey).child("UpdatedBy").setValue(AuthService.instance.riderID!){(error) in print("Error while Writing Updated By to Database")}
-                
-            statusText.text = bookStatus
-            send.isHidden = true
-            self.stopActivity()
-            
-            }
-        } else{
-            let alert = UIAlertController(title: "Error!", message: "Please Enter Valid Amount.", preferredStyle: .alert)
-            let action = UIAlertAction(title: "OK", style: .default, handler: nil)
-            alert.addAction(action)
-            present(alert, animated: true, completion: nil)
-        }
+                let alert = UIAlertController(title: "Error!", message: "Please Enter Valid Amount.", preferredStyle: .alert)
+                let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+                alert.addAction(action)
+                present(alert, animated: true, completion: nil)
+        
+                }
             
             if bookStatus == "Quoted"{
                 sendMessage()
@@ -322,6 +324,42 @@ class AdminBookDetailViewController: UIViewController, UITextFieldDelegate {
         // Sending Message End
     
     }
+    
+    @IBAction func cancelButtonPressed(_ sender: UIBarButtonItem) {
+        
+        // Check if internet connection is available
+        
+        if Reachability.isConnectedToNetwork() == true
+        {
+            if (self.bookStatus == "Pending" || self.bookStatus == "Quoted" || self.bookStatus == "Accepted"){
+                let alert = UIAlertController(title: "Cancel Booking", message: "Do you want to Cancel this Booking?", preferredStyle: .alert)
+                let actionYes = UIAlertAction(title: "Yes", style: .default, handler: { (action) in
+                
+                    self.bookStatus = "Cancelled"
+                    DataService.ds.REF_RIDEBOOKING.child(self.bookKey).child("Status").setValue(self.bookStatus)
+                
+                    DataService.ds.REF_RIDEBOOKING.child(self.bookKey).child("LastUpdatedOnDate").setValue(String(describing: NSDate())){(error) in print("Error while Writing Last Updated On Date to Database")}
+                    DataService.ds.REF_RIDEBOOKING.child(self.bookKey).child("UpdatedBy").setValue(AuthService.instance.riderID!){(error) in print("Error while Writing Updated By to Database")}
+                
+                self.viewDidLoad()
+            })
+            
+                let actionNo = UIAlertAction(title: "No", style: .default, handler: { (action) in
+                    print("=======NO PRESSED=====")
+                })
+                alert.addAction(actionYes)
+                alert.addAction(actionNo)
+                present(alert, animated: true, completion: nil)
+                cancelButton.isEnabled = false
+            }else{
+                cancelButton.isEnabled = false
+            }
+        }else{
+            self.showAlert(title: "Failure", message: "Internet Connection not available! Connect to Internet")
+        }
+
+    }
+    
     
     func showAlert(title: String, message: String){
         

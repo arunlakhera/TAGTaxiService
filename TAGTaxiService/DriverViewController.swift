@@ -84,7 +84,9 @@ class DriverViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 
             }
             
-            self.showAlert(title: "Alert!!", message: "Driving License Expiring for \(self.count) Drivers: \(self.dname)")
+            if self.count > 0{
+                self.showAlert(title: "Alert!!", message: "Driving License Expiring for \(self.count) Drivers: \(self.dname)")
+            }
             self.tableView.reloadData()
             
         })
@@ -96,6 +98,9 @@ class DriverViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if driverList.count == 0{
+            self.stopActivity()
+        }
         return driverList.count
     }
     
