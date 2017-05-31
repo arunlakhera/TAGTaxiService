@@ -155,6 +155,13 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
         cityTextField.inputAccessoryView = toolBarWithDoneButton
         DLNumberTextField.inputAccessoryView = toolBarWithDoneButton
         
+        dateOfBirthTextField.inputAccessoryView = toolBarWithDoneButton
+        stateTextField.inputAccessoryView = toolBarWithDoneButton
+        DLValidFromTextField.inputAccessoryView = toolBarWithDoneButton
+        DLValidTillTextField.inputAccessoryView = toolBarWithDoneButton
+        policeVerifiedTextField.inputAccessoryView = toolBarWithDoneButton
+        bloodGroupTextField.inputAccessoryView = toolBarWithDoneButton
+        
         saveButton.isHidden = true
         
         firstNameTextField.text = firstName
@@ -323,7 +330,7 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
         // MARK: Create toolbar with button
         let toolBar = UIToolbar()   // Create toolbar View
         toolBar.sizeToFit()             // calls sizeThatFits: with current view bounds and changes bounds size of toolbar.
-        
+        toolBar.backgroundColor = UIColor.orange
         // Adds space on toolbar so that Done Button appears on right side of the toolbar
         let flexibleSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
         // Adds Done button to the toolbar

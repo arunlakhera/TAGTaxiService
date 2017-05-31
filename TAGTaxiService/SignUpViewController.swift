@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class SignUpViewController: UIViewController {
+class SignUpViewController: UIViewController, UITextFieldDelegate {
 
     // MARK: Outlets
     
@@ -18,11 +18,17 @@ class SignUpViewController: UIViewController {
     @IBOutlet weak var phoneTextField: UITextField!
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
+    @IBOutlet weak var scrollView: UIScrollView!
+   
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
   
+        phoneTextField.delegate = self
+        emailTextField.delegate = self
+        passwordTextField.delegate = self
+        
         // MARK: Create variable and assign return properties from addDoneButton()
         let toolBarWithDoneButton = addDoneButton()
         
@@ -231,22 +237,30 @@ class SignUpViewController: UIViewController {
         return checkFlag
     }
     
-    // To move cursore to next available field
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
         
-        if textField == firstNameTextField{
-            self.lastNameTextField.becomeFirstResponder()
-        }else if textField == lastNameTextField{
-            self.phoneTextField.becomeFirstResponder()
-        }else if textField == phoneTextField{
-            self.emailTextField.becomeFirstResponder()
-        } else if textField == emailTextField{
-            self.passwordTextField.becomeFirstResponder()
-        }else{
-            self.passwordTextField.resignFirstResponder()
+        var yValue = 0
+        
+        if (textField == phoneTextField)
+        {
+            yValue = 80
         }
-        return true
+        if (textField == emailTextField)
+        {
+            yValue = 110
+        }
+        if (textField == passwordTextField)
+        {
+            yValue = 130
+        }
+        scrollView.setContentOffset(CGPoint.init(x: 0, y: yValue), animated: true)
+        
     }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        scrollView.setContentOffset(CGPoint.init(x: 0, y: 0), animated: true)
+    }
+    
     // To Dissmiss keyboard once user clicks on screeen
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)

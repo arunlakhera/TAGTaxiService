@@ -164,6 +164,7 @@ class EditVehicleViewController: UIViewController, UIPickerViewDelegate,UIPicker
         // Add Done button to Keyboard
         
         let toolBarWithDoneButton =  addDoneButton()
+        
         vehicleModelNameTextField.inputAccessoryView = toolBarWithDoneButton
         vehicleNumberTextField.inputAccessoryView = toolBarWithDoneButton
         insuranceNumberTextField.inputAccessoryView = toolBarWithDoneButton
@@ -171,6 +172,16 @@ class EditVehicleViewController: UIViewController, UIPickerViewDelegate,UIPicker
         pollutionCertificateNumberTextField.inputAccessoryView = toolBarWithDoneButton
         mileageTextField.inputAccessoryView = toolBarWithDoneButton
 
+        
+        vehicleCompanyNameTextField.inputAccessoryView = toolBarWithDoneButton
+        vehicleTypeTextField.inputAccessoryView = toolBarWithDoneButton
+        vehicleModelYearTextField.inputAccessoryView = toolBarWithDoneButton
+        pollutionCertificateExpiryDateTextField.inputAccessoryView = toolBarWithDoneButton
+        lastServiceDateTextField.inputAccessoryView = toolBarWithDoneButton
+        permitExpiryDateTextField.inputAccessoryView = toolBarWithDoneButton
+        vehicleFitnessExpiryDateTextField.inputAccessoryView = toolBarWithDoneButton
+        insuranceExpiryDateTextField.inputAccessoryView = toolBarWithDoneButton
+        
         saveButton.isHidden = true
        
         self.startActivity()
@@ -289,7 +300,7 @@ class EditVehicleViewController: UIViewController, UIPickerViewDelegate,UIPicker
         // MARK: Create toolbar with button
         let toolBar = UIToolbar()   // Create toolbar View
         toolBar.sizeToFit()             // calls sizeThatFits: with current view bounds and changes bounds size of toolbar.
-        
+        toolBar.backgroundColor = UIColor.orange
         // Adds space on toolbar so that Done Button appears on right side of the toolbar
         let flexibleSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
         // Adds Done button to the toolbar
@@ -545,6 +556,7 @@ class EditVehicleViewController: UIViewController, UIPickerViewDelegate,UIPicker
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        print("Touches began in EDit Vehicle")
         self.view.endEditing(true)
     }
     

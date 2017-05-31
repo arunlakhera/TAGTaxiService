@@ -34,6 +34,7 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
     @IBOutlet weak var uploadButton: UIButton!
     @IBOutlet weak var activeSegment: UISegmentedControl!
     
+    
     // MARK: VARIABLES
 
     let imagePicker = UIImagePickerController()
@@ -134,6 +135,13 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
         cityTextField.inputAccessoryView = toolBarWithDoneButton
         DLNumberTextField.inputAccessoryView = toolBarWithDoneButton
         
+        dateOfBirthTextField.inputAccessoryView = toolBarWithDoneButton
+        stateTextField.inputAccessoryView = toolBarWithDoneButton
+        DLValidFromTextField.inputAccessoryView = toolBarWithDoneButton
+        DLValidTillTextField.inputAccessoryView = toolBarWithDoneButton
+        policeVerifiedTextField.inputAccessoryView = toolBarWithDoneButton
+        bloodGroupTextField.inputAccessoryView = toolBarWithDoneButton
+        
     }
     
     func dateDLValidFromPickerValueChanged(_ sender: UIDatePicker){
@@ -141,7 +149,7 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
         dateformatter.dateFormat = "YYYY-MM-dd"
         
         DLValidFromTextField.text = dateformatter.string(from: sender.date)
-         self.view.endEditing(true)
+         //self.view.endEditing(true)
     }
     
     func dateDLValidTillPickerValueChanged(_ sender: UIDatePicker){
@@ -178,7 +186,7 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
         // MARK: Create toolbar with button
         let toolBar = UIToolbar()   // Create toolbar View
         toolBar.sizeToFit()             // calls sizeThatFits: with current view bounds and changes bounds size of toolbar.
-        
+        toolBar.backgroundColor = UIColor.orange
         // Adds space on toolbar so that Done Button appears on right side of the toolbar
         let flexibleSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
         // Adds Done button to the toolbar
