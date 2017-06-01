@@ -56,11 +56,12 @@ class RiderProfileViewController: UIViewController, UIPickerViewDataSource, UIPi
         self.view.addSubview(activityIndicator)
         
         activityIndicator.startAnimating()
-        
+        disableFields()
     }
     
     func stopActivity(){
         activityIndicator.stopAnimating()
+        enableFields()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -193,22 +194,8 @@ class RiderProfileViewController: UIViewController, UIPickerViewDataSource, UIPi
     }
 
     
-    func enableFields(){
-        firstNameTextField.isEnabled = true
-        lastNameTextField.isEnabled = true
-        address1TextField.isEnabled = true
-        address2TextField.isEnabled = true
-        cityTextField.isEnabled = true
-        stateTextField.isEnabled = true
-        phoneTextField.isEnabled = true
-        dateOfBirthTextField.isEnabled = true
-        genderTextField.isEnabled = true
-       
-    }
-    
         // Function to load the profile data if it already exists
     func loadProfile(){
-        
         
            riderProfile.observe(.value, with: { snapshot in
             
@@ -305,6 +292,39 @@ class RiderProfileViewController: UIViewController, UIPickerViewDataSource, UIPi
     }
     
 
+    func enableFields(){
+        
+        firstNameTextField.isEnabled = true
+        lastNameTextField.isEnabled = true
+        address1TextField.isEnabled = true
+        address2TextField.isEnabled = true
+        cityTextField.isEnabled = true
+        stateTextField.isEnabled = true
+        phoneTextField.isEnabled = true
+        dateOfBirthTextField.isEnabled = true
+        genderTextField.isEnabled = true
+        emailIDTextField.isEnabled = true
+        saveButton.isEnabled = true
+        backButton.isEnabled = true
+    }
+    
+    func disableFields(){
+        
+        firstNameTextField.isEnabled = false
+        lastNameTextField.isEnabled = false
+        address1TextField.isEnabled = false
+        address2TextField.isEnabled = false
+        cityTextField.isEnabled = false
+        stateTextField.isEnabled = false
+        phoneTextField.isEnabled = false
+        dateOfBirthTextField.isEnabled = false
+        genderTextField.isEnabled = false
+        emailIDTextField.isEnabled = false
+        saveButton.isEnabled = false
+        backButton.isEnabled = false
+    }
+    
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
@@ -354,6 +374,8 @@ class RiderProfileViewController: UIViewController, UIPickerViewDataSource, UIPi
        // let action = UIAlertAction(title: "Ok", style: .default, handler: nil)
         let action = UIAlertAction(title: "Ok", style: .default) { (UIAlertAction) in
            self.stopActivity()
+            self.disableFields()
+            self.backButton.isEnabled = true
         }
         alertController.addAction(action)
         self.present(alertController, animated: true, completion: nil)

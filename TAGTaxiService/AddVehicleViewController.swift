@@ -55,6 +55,7 @@ class AddVehicleViewController: UIViewController, UIPickerViewDelegate,UIPickerV
     
     var vehicleType = ["---","Small","Sedan","SUV"]
     let vehicleTypePicker = UIPickerView()
+    var completeFlag = false
     
     var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
     
@@ -65,11 +66,12 @@ class AddVehicleViewController: UIViewController, UIPickerViewDelegate,UIPickerV
         self.view.addSubview(activityIndicator)
         
         activityIndicator.startAnimating()
-        
+        disableFields()
     }
     
     func stopActivity(){
         activityIndicator.stopAnimating()
+        enableFields()
     }
 
     
@@ -350,8 +352,13 @@ class AddVehicleViewController: UIViewController, UIPickerViewDelegate,UIPickerV
                 saveButton.isHidden = true
                 backButton.isEnabled = false
                
-                addVehicleDetails()
+                completeFlag = addVehicleDetails()
              
+                if completeFlag{
+                    self.performSegue(withIdentifier: "vehicleListSegue", sender: nil)
+                    self.stopActivity()
+                    self.disableFields()
+                }
                 //backButton.isEnabled = true
                 
                 //self.performSegue(withIdentifier: "vehicleListSegue", sender: nil)
@@ -362,7 +369,7 @@ class AddVehicleViewController: UIViewController, UIPickerViewDelegate,UIPickerV
         }
     }
     
-    func addVehicleDetails(){
+    func addVehicleDetails() -> Bool{
         
         let vehicleID = DataService.ds.REF_VEHICLE.childByAutoId()
         let formatter = DateFormatter()
@@ -421,10 +428,11 @@ class AddVehicleViewController: UIViewController, UIPickerViewDelegate,UIPickerV
                 
                 self.showAlert(title: "Saved", message: "Record Saved Successfully!")
                 self.saveButton.isHidden = true
+                self.completeFlag = true
             })
             
         }
-
+        return completeFlag
     }
     
     func checkfield() -> Bool{
@@ -501,12 +509,59 @@ class AddVehicleViewController: UIViewController, UIPickerViewDelegate,UIPickerV
         scrollView.setContentOffset(CGPoint.init(x: 0, y: 0), animated: true)
     }
     
+    func enableFields(){
+        
+        vehicleCompanyNameTextField.isEnabled = true
+        vehicleModelNameTextField.isEnabled = true
+        vehicleNumberTextField.isEnabled = true
+        vehicleTypeTextField.isEnabled = true
+        vehicleRegistrationNumberTextField.isEnabled = true
+        vehicleModelYearTextField.isEnabled = true
+        insuranceNumberTextField.isEnabled = true
+        insuranceExpiryDateTextField.isEnabled = true
+        pollutionCertificateNumberTextField.isEnabled = true
+        pollutionCertificateExpiryDateTextField.isEnabled = true
+        permitExpiryDateTextField.isEnabled = true
+        vehicleFitnessExpiryDateTextField.isEnabled = true
+        mileageTextField.isEnabled = true
+        lastServiceDateTextField.isEnabled = true
+        uploadButton.isEnabled = true
+        activeSegment.isEnabled = true
+        
+    }
+    
+    func disableFields(){
+        
+        vehicleCompanyNameTextField.isEnabled = false
+        vehicleModelNameTextField.isEnabled = false
+        vehicleNumberTextField.isEnabled = false
+        vehicleTypeTextField.isEnabled = false
+        vehicleRegistrationNumberTextField.isEnabled = false
+        vehicleModelYearTextField.isEnabled = false
+        insuranceNumberTextField.isEnabled = false
+        insuranceExpiryDateTextField.isEnabled = false
+        pollutionCertificateNumberTextField.isEnabled = false
+        pollutionCertificateExpiryDateTextField.isEnabled = false
+        permitExpiryDateTextField.isEnabled = false
+        vehicleFitnessExpiryDateTextField.isEnabled = false
+        mileageTextField.isEnabled = false
+        lastServiceDateTextField.isEnabled = false
+        uploadButton.isEnabled = false
+        activeSegment.isEnabled = false
+        
+    }
+    
+    
+    
     func showAlert(title: String, message: String){
         
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let action = UIAlertAction(title: "Ok", style: .default) { (UIAlertAction) in
-            self.backButton.isEnabled = true
             self.stopActivity()
+            //self.disableFields()
+            self.backButton.isEnabled = true
+            //self.activeSegment.isEnabled = false
+            
         }
         alertController.addAction(action)
         self.present(alertController, animated: true, completion: nil)

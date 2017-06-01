@@ -183,7 +183,11 @@ class BookingStatusListViewController: UIViewController, UITableViewDelegate, UI
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-            return bookings.count
+        if bookings.count == 0{
+            self.stopActivity()
+        }
+        
+        return bookings.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

@@ -68,11 +68,32 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
         self.view.addSubview(activityIndicator)
         
         activityIndicator.startAnimating()
-        
+        disableFields()
     }
     
     func stopActivity(){
         activityIndicator.stopAnimating()
+    }
+    
+    func disableFields(){
+        
+        firstNameTextField.isEnabled = false
+        lastNameTextField.isEnabled = false
+        dateOfBirthTextField.isEnabled = false
+        phoneNumberTextField.isEnabled = false
+        address1TextField.isEnabled = false
+        address2TextField.isEnabled = false
+        cityTextField.isEnabled = false
+        stateTextField.isEnabled = false
+        DLNumberTextField.isEnabled = false
+        DLValidFromTextField.isEnabled = false
+        DLValidTillTextField.isEnabled = false
+        policeVerifiedTextField.isEnabled = false
+        bloodGroupTextField.isEnabled = false
+        saveButton.isEnabled = false
+        backButton.isEnabled = false
+        uploadButton.isEnabled = false
+        activeSegment.isEnabled = false
     }
     
     override func viewDidLoad() {
@@ -330,6 +351,7 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
                 if completeFlag {
                     self.performSegue(withIdentifier: "driverListSegue", sender: nil)
                     self.stopActivity()
+                    self.disableFields()
                 }
             }
         
@@ -493,8 +515,11 @@ class AddDriverViewController: UIViewController, UIPickerViewDelegate, UIPickerV
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         //let action = UIAlertAction(title: "Ok", style: .default, handler: nil)
         let action = UIAlertAction(title: "Ok", style: .default) { (UIAlertAction) in
-            self.backButton.isEnabled = true
             self.stopActivity()
+            //self.disableFields()
+            self.backButton.isEnabled = true
+           // self.activeSegment.isEnabled = false
+            
         }
         alertController.addAction(action)
         self.present(alertController, animated: true, completion: nil)

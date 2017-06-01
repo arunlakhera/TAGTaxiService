@@ -87,11 +87,13 @@ class EditVehicleViewController: UIViewController, UIPickerViewDelegate,UIPicker
         self.view.addSubview(activityIndicator)
         //UIApplication.shared.beginIgnoringInteractionEvents()
         activityIndicator.startAnimating()
+        disableFields()
         
     }
     
     func stopActivity(){
         activityIndicator.stopAnimating()
+        enableFields()
         //UIApplication.shared.endIgnoringInteractionEvents()
     }
     
@@ -101,6 +103,8 @@ class EditVehicleViewController: UIViewController, UIPickerViewDelegate,UIPicker
     
     override func viewDidAppear(_ animated: Bool) {
         self.stopActivity()
+        self.disableFields()
+        self.backButton.isEnabled = true
     }
     
     override func viewDidLoad() {
@@ -365,7 +369,7 @@ class EditVehicleViewController: UIViewController, UIPickerViewDelegate,UIPicker
     }
 
     @IBAction func editButtonClicked(_ sender: UIBarButtonItem) {
-        backButton.isEnabled = false
+       // backButton.isEnabled = true
         saveButton.isHidden = false
         editButton.isEnabled = false
         
@@ -440,6 +444,26 @@ class EditVehicleViewController: UIViewController, UIPickerViewDelegate,UIPicker
         uploadButton.isEnabled = true
         activeSegment.isEnabled = true
         
+    }
+    
+    func disableFields(){
+        
+        vehicleCompanyNameTextField.isEnabled = false
+        vehicleModelNameTextField.isEnabled = false
+        vehicleNumberTextField.isEnabled = false
+        vehicleTypeTextField.isEnabled = false
+        vehicleRegistrationNumberTextField.isEnabled = false
+        vehicleModelYearTextField.isEnabled = false
+        insuranceNumberTextField.isEnabled = false
+        insuranceExpiryDateTextField.isEnabled = false
+        pollutionCertificateNumberTextField.isEnabled = false
+        pollutionCertificateExpiryDateTextField.isEnabled = false
+        permitExpiryDateTextField.isEnabled = false
+        vehicleFitnessExpiryDateTextField.isEnabled = false
+        mileageTextField.isEnabled = false
+        lastServiceDateTextField.isEnabled = false
+        uploadButton.isEnabled = false
+        activeSegment.isEnabled = false
         
     }
     
@@ -458,6 +482,7 @@ class EditVehicleViewController: UIViewController, UIPickerViewDelegate,UIPicker
                 editVehicleDetails()
                 
                 saveButton.isHidden = true
+                disableFields()
                //backButton.isEnabled = true
                 
             }else{
@@ -604,8 +629,11 @@ class EditVehicleViewController: UIViewController, UIPickerViewDelegate,UIPicker
         
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let action = UIAlertAction(title: "Ok", style: .default) { (UIAlertAction) in
-            self.backButton.isEnabled = true
             self.stopActivity()
+            self.disableFields()
+            self.backButton.isEnabled = true
+           //self.activeSegment.isEnabled = false
+            
         }
         alertController.addAction(action)
         self.present(alertController, animated: true, completion: nil)

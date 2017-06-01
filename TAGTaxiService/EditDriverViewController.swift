@@ -47,7 +47,7 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
     var DLValidTill = "NA"
     var policeVerified = "NA"
     var driverBloodGroup = "NA"
-    var active = "Yes"
+    var active = "NA"
     var numberOfDaysForExpiry: Int?
     
     var activeRecord: String?
@@ -82,12 +82,13 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
         self.view.addSubview(activityIndicator)
         //UIApplication.shared.beginIgnoringInteractionEvents()
         activityIndicator.startAnimating()
-        
+        disableFields()
     }
     
     func stopActivity(){
         activityIndicator.stopAnimating()
         //UIApplication.shared.endIgnoringInteractionEvents()
+        enableFields()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -96,7 +97,10 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
     
     override func viewDidAppear(_ animated: Bool) {
         self.stopActivity()
-    }
+        self.disableFields()
+        self.backButton.isEnabled = true
+
+        }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -118,7 +122,7 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
         policeVerifiedTextField.delegate = self
         bloodGroupTextField.delegate = self
         
-        activeSegment.isEnabled = false
+      //  activeSegment.isEnabled = false
         
         dateOfBirthPicker.datePickerMode = UIDatePickerMode.date
         dateOfBirthTextField.inputView = dateOfBirthPicker
@@ -174,7 +178,7 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
         DLNumberTextField.text = DLNumber
         DLValidFromTextField.text = DLValidFrom
         DLValidTillTextField.text = DLValidTill
-        
+      
         for s in statesArray{
             if s == state{
                 stateTextField.text = s
@@ -188,6 +192,7 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
         }
         
         activeRecord = active
+     //   print("====Active--\(active)==ActiveRecord---\(activeRecord)===")
         
         if activeRecord == "No"{
             activeSegment.selectedSegmentIndex = 1
@@ -215,24 +220,8 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
         self.stopActivity()
         
         // END IMAGE LOAD FOR DRIVER
-        
-        // Disable all fields
-        
-        firstNameTextField.isEnabled = false
-        lastNameTextField.isEnabled = false
-        dateOfBirthTextField.isEnabled = false
-        phoneNumberTextField.isEnabled = false
-        address1TextField.isEnabled = false
-        address2TextField.isEnabled = false
-        cityTextField.isEnabled = false
-        stateTextField.isEnabled = false
-        DLNumberTextField.isEnabled = false
-        DLValidFromTextField.isEnabled = false
-        DLValidTillTextField.isEnabled = false
-        policeVerifiedTextField.isEnabled = false
-        bloodGroupTextField.isEnabled = false
-        uploadButton.isEnabled = false
-        
+       
+       activeSegment.isEnabled = false
     }
 
     // MARK: ACTIONS
@@ -404,9 +393,9 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
     
     @IBAction func editButtonClicked(_ sender: Any) {
         saveButton.isHidden = false
-        backButton.isEnabled = false
+        saveButton.isEnabled = false
+       // backButton.isEnabled = false
         editButton.isEnabled = false
-        
         
         enableFields()
     }
@@ -426,10 +415,34 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
         DLValidTillTextField.isEnabled = true
         policeVerifiedTextField.isEnabled = true
         bloodGroupTextField.isEnabled = true
+        saveButton.isEnabled = true
+        backButton.isEnabled = true
         uploadButton.isEnabled = true
         activeSegment.isEnabled = true
         
     }
+    
+    func disableFields(){
+        
+        firstNameTextField.isEnabled = false
+        lastNameTextField.isEnabled = false
+        dateOfBirthTextField.isEnabled = false
+        phoneNumberTextField.isEnabled = false
+        address1TextField.isEnabled = false
+        address2TextField.isEnabled = false
+        cityTextField.isEnabled = false
+        stateTextField.isEnabled = false
+        DLNumberTextField.isEnabled = false
+        DLValidFromTextField.isEnabled = false
+        DLValidTillTextField.isEnabled = false
+        policeVerifiedTextField.isEnabled = false
+        bloodGroupTextField.isEnabled = false
+        saveButton.isEnabled = false
+        backButton.isEnabled = false
+        uploadButton.isEnabled = false
+        activeSegment.isEnabled = false
+    }
+
     
     
     @IBAction func saveButtonClicked(_ sender: UIButton) {
@@ -448,6 +461,7 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
                 // Enable Edit Button once changes have been saved
                 
                 saveButton.isHidden = true
+                //disableFields()
                 
             }
             
@@ -582,7 +596,9 @@ class EditDriverViewController: UIViewController,UIPickerViewDelegate, UIPickerV
         let action = UIAlertAction(title: "Ok", style: .default) { (UIAlertAction) in
             
             self.stopActivity()
+            self.disableFields()
             self.backButton.isEnabled = true
+           // self.activeSegment.isEnabled = false
         }
         alertController.addAction(action)
         self.present(alertController, animated: true, completion: nil)

@@ -7,25 +7,10 @@
 //
 
 import UIKit
+import Firebase
 
 class AdminBookDetailViewController: UIViewController, UITextFieldDelegate {
 
-    var bookName = "NA"
-    var bookTravelDate = "NA"
-    var bookFrom = "NA"
-    var bookTo = "NA"
-    var bookNoOfTravellers = "NA"
-    var bookPhone = "NA"
-    var bookRoundTrip = "NA"
-    var bookAmount = "NA"
-    var bookStatus = "NA"
-    var bookVehicle = ""
-    var bookVehicleType = ""
-    
-    var bookKey = ""
-    var riderID = ""
-    var bStatus = ""
-    
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var phoneLabel: UILabel!
@@ -40,6 +25,23 @@ class AdminBookDetailViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var send: UIButton!
     @IBOutlet weak var statusText: UILabel!
     @IBOutlet weak var cancelButton: UIBarButtonItem!
+    
+    
+    var bookName = "NA"
+    var bookTravelDate = "NA"
+    var bookFrom = "NA"
+    var bookTo = "NA"
+    var bookNoOfTravellers = "NA"
+    var bookPhone = ""
+    var bookRoundTrip = "NA"
+    var bookAmount = "NA"
+    var bookStatus = "NA"
+    var bookVehicle = ""
+    var bookVehicleType = ""
+    
+    var bookKey = ""
+    var riderID = ""
+    var bStatus = ""
     
     // Create a MessageComposer
     let messageComposer = MessageComposer()
@@ -65,17 +67,22 @@ class AdminBookDetailViewController: UIViewController, UITextFieldDelegate {
     override func viewDidAppear(_ animated: Bool) {
         self.stopActivity()
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        
-        let toolBarWithDoneButton =  addDoneButton()
-        
         amountText.delegate = self
         vehicleText.delegate = self
         
+        let riderProfile = DataService.ds.REF_RIDER.child(riderID).child("Profile")
+        riderProfile.observe(.value, with: { (snapshot) in
+            let riderData = Rider(riderID: self.riderID, dictionary: snapshot.value as! Dictionary<String, AnyObject>)
+                self.phoneLabel.text = riderData.phoneNumber!
+        })
+       
+        let toolBarWithDoneButton =  addDoneButton()
+        
         nameLabel.text = bookName.capitalized
-        phoneLabel.text = bookPhone
         travelDateLabel.text = bookTravelDate
         travelFromLabel.text = bookFrom.capitalized
         travelToLabel.text = bookTo.capitalized
@@ -103,9 +110,9 @@ class AdminBookDetailViewController: UIViewController, UITextFieldDelegate {
         amountText.inputAccessoryView = toolBarWithDoneButton
         vehicleText.inputAccessoryView = toolBarWithDoneButton
         
-        let riderProfile = DataService.ds.REF_RIDER.child("\(riderID)").child("Profile")
+        let riderInfo = DataService.ds.REF_RIDER.child("\(riderID)").child("Profile")
         
-        riderProfile.observe(.value, with: { (snapshot) in
+        riderInfo.observe(.value, with: { (snapshot) in
             
             let riderProfile = Rider(riderID: self.riderID, dictionary: snapshot.value as! Dictionary<String, AnyObject>)
             

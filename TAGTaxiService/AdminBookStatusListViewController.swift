@@ -18,6 +18,7 @@ class AdminBookStatusListViewController: UIViewController, UITableViewDelegate, 
     var riderName = ""
     var riderEmail = ""
     var riderPhone = ""
+   
     
     var travelBeginDate: String?
     var upcomingTravelCount = 0
@@ -51,7 +52,7 @@ class AdminBookStatusListViewController: UIViewController, UITableViewDelegate, 
         super.viewDidLoad()
          riderName = ""
          riderEmail = ""
-         riderPhone = ""
+         //riderPhone = []()
         
         tableView.delegate = self
         tableView.dataSource = self
@@ -107,25 +108,24 @@ class AdminBookStatusListViewController: UIViewController, UITableViewDelegate, 
         
         riderProfile.observe(.value, with: { (snapshot) in
            
-            let riderProfile = Rider(riderID: book.riderID!, dictionary: snapshot.value as! Dictionary<String, AnyObject>)
+            let riderData = Rider(riderID: book.riderID!, dictionary: snapshot.value as! Dictionary<String, AnyObject>)
            
-            if (riderProfile.firstName?.characters.count)! > 0 {
-                self.riderName = (riderProfile.firstName)!
+            if (riderData.firstName?.characters.count)! > 0 {
+                self.riderName = (riderData.firstName)!
             }else{
                 self.riderName = ""
             }
             
-            if (riderProfile.lastName?.characters.count)! > 0 {
-                self.riderName = self.riderName + " " + (riderProfile.lastName)!
+            if (riderData.lastName?.characters.count)! > 0 {
+                self.riderName = self.riderName + " " + (riderData.lastName)!
             }else{
                 self.riderName = self.riderName + "" + ""
             }
             
             if (self.riderName.characters.count) <= 0 {
-                self.riderName = String(describing: riderProfile.emailID)
+                self.riderName = String(describing: riderData.emailID)
             }
             
-            self.riderPhone = riderProfile.phoneNumber!
             cell?.nameLabel.text = self.riderName.capitalized
             
         })
@@ -200,26 +200,25 @@ class AdminBookStatusListViewController: UIViewController, UITableViewDelegate, 
             if let destinationVC = segue.destination as? AdminBookDetailViewController{
                 
                 let ip = (self.tableView.indexPathForSelectedRow?.row)!
-                let book = bookings.reversed()[ip]
+                let selectedBooking = bookings.reversed()[ip]
                 
-                destinationVC.bookKey = book.bookingID!
+                destinationVC.bookKey = selectedBooking.bookingID!
+                destinationVC.riderID = selectedBooking.riderID!
+               // destinationVC.bookPhone =  riderPhone
+                destinationVC.bookTravelDate = selectedBooking.rideBeginDate!
+                destinationVC.bookFrom = selectedBooking.rideFrom!.capitalized
+                destinationVC.bookTo = selectedBooking.rideTo!.capitalized
+                destinationVC.bookNoOfTravellers = selectedBooking.noOfTravellers!
+                destinationVC.bookRoundTrip = selectedBooking.roundTripFlag!.capitalized
                 
-                destinationVC.riderID = book.riderID!
-                destinationVC.bookPhone = riderPhone
-                destinationVC.bookTravelDate = book.rideBeginDate!
-                destinationVC.bookFrom = book.rideFrom!.capitalized
-                destinationVC.bookTo = book.rideTo!.capitalized
-                destinationVC.bookNoOfTravellers = book.noOfTravellers!
-                destinationVC.bookRoundTrip = book.roundTripFlag!.capitalized
-                
-                if book.status == "Quoted"{
+                if selectedBooking.status == "Quoted"{
                     destinationVC.bookStatus = "Quote Sent"
                 }else{
-                    destinationVC.bookStatus = book.status!
+                    destinationVC.bookStatus = selectedBooking.status!
                 }
-                destinationVC.bookAmount = book.amount!
-                destinationVC.bookVehicle = book.vehicle!
-                destinationVC.bookStatus = book.status!
+                destinationVC.bookAmount = selectedBooking.amount!
+                destinationVC.bookVehicle = selectedBooking.vehicle!
+                destinationVC.bookStatus = selectedBooking.status!
             }
             
         }
