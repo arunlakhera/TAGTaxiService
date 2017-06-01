@@ -81,7 +81,7 @@ class AdminBookDetailViewController: UIViewController, UITextFieldDelegate {
         })
        
         let toolBarWithDoneButton =  addDoneButton()
-        
+        bookPhone = phoneLabel.text!
         nameLabel.text = bookName.capitalized
         travelDateLabel.text = bookTravelDate
         travelFromLabel.text = bookFrom.capitalized
